@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "sakamatabot-v2"
+version = "0.1.0"
+description = ""
+authors = ["sushi-chaaaan <sushi_code@outlook.jp>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+mypy = "^0.982"
+isort = "^5.10.1"
+pyproject-flake8 = "^5.0.4.post1"
+flake8-isort = "^5.0.0"
+poethepoet = "^0.16.4"
+
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+ignore="W503"
+max-line-length = 120
+extend-exclude = ".venv"
+
+[tool.poe.tasks]
+# lint
+lint = ["lint-flake8", "lint-isort", "lint-mypy"]
+"lint-flake8" = "poetry run pflake8 ."
+"lint-isort" = "poetry run isort -c ."
+"lint-mypy" = "poetry run mypy ."
+
+# format
+format = ["format-black", "format-isort"]
+"format-black" = "poetry run black ."
+"format-isort" = "poetry run isort ."
+
+"mypy-types" = "mypy --install-types --non-interactive"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
