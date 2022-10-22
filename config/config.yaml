@@ -1,0 +1,37 @@
+# bot configuration file
+
+# environment variables: development or production
+environment: development
+
+# clear app command: if true, the bot will clear all app command on Discord Server
+clearAppCommands: false
+
+# extensions: wrote in python style file-path
+extensions:
+  - src.exts.deal
+  - src.exts.dm
+  - src.exts.entrance
+  - src.exts.error
+  - src.exts.inquiry
+  - src.exts.member_count
+  - src.exts.message
+  - src.exts.poll
+  - src.exts.reload
+  - src.exts.report
+  - src.exts.thread
+  - src.exts.utils
+  - src.membership.command
+  # - src.logging.listener
+
+# persistent_view: array of persistent views
+persistent_view:
+  - # 1
+    cls_name: InquiryView
+    custom_id:
+      - src.exts.inquiry.InquiryView
+    path: components.inquiry
+  - # 2
+    cls_name: Start_Verify_View
+    custom_id:
+      - components.membership.Start_Verify_View
+    path: components.membership.start_verify
