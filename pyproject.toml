@@ -22,13 +22,23 @@ isort = "^5.10.1"
 pyproject-flake8 = "^5.0.4.post1"
 poethepoet = "^0.16.4"
 
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+profile="black"
+lines_after_imports = 2
+ignore="W503"
+max-line-length = 120
+extend-exclude = ".venv"
+
 [tool.poe.tasks]
 # lint
 lint = { sequence = ["lint:flake8", "lint:isort", "lint:mypy"] }
 "lint:flake8" = "poetry run pflake8 ."
 "lint:isort" = "poetry run isort -c ."
 "lint:mypy" = "poetry run mypy ."
-"type-stub" = "mypy --install-types --non-interactive"
+"mypy-stub" = "mypy --install-types --non-interactive"
 
 # format
 format = { sequence = ["format:black", "format:isort"] }

@@ -1,9 +1,11 @@
 from discord import Intents
-from dotenv import load_dotenv
 from src.bot import MyBot
 
 
-
 if __name__ == "__main__":
-    intents = Intents.default()
+    intents = Intents.all()
+    intents.presences = False
     intents.typing = False
+
+    bot = MyBot(intents=intents)
+    bot.run()

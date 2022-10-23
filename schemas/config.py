@@ -1,7 +1,9 @@
-from pydantic import BaseSettings, Field
+from typing import Literal
+from pydantic import BaseSettings, BaseModel
 
 
 class Settings(BaseSettings):
+
     # general
     DISCORD_BOT_TOKEN: str
     APPLICATION_ID: int
@@ -24,13 +26,8 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
+        env_file_encoding = "utf-8"
 
 
-class DevSettings(Settings):
-    class Config:
-        env_file = ".env.development"
-
-
-class ProdSettings(Settings):
-    class Config:
-        env_file = ".env.production"
+class Environment(BaseModel):
+    environment: Literal["development", "production"]
