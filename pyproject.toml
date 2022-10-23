@@ -21,15 +21,15 @@ mypy = "^0.982"
 isort = "^5.10.1"
 pyproject-flake8 = "^5.0.4.post1"
 poethepoet = "^0.16.4"
+flake8-isort = "^5.0.0"
 
 [tool.black]
 target-version = ["py310"]
 line-length = 88
 
 [tool.flake8]
-profile = "black"
 max-line-length = 88
-extend-exclude = ".venv"
+extend-exclude =[ ".venv", "archive"]
 extend-ignore = ["E203", "W503"]
 
 [tool.isort]
