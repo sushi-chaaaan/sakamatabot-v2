@@ -2,7 +2,7 @@ from typing import Literal
 from pydantic import BaseSettings, HttpUrl, SecretStr
 
 
-class Settings(BaseSettings):
+class DotEnv(BaseSettings):
 
     # general
     DISCORD_BOT_TOKEN: SecretStr
@@ -32,7 +32,7 @@ class ConfigYaml(BaseSettings):
     # load from /config/config.yml
     Environment: Literal["development", "production"]
     CommandPrefix: str
-    clearAppCommands: bool
+    ClearAppCommands: bool
 
     class Config:
         case_sensitive = True
