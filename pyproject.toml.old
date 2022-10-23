@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "sakamatabot-v2"
+version = "0.1.0"
+description = ""
+authors = ["sushi-chaaaan <sushi_code@outlook.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiofiles = "^0.8.0"
+discord-handler = "^0.0.5"
+gspread = "^5.4.0"
+python-dotenv = "^0.20.0"
+# songdbcore = {git = "https://github.com/sushi-chaaaan/song-db-client", rev = "02d58f117d35744c20458c3c679f81d59b87423e"}
+
+PyNaCl = {version = "^1.5.0"}
+orjson = {version = "^3.7.1"}
+aiodns = {version = "^3.0.0"}
+Brotli = {version = "^1.0.9"}
+cchardet = {version = "^2.1.7"}
+dispander = {git = "https://github.com/DiscordBotPortalJP/dispander.git", rev = "dpy2"}
+"discord.py" = {git = "https://github.com/Rapptz/discord.py.git", rev = "master", extras = ["voice", "speed"]}
+# discord-ext-ui = {git = "https://github.com/sushi-chaaaan/discord-ext-ui.git", rev = "develop"}
+PyYAML = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.3.0"
+mypy = "^0.960"
+isort = "^5.10.1"
+pyproject-flake8 = "^5.0.4.post1"
+flake8-isort = "^5.0.0"
+poethepoet = "^0.16.4"
+
+[tool.black]
+line-length = 120
+
+[tool.flake8]
+profile="black"
+lines_after_imports = 2
+ignore="W503"
+max-line-length = 120
+extend-exclude = ".venv"
+
+[tool.poe.tasks]
+# lint
+lint = { sequence = ["lint:flake8", "lint:isort", "lint:mypy"] }
+"lint:flake8" = "poetry run pflake8 ."
+"lint:isort" = "poetry run isort -c ."
+"lint:mypy" = "poetry run mypy ."
+"type-stub" = "mypy --install-types --non-interactive"
+
+# format
+format = { sequence = ["format:black", "format:isort"] }
+"format:black" = "poetry run black ."
+"format:isort" = "poetry run isort ."
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
