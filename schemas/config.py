@@ -1,17 +1,16 @@
 from typing import Literal
-from pydantic import BaseSettings, HttpUrl
+from pydantic import BaseSettings, HttpUrl, SecretStr
 
 
 class Settings(BaseSettings):
 
     # general
-    DISCORD_BOT_TOKEN: str
+    DISCORD_BOT_TOKEN: SecretStr
     APPLICATION_ID: int
     BOT_OWNER: int
 
     # guild
     GUILD_ID: int
-
     # role
     ADMIN_ROLE_ID: int
 
