@@ -1,6 +1,6 @@
 from discord import Intents
-from src.bot import Bot
 
+from src.bot import Bot
 
 if __name__ == "__main__":
     intents = Intents.all()

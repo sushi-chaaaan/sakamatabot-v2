@@ -16,9 +16,7 @@ class ErrorCatcher(commands.Cog):
     @commands.Cog.listener(name="on_command_error")
     async def _on_command_error(self, ctx: commands.Context, exc: Exception):
         name = None if not ctx.command else ctx.command.name
-        self.logger.error(
-            f"on_command_error: \n{ctx.author} used {name} command", exc_info=exc
-        )
+        self.logger.error(f"on_command_error: \n{ctx.author} used {name} command", exc_info=exc)
         return
 
 

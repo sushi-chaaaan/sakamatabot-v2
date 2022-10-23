@@ -22,9 +22,7 @@ class Start_Verify_Button(ui.Button):
             await user.send(embeds=[Embeds.verify_intro_embed()])
         except discord.Forbidden:
             # TODO: ここらへんのEmbedを古いコードから持ってくる
-            await interaction.followup.send(
-                "サーバーメンバーからのDMの受信が拒否されています。DMを許可してからもう一度お試しください。", ephemeral=True
-            )
+            await interaction.followup.send("サーバーメンバーからのDMの受信が拒否されています。DMを許可してからもう一度お試しください。", ephemeral=True)
 
         else:
             await interaction.followup.send("DMに認証手順を送信しましたのでご確認ください。", ephemeral=True)

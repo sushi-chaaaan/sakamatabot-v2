@@ -75,9 +75,7 @@ class Timeout(commands.Cog):
             exe_msg = f"{member.mention}をタイムアウトしました。"
             non_exe_msg = f"{member.mention}のタイムアウトをキャンセルしました。"
             confirm_arg = ""
-            result = await Confirm(self.bot).confirm(
-                ctx, confirm_arg, role, confirm_msg
-            )
+            result = await Confirm(self.bot).confirm(ctx, confirm_arg, role, confirm_msg)
             if result:
                 msg = exe_msg
                 if if_dm == "dm:true":

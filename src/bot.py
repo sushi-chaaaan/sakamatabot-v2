@@ -1,6 +1,6 @@
 from discord.ext import commands  # type: ignore
-from schemas.config import DotEnv, ConfigYaml
 
+from schemas.config import ConfigYaml, DotEnv
 from tools.io import read_yaml
 
 

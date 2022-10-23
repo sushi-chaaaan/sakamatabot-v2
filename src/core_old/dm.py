@@ -21,9 +21,7 @@ class DM_Sys(commands.Cog):
 
     @commands.command(name="send-dm")
     @commands.has_role(admin_role)
-    async def _send_dm(
-        self, ctx: commands.Context, user: discord.Member, *, text: str
-    ) -> None:
+    async def _send_dm(self, ctx: commands.Context, user: discord.Member, *, text: str) -> None:
         """DM送信用"""
         permitted_role = ctx.guild.get_role(admin_role)
         confirm_msg = f"【DM送信確認】\n以下のDMを{user.mention}へ送信します。"
@@ -31,17 +29,11 @@ class DM_Sys(commands.Cog):
         non_exe_msg = f"{user.mention}へのDM送信をキャンセルしました。"
         confirm_arg = f"\n{text}\n------------------------"
         if ctx.message.attachments:
-            files: list[discord.File] = [
-                await attachment.to_file() for attachment in ctx.message.attachments
-            ]
-            result = await Confirm(self.bot).confirm(
-                ctx, confirm_arg, permitted_role, confirm_msg, files
-            )
+            files: list[discord.File] = [await attachment.to_file() for attachment in ctx.message.attachments]
+            result = await Confirm(self.bot).confirm(ctx, confirm_arg, permitted_role, confirm_msg, files)
         else:
             files = []
-            result = await Confirm(self.bot).confirm(
-                ctx, confirm_arg, permitted_role, confirm_msg
-            )
+            result = await Confirm(self.bot).confirm(ctx, confirm_arg, permitted_role, confirm_msg)
         if result:
             if files != []:
                 names = []
@@ -83,10 +75,7 @@ class DM_Sys(commands.Cog):
     @commands.Cog.listener("on_message")
     async def on_message_dm(self, message: discord.Message) -> None:
         avoid_dm_list = ["//check", "//remove-member"]
-        if (
-            type(message.channel) == discord.DMChannel
-            and self.bot.user == message.channel.me
-        ):
+        if type(message.channel) == discord.DMChannel and self.bot.user == message.channel.me:
             if message.author.bot:
                 return
             else:

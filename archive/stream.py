@@ -55,9 +55,7 @@ class StreamButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         # msg = await interaction.original_message()
-        await interaction.response.send_modal(
-            StreamModal(_url=self._url, origin_msg=interaction.message)
-        )
+        await interaction.response.send_modal(StreamModal(_url=self._url, origin_msg=interaction.message))
 
         return
 
@@ -69,14 +67,10 @@ class Dis_StreamButton(StreamButton):
 
 
 class StreamModal(Modal):
-    def __init__(
-        self, _url: str | None = None, origin_msg: discord.Message | None = None
-    ) -> None:
+    def __init__(self, _url: str | None = None, origin_msg: discord.Message | None = None) -> None:
         super().__init__(title="配信登録用フォーム")
         self.origin_msg = origin_msg
-        self.add_item(
-            InputText(label="配信のトピック", placeholder="歌枠、雑談、など", row=0, required=True)
-        )
+        self.add_item(InputText(label="配信のトピック", placeholder="歌枠、雑談、など", row=0, required=True))
         if _url:
             self.add_item(
                 InputText(
@@ -106,11 +100,7 @@ class StreamModal(Modal):
                 max_length=15,
             )
         )
-        self.add_item(
-            InputText(
-                label="予想配信時間(単位:時間)", placeholder="1.5(1時間30分)", row=3, required=True
-            )
-        )
+        self.add_item(InputText(label="予想配信時間(単位:時間)", placeholder="1.5(1時間30分)", row=3, required=True))
 
     async def callback(self, interaction: discord.Interaction):
         # print(interaction.guild.id)
@@ -122,9 +112,7 @@ class StreamModal(Modal):
         if len(time) == 4:
             todate = datetime.now(timezone.utc).astimezone(jst)
             start_time_object = datetime.strptime(time, "%H%M")
-            true_start_jst = start_time_object.replace(
-                year=todate.year, month=todate.month, day=todate.day, tzinfo=jst
-            )
+            true_start_jst = start_time_object.replace(year=todate.year, month=todate.month, day=todate.day, tzinfo=jst)
         elif len(time) == 15:
             true_start = datetime.strptime(time, "%Y.%m.%d.%H%M")
             true_start_jst = true_start.replace(tzinfo=jst)

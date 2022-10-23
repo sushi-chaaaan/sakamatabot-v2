@@ -15,9 +15,7 @@ class EmbedBuilder:
     def __init__(self) -> None:
         pass
 
-    def create_base_log_embed(
-        self, ctx: commands.Context, msg: str, desc_url: str
-    ) -> Embed:
+    def create_base_log_embed(self, ctx: commands.Context, msg: str, desc_url: str) -> Embed:
         embed = discord.Embed(
             title="実行ログ",
             color=3447003,
@@ -33,9 +31,7 @@ class EmbedBuilder:
         )
         return embed
 
-    def create_base_context_log_embed(
-        self, ctx: ApplicationContext, msg: str, desc_url: str
-    ) -> Embed:
+    def create_base_context_log_embed(self, ctx: ApplicationContext, msg: str, desc_url: str) -> Embed:
         embed = discord.Embed(
             title="Context Menu 実行ログ",
             color=3447003,
@@ -77,7 +73,5 @@ class EmbedBuilder:
             avatar_url = member.default_avatar.url
             return avatar_url
         else:
-            avatar_url = member.display_avatar.replace(
-                size=1024, static_format="webp"
-            ).url
+            avatar_url = member.display_avatar.replace(size=1024, static_format="webp").url
             return avatar_url

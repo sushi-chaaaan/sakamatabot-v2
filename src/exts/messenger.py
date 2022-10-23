@@ -72,14 +72,10 @@ class Messenger:
                         f"failed to send message to {self.channel.mention}\n\nHTTPException(plz check log)",
                         exc_info=e,
                     )
-                    await self.ctx.send(
-                        content="メッセージの送信に失敗しました。(HTTP Exception)\n詳しくはログを参照してください。"
-                    )
+                    await self.ctx.send(content="メッセージの送信に失敗しました。(HTTP Exception)\n詳しくはログを参照してください。")
                     return
         except Exception as e:
-            self.logger.exception(
-                f"failed to send message to {self.channel.name}", exc_info=e
-            )
+            self.logger.exception(f"failed to send message to {self.channel.name}", exc_info=e)
             await self.ctx.send(
                 content="メッセージの送信に失敗しました。\n権限が不足している可能性があります。\nまた、ボイスチャンネルに送信する場合は、サーバーで\nText in Voiceが有効化されているか予め確認してください。"
             )

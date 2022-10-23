@@ -53,9 +53,7 @@ class MemberCounter(commands.Cog):
         """MemberCountを手動で更新します。"""
         # defer and log
         await interaction.response.defer(ephemeral=True)
-        self.logger.info(
-            command_log(name="refresh-member-count", author=interaction.user)
-        )
+        self.logger.info(command_log(name="refresh-member-count", author=interaction.user))
 
         # refresh member count
         res = await self._refresh_count()
@@ -83,9 +81,7 @@ class MemberCounter(commands.Cog):
         try:
             await channel.edit(
                 name="Member Count: {count}".format(
-                    count=guild.member_count
-                    if guild.member_count
-                    else len(guild.members)
+                    count=guild.member_count if guild.member_count else len(guild.members)
                 )
             )
         except Exception as e:

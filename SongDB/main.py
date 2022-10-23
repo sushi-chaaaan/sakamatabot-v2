@@ -15,7 +15,9 @@ from SongDB.match import match_url
 
 load_dotenv()
 
-req_url = "https://script.google.com/macros/s/AKfycbybEQO66Ui5AbgaPvisluBbWMqxayLM2iyPCNeipXUOvn__Jp4SQsm7X8Z4w3HQvxja/exec"
+req_url = (
+    "https://script.google.com/macros/s/AKfycbybEQO66Ui5AbgaPvisluBbWMqxayLM2iyPCNeipXUOvn__Jp4SQsm7X8Z4w3HQvxja/exec"
+)
 
 guild_id = int(os.environ["GUILD_ID"])
 
@@ -52,9 +54,7 @@ class ProdDropdown(discord.ui.Select):
                 default=False,
             ),
         ]
-        super().__init__(
-            placeholder="検索方式を指定してください。", min_values=1, max_values=1, options=options
-        )
+        super().__init__(placeholder="検索方式を指定してください。", min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction) -> None:
         if self.values[0] == "multi":
@@ -63,9 +63,7 @@ class ProdDropdown(discord.ui.Select):
         elif self.values[0] == "no_recent":
             embed = EB()._start()
             view = ProdRecentDropdownView()
-            await interaction.response.send_message(
-                embed=embed, view=view, ephemeral=True
-            )
+            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
             return
         raise InteractionError(interaction=interaction, cls=self)
 
@@ -98,9 +96,7 @@ class DateSelect(discord.ui.Select):
                 default=False,
             ),
         ]
-        super().__init__(
-            placeholder="検索する期間を選択してください。", min_values=1, max_values=1, options=options
-        )
+        super().__init__(placeholder="検索する期間を選択してください。", min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
         mth = int(self.values[0])  # 1 or 3 or 6 or 12
@@ -161,9 +157,7 @@ class ProdSearch(discord.ui.Modal):
             matched_id = match_url(self.children[2].value)
             if not matched_id:
                 print("Invalid url inputted.")
-                await interaction.response.send_message(
-                    content="対応していないURLが入力されました。", ephemeral=True
-                )
+                await interaction.response.send_message(content="対応していないURLが入力されました。", ephemeral=True)
                 return
         client = SongDBClient(url=req_url)
         d = {
@@ -172,9 +166,7 @@ class ProdSearch(discord.ui.Modal):
             "stream_id": self.children[2].value,
         }
         if not any(d.values()):
-            await interaction.response.send_message(
-                content="一つ以上の検索条件を指定してください。", ephemeral=True
-            )
+            await interaction.response.send_message(content="一つ以上の検索条件を指定してください。", ephemeral=True)
             return
         songs = await client.multi_search(**d)
         if songs.songs == []:  # no result found

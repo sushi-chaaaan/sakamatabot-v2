@@ -46,9 +46,7 @@ class Deal(commands.Cog):
         )
 
     @app_commands.guild_only()
-    async def ctx_user(
-        self, interaction: discord.Interaction, target: discord.Member
-    ) -> None:
+    async def ctx_user(self, interaction: discord.Interaction, target: discord.Member) -> None:
         await interaction.response.defer(ephemeral=True)
         self.logger.info(command_log(name="ctx_user", author=interaction.user))
 
@@ -57,9 +55,7 @@ class Deal(commands.Cog):
         return
 
     @app_commands.guild_only()
-    async def ctx_timeout(
-        self, interaction: discord.Interaction, target: discord.Member
-    ) -> None:
+    async def ctx_timeout(self, interaction: discord.Interaction, target: discord.Member) -> None:
         await interaction.response.defer(ephemeral=True)
         self.logger.info(command_log(name="ctx_timeout", author=interaction.user))
 
@@ -185,9 +181,7 @@ class Deal(commands.Cog):
     @app_commands.guild_only()
     @app_commands.describe(target="Choose user to timeout")
     @app_commands.describe(target="Timeoutするユーザーを選択してください。")
-    @app_commands.describe(
-        time="解除する日付を入力してください。(例: 20220510→2020/05/10 0:00AM JSTに解除)"
-    )
+    @app_commands.describe(time="解除する日付を入力してください。(例: 20220510→2020/05/10 0:00AM JSTに解除)")
     @app_commands.rename(target="ユーザー")
     @app_commands.rename(time="解除する日付")
     @app_commands.rename(reason="理由")
