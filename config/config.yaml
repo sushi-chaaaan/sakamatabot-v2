@@ -7,4 +7,4 @@ Environment: development
 CommandPrefix: //
 
 # clear app command: if true, the bot will clear all app command on Discord Server
-clearAppCommands: false
+ClearAppCommands: false
