@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import BaseSettings
+from pydantic import BaseSettings, HttpUrl
 
 
 class Settings(BaseSettings):
@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     MEMBER_COUNT_CHANNEL_ID: int
 
     # webhook
-    LOGGER_WEBHOOK_URL: str
-    INQUIRY_WEBHOOK_URL: str
+    LOGGER_WEBHOOK_URL: HttpUrl
+    INQUIRY_WEBHOOK_URL: HttpUrl
 
     class Config:
         case_sensitive = True
