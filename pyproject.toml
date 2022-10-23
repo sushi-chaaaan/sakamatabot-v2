@@ -10,10 +10,10 @@ readme = "README.md"
 python = "^3.10"
 aiofiles = "^22.1.0"
 discord-handler = "^0.0.5"
-python-dotenv = "^0.21.0"
 PyYAML = "^6.0"
 discord-py = {git = "https://github.com/Rapptz/discord.py.git", rev = "master", extras = ["voice", "speed"]}
 dispander = {git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2"}
+pydantic = {extras = ["dotenv"], version = "^1.10.2"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"

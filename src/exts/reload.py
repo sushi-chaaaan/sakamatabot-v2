@@ -3,7 +3,7 @@ import os
 from discord import Interaction, Object, app_commands
 from discord.ext import commands
 
-from src.bot import Bot
+from old_bot import Bot
 from tools.logger import command_log, getMyLogger
 
 
