@@ -1,17 +1,16 @@
 from discord.ext import commands  # type: ignore
-from schemas.config import Settings, Environment
+from schemas.config import Settings, ConfigYaml
 
 from tools.io import read_yaml
 
 
 class MyBot(commands.Bot):
     def __init__(self, **kwargs):
-        self.config = read_yaml(r"config/config.yml")
-        self.environment = Environment(environment=self.config["environment"]).environment
-        self.dotenv_path = f".env.{self.environment}"
+        self.config = ConfigYaml(**read_yaml(r"config/config.yml"))
+        self.dotenv_path = f".env.{self.config.Environment}"
         self.env_value = Settings(_env_file=self.dotenv_path)  # type: ignore
 
-        super().__init__(command_prefix="//", **kwargs)
+        super().__init__(command_prefix=self.config.CommandPrefix, **kwargs)
 
     def run(self):
         super().run(self.env_value.DISCORD_BOT_TOKEN)

@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import BaseSettings, BaseModel
+from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -29,5 +29,12 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-class Environment(BaseModel):
-    environment: Literal["development", "production"]
+class ConfigYaml(BaseSettings):
+    # load from /config/config.yml
+    Environment: Literal["development", "production"]
+    CommandPrefix: str
+    clearAppCommands: bool
+
+    class Config:
+        case_sensitive = True
+        env_file_encoding = "utf-8"
