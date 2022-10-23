@@ -18,7 +18,9 @@ class Ban(commands.Cog):
 
     @commands.command(name="ban")
     @commands.has_role(admin_role)
-    async def _ban_user(self, ctx: commands.Context, member: discord.Member, if_dm: str = "dm:true"):
+    async def _ban_user(
+        self, ctx: commands.Context, member: discord.Member, if_dm: str = "dm:true"
+    ):
         """メンバーをBAN"""
         role = ctx.guild.get_role(admin_role)
         valid_if_dm_list = ["dm:true", "dm:false"]
@@ -49,7 +51,9 @@ class Ban(commands.Cog):
             exe_msg = f"{member.mention}をBANしました。"
             non_exe_msg = f"{member.mention}のBANをキャンセルしました。"
             confirm_arg = ""
-            result = await Confirm(self.bot).confirm(ctx, confirm_arg, role, confirm_msg)
+            result = await Confirm(self.bot).confirm(
+                ctx, confirm_arg, role, confirm_msg
+            )
             if result:
                 msg = exe_msg
                 if if_dm == "dm:true":
@@ -94,7 +98,9 @@ class Ban(commands.Cog):
             exe_msg = f"{user.mention}のBANを解除しました。"
             non_exe_msg = f"{user.mention}のBANの解除をキャンセルしました。"
             confirm_arg = ""
-            result = await Confirm(self.bot).confirm(ctx, confirm_arg, role, confirm_msg)
+            result = await Confirm(self.bot).confirm(
+                ctx, confirm_arg, role, confirm_msg
+            )
             if result:
                 msg = exe_msg
                 desc_url = ""

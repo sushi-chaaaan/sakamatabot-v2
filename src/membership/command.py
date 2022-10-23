@@ -16,7 +16,9 @@ class MemberShipCommand(commands.Cog):
     @app_commands.command(name="membership")
     @app_commands.guild_only()
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
-    async def membership(self, interaction: discord.Interaction, channel: discord.TextChannel):
+    async def membership(
+        self, interaction: discord.Interaction, channel: discord.TextChannel
+    ):
         await interaction.response.defer(ephemeral=True)
         self.logger.info(command_log(name="membership", author=interaction.user))
 
@@ -34,7 +36,11 @@ class MemberShipCommand(commands.Cog):
         self.logger.info(command_log(name="verify", author=ctx.author))
 
         # judge if media-type is image
-        if not image or not image.content_type or not image.content_type.startswith("image"):
+        if (
+            not image
+            or not image.content_type
+            or not image.content_type.startswith("image")
+        ):
             await ctx.send("画像を添付して実行してください。")
             return
 

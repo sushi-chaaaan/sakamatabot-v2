@@ -38,7 +38,9 @@ class Poll(commands.Cog):
             ]
         else:
             # many options
-            option = [{"name": emoji_dict[str(i)], "value": select[i]} for i in range(options)]
+            option = [
+                {"name": emoji_dict[str(i)], "value": select[i]} for i in range(options)
+            ]
 
         # generate embed
         embed = discord.Embed(

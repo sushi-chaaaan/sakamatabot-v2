@@ -38,7 +38,9 @@ class Membership(commands.Cog):
     async def _check_member(self, ctx: commands.Context):
         """メンバーシップ認証用"""
         if ctx.message.attachments == []:
-            await ctx.reply(content="画像が添付されていません。画像を添付して送り直してください。", mention_author=False)
+            await ctx.reply(
+                content="画像が添付されていません。画像を添付して送り直してください。", mention_author=False
+            )
             msg = "メンバー認証コマンドに画像が添付されていなかったため処理を停止しました。"
             desc_url = ""
             await LS(self.bot).send_exe_log(ctx, msg, desc_url)
@@ -60,7 +62,9 @@ class Membership(commands.Cog):
                     msg = exe_msg
                     desc_url = tracker.message.jump_url
                     member = guild.get_member(ctx.message.author.id)
-                    ref_msg = await btn_msg.reply(f"{ctx.message.author.display_name}さんの次回支払日を返信してください。")
+                    ref_msg = await btn_msg.reply(
+                        f"{ctx.message.author.display_name}さんの次回支払日を返信してください。"
+                    )
 
                     def check_date(message: discord.Message):
                         return (
@@ -133,7 +137,9 @@ class Membership(commands.Cog):
                         url=f"{desc_url}",
                         timestamp=datetime.utcnow(),
                     )
-                    embed.set_author(name=self.bot.user, icon_url=self.bot.user.display_avatar.url)
+                    embed.set_author(
+                        name=self.bot.user, icon_url=self.bot.user.display_avatar.url
+                    )
                     embed.add_field(
                         name="実行日時",
                         value=datetime.now(jst).strftime("%Y/%m/%d %H:%M:%S"),
@@ -158,7 +164,9 @@ class Membership(commands.Cog):
     @commands.dm_only()
     async def _remove_member(self, ctx: commands.Context):
         """メンバーシップ継続停止時"""
-        await ctx.reply(content="メンバーシップ継続停止を受理しました。\nしばらくお待ちください。", mention_author=False)
+        await ctx.reply(
+            content="メンバーシップ継続停止を受理しました。\nしばらくお待ちください。", mention_author=False
+        )
         channel = self.bot.get_channel(member_check_channel)
         guild = self.bot.get_guild(guild_id)
         exe_msg = f"{ctx.message.author.mention}のメンバーシップ継続停止を反映しました。"
@@ -186,7 +194,9 @@ class Membership(commands.Cog):
                     url=f"{desc_url}",
                     timestamp=datetime.utcnow(),
                 )
-                embed.set_author(name=self.bot.user, icon_url=self.bot.user.display_avatar.url)
+                embed.set_author(
+                    name=self.bot.user, icon_url=self.bot.user.display_avatar.url
+                )
                 embed.add_field(
                     name="実行日時",
                     value=datetime.now(jst).strftime("%Y/%m/%d %H:%M:%S"),
@@ -198,7 +208,9 @@ class Membership(commands.Cog):
 
     @commands.command(name="update-member")
     @commands.has_role(admin_role)
-    async def _update_member(self, ctx: commands.Context, *update_member: discord.Member):
+    async def _update_member(
+        self, ctx: commands.Context, *update_member: discord.Member
+    ):
         """メンバーシップ更新案内"""
         role = ctx.guild.get_role(admin_role)
         update_member_mention = [member.mention for member in update_member]
@@ -237,7 +249,9 @@ class MemberVerifyButton(discord.ui.View):
         emoji="\N{Envelope with Downwards Arrow Above}",
         custom_id="start_membership_verify_button",
     )
-    async def _start_verify(self, button: discord.ui.Button, interaction: discord.Interaction):
+    async def _start_verify(
+        self, button: discord.ui.Button, interaction: discord.Interaction
+    ):
         await interaction.response.defer()
         res_image_name = "receive_dm.png"
         path = os.path.join(os.path.dirname(__file__), r"../images/receive_dm.png")
@@ -253,7 +267,9 @@ class MemberVerifyButton(discord.ui.View):
         )
         embed.set_image(url=f"attachment://{res_image_name}")
         if not interaction.response.is_done():
-            await interaction.response.send_message(embed=embed, file=res_image, ephemeral=True)
+            await interaction.response.send_message(
+                embed=embed, file=res_image, ephemeral=True
+            )
         else:
             await interaction.followup.send(embed=embed, file=res_image, ephemeral=True)
         # Send DM
@@ -275,7 +291,9 @@ def _compose_dm_embeds() -> tuple[discord.Embed, discord.File]:
     image_name = "auth_1.png"
     path = os.path.join(os.path.dirname(__file__), r"../images/auth_1.png")
     image = discord.File(fp=path, filename=image_name, spoiler=False)
-    embed = discord.Embed(title="メンバーシップ認証", description="以下の手順に従って\n認証を開始してください。", color=15767485)
+    embed = discord.Embed(
+        title="メンバーシップ認証", description="以下の手順に従って\n認証を開始してください。", color=15767485
+    )
     embed.add_field(
         inline=False,
         name="手順1",

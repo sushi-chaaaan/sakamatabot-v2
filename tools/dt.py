@@ -24,7 +24,9 @@ def get_now() -> datetime:
     return datetime.now(JST())
 
 
-def dt_to_str(datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S") -> str:
+def dt_to_str(
+    datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S"
+) -> str:
     """convert datetime object to string.
 
     Args:

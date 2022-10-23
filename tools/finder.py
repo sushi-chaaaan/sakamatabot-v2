@@ -29,7 +29,9 @@ class Finder:
                 raise Exception(text)
         return channel
 
-    def deal_guild(self, guild: discord.Guild | None = None) -> discord.Guild | discord.Client:
+    def deal_guild(
+        self, guild: discord.Guild | None = None
+    ) -> discord.Guild | discord.Client:
         if guild:
             return guild
         return self.bot

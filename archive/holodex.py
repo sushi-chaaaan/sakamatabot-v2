@@ -44,9 +44,19 @@ class StreamNotify(commands.Cog):
             lives = await client.live_streams(channel_id=ch_id)
             archives = await client.videos_from_channel(channel_id=ch_id, type="videos")
             yt_channel = await client.channel(channel_id=ch_id)
-            lives_tuple = (x for x in lives.contents if x.status == "upcoming" and x.type == "stream")
-            nowgoing_tuple = (x for x in lives.contents if x.status == "live" and x.type == "stream")
-            ended_tuple = (x for x in archives.contents if x.status == "past" and x.type == "stream")
+            lives_tuple = (
+                x
+                for x in lives.contents
+                if x.status == "upcoming" and x.type == "stream"
+            )
+            nowgoing_tuple = (
+                x for x in lives.contents if x.status == "live" and x.type == "stream"
+            )
+            ended_tuple = (
+                x
+                for x in archives.contents
+                if x.status == "past" and x.type == "stream"
+            )
             await self.upcoming_stream(lives_tuple, yt_channel)
             print("今後の配信の処理を完了")
             await self.nowgoing_stream(nowgoing_tuple, yt_channel)
@@ -84,7 +94,9 @@ class StreamNotify(commands.Cog):
                     name="**配信予定時刻(JST)**",
                     value=f"{time}",
                 )
-                embed.add_field(name="**配信予定時刻(Timestamp)**", value=f"{timestamp}", inline=False)
+                embed.add_field(
+                    name="**配信予定時刻(Timestamp)**", value=f"{timestamp}", inline=False
+                )
                 embed.set_image(url=f"https://i.ytimg.com/vi/{x.id}/maxresdefault.jpg")
                 embed.set_footer(
                     text=f"{yt_channel.name} ({created})",

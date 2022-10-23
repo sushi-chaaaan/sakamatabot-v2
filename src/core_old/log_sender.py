@@ -25,7 +25,9 @@ class LogSender(commands.Cog):
         await channel.send(embed=embed)
         return
 
-    async def send_timeout_log(self, ctx: commands.Context, msg: str, desc_url: str, until: str):
+    async def send_timeout_log(
+        self, ctx: commands.Context, msg: str, desc_url: str, until: str
+    ):
         embed = EB().create_base_log_embed(ctx, msg, desc_url)
         channel = self.bot.get_channel(log_channel)
         embed.insert_field_at(2, name="解除日時", value=until)
@@ -38,7 +40,9 @@ class LogSender(commands.Cog):
         await channel.send(embed=embed)
         return
 
-    async def send_context_timeout_log(self, ctx: ApplicationContext, msg: str, desc_url: str, until_str: str):
+    async def send_context_timeout_log(
+        self, ctx: ApplicationContext, msg: str, desc_url: str, until_str: str
+    ):
         embed = EB().create_base_context_log_embed(ctx, msg, desc_url)
         channel = self.bot.get_channel(log_channel)
         embed.insert_field_at(2, name="解除日時", value=until_str)

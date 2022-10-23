@@ -77,7 +77,10 @@ class ConfirmView(View):
                 .style(discord.ButtonStyle.green)
                 .disabled(self.status is not None)
                 .on_click(self.ok),
-                Button(self.ng_str).style(discord.ButtonStyle.red).disabled(self.status is not None).on_click(self.ng),
+                Button(self.ng_str)
+                .style(discord.ButtonStyle.red)
+                .disabled(self.status is not None)
+                .on_click(self.ng),
             ],
         )
 

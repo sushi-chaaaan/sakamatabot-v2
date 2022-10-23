@@ -45,7 +45,9 @@ class WordAlert(commands.Cog):
     def ignore_message(self, message: discord.Message) -> bool:
 
         # ignore message not from Guild
-        if not isinstance(message.channel, discord.TextChannel | discord.VoiceChannel | discord.Thread):
+        if not isinstance(
+            message.channel, discord.TextChannel | discord.VoiceChannel | discord.Thread
+        ):
             return True
 
         # ignore message from Bot
@@ -78,11 +80,17 @@ class WordDetector:
 
     def _detect_low(self) -> tuple[Word]:
         return tuple(
-            [Word(content=word, level="low") for word in self.dict if word in self.content and self.dict[word] == "low"]
+            [
+                Word(content=word, level="low")
+                for word in self.dict
+                if word in self.content and self.dict[word] == "low"
+            ]
         )
 
     def _detect_server_link(self) -> tuple[Link]:
-        return tuple([Link(content=link) for link in self.server_link.findall(self.content)])
+        return tuple(
+            [Link(content=link) for link in self.server_link.findall(self.content)]
+        )
 
     def find_all(self) -> Detected | None:
         high = self._detect_high()

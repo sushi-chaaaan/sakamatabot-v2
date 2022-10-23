@@ -56,7 +56,9 @@ class Utils(commands.Cog):
         await ctx.defer(ephemeral=True)
         self.logger.info(command_log(name="ping", author=ctx.author))
 
-        await ctx.send(content=f"pong!\nping is {self.bot.latency * 1000:.2f}ms", ephemeral=True)
+        await ctx.send(
+            content=f"pong!\nping is {self.bot.latency * 1000:.2f}ms", ephemeral=True
+        )
         return
 
 

@@ -58,8 +58,12 @@ class Bot(commands.Bot):
         try:
             if self.environment == "development":  # development
                 if self.clear_app_commands:
-                    self.tree.clear_commands(guild=discord.Object(id=int(os.environ["GUILD_ID"])))
-                cmd = await self.tree.sync(guild=discord.Object(id=int(os.environ["GUILD_ID"])))
+                    self.tree.clear_commands(
+                        guild=discord.Object(id=int(os.environ["GUILD_ID"]))
+                    )
+                cmd = await self.tree.sync(
+                    guild=discord.Object(id=int(os.environ["GUILD_ID"]))
+                )
             else:  # production
                 if self.clear_app_commands:
                     self.tree.clear_commands(guild=None)
@@ -162,7 +166,9 @@ class Bot(commands.Bot):
         channel = await finder.find_channel(int(os.environ["LOG_CHANNEL"]))
 
         if not isinstance(channel, discord.abc.Messageable):
-            self.logger.error(f"Failed to get Messageable channel {os.environ['LOG_CHANNEL']}")
+            self.logger.error(
+                f"Failed to get Messageable channel {os.environ['LOG_CHANNEL']}"
+            )
         else:
             await channel.send(embeds=[embed])
 

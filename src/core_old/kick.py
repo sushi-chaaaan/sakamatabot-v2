@@ -18,7 +18,9 @@ class Kick(commands.Cog):
 
     @commands.command(name="kick")
     @commands.has_role(admin_role)
-    async def _kick_user(self, ctx: commands.Context, member: discord.Member, if_dm: str = "dm:true"):
+    async def _kick_user(
+        self, ctx: commands.Context, member: discord.Member, if_dm: str = "dm:true"
+    ):
         """メンバーをキック"""
         role = ctx.guild.get_role(admin_role)
         valid_if_dm_list = ["dm:true", "dm:false"]
@@ -43,7 +45,9 @@ class Kick(commands.Cog):
             exe_msg = f"{member.mention}をキックしました。"
             non_exe_msg = f"{member.mention}のキックをキャンセルしました。"
             confirm_arg = ""
-            result = await Confirm(self.bot).confirm(ctx, confirm_arg, role, confirm_msg)
+            result = await Confirm(self.bot).confirm(
+                ctx, confirm_arg, role, confirm_msg
+            )
             if result:
                 msg = exe_msg
                 if if_dm == "dm:true":

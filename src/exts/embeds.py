@@ -43,7 +43,9 @@ class Embeds:
                 inline=False,
             )
         else:
-            embed.description = f"\N{Warning Sign}このサーバーにいないユーザーです。\n対象ユーザー: {target.mention}"
+            embed.description = (
+                f"\N{Warning Sign}このサーバーにいないユーザーです。\n対象ユーザー: {target.mention}"
+            )
         return embed
 
     @staticmethod
@@ -60,7 +62,9 @@ class Embeds:
         if thread.parent:
             embed.add_field(name="Parent channel", value=thread.parent.mention)
         embed.add_field(name="Thread link", value=thread.mention)
-        embed.add_field(name="Owner", value=thread.owner.mention if thread.owner else "Unknown")
+        embed.add_field(
+            name="Owner", value=thread.owner.mention if thread.owner else "Unknown"
+        )
         visibility = "public" if not thread.is_private() else "private"
         embed.add_field(name="Visibility", value=visibility)
         if thread.created_at:

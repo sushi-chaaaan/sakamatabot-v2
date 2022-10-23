@@ -19,7 +19,11 @@ class MessageInputView(View):
     def __init__(
         self,
         title: str,
-        target: discord.User | discord.Member | discord.abc.GuildChannel | discord.Thread | None = None,
+        target: discord.User
+        | discord.Member
+        | discord.abc.GuildChannel
+        | discord.Thread
+        | None = None,
         embed: discord.Embed | None = None,
         attachment: discord.Attachment | None = None,
         extras: dict[str, Any] | None = None,
@@ -87,7 +91,10 @@ class MessageInputView(View):
                 .row(0)
                 .disabled(self.disable_all or not self.inputted_once)
                 .on_click(self.execute_button),
-                CancelButton().row(0).disabled(self.disable_all).on_click(self.cancel_button),
+                CancelButton()
+                .row(0)
+                .disabled(self.disable_all)
+                .on_click(self.cancel_button),
             ],
         )
 

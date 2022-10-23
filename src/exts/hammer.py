@@ -37,7 +37,9 @@ class Hammer:
             succeeded = False
             exc = e
         else:
-            self.logger.info(text := DealText.kick.value.format(target=self.target.mention))
+            self.logger.info(
+                text := DealText.kick.value.format(target=self.target.mention)
+            )
             succeeded = True
         return HammerResponse(succeeded=succeeded, message=text, exception=exc)
 
@@ -68,7 +70,9 @@ class Hammer:
             succeeded = False
             exc = e
         else:
-            self.logger.info(text := DealText.ban.value.format(target=self.target.mention))
+            self.logger.info(
+                text := DealText.ban.value.format(target=self.target.mention)
+            )
             succeeded = True
             exc = None
         return HammerResponse(succeeded=succeeded, message=text, exception=exc)
@@ -82,7 +86,9 @@ class Hammer:
         try:
             await self.target.timeout(
                 until,
-                reason=AuditLogText.timeout.value.format(author=self.author, reason=self.reason),
+                reason=AuditLogText.timeout.value.format(
+                    author=self.author, reason=self.reason
+                ),
             )
         except Exception as e:
             self.logger.exception(
@@ -96,6 +102,8 @@ class Hammer:
             succeeded = False
             exc = e
         else:
-            self.logger.info(text := DealText.timeout.value.format(target=self.target.mention))
+            self.logger.info(
+                text := DealText.timeout.value.format(target=self.target.mention)
+            )
             succeeded = True
         return HammerResponse(succeeded=succeeded, message=text, exception=exc)

@@ -43,7 +43,9 @@ class Report(commands.Cog):
         )
 
     @app_commands.guild_only()
-    async def report_user(self, interaction: discord.Interaction, user: discord.Member) -> None:
+    async def report_user(
+        self, interaction: discord.Interaction, user: discord.Member
+    ) -> None:
         self.logger.info(command_log(name="report_user", author=interaction.user))
 
         # get text input
@@ -67,11 +69,15 @@ class Report(commands.Cog):
 
         await self.send_report_to_forum(info)
 
-        await interaction.followup.send(f"ユーザーを管理者に通報しました。\n通報内容: {content}", ephemeral=True)
+        await interaction.followup.send(
+            f"ユーザーを管理者に通報しました。\n通報内容: {content}", ephemeral=True
+        )
         return
 
     @app_commands.guild_only()
-    async def report_message(self, interaction: discord.Interaction, message: discord.Message) -> None:
+    async def report_message(
+        self, interaction: discord.Interaction, message: discord.Message
+    ) -> None:
         self.logger.info(command_log(name="report_message", author=interaction.user))
 
         # get text input
@@ -95,7 +101,9 @@ class Report(commands.Cog):
 
         await self.send_report_to_forum(info)
 
-        await interaction.followup.send(f"メッセージを管理者に通報しました。\n通報内容: {content}", ephemeral=True)
+        await interaction.followup.send(
+            f"メッセージを管理者に通報しました。\n通報内容: {content}", ephemeral=True
+        )
         return
 
     async def send_report_to_forum(self, info: ReportInfo) -> None:
@@ -127,7 +135,9 @@ class Report(commands.Cog):
 
 class ReportModal(ui.Modal):
     def __init__(self) -> None:
-        super().__init__(title="通報フォーム", timeout=None, custom_id="src.exts.report.ReportModal")
+        super().__init__(
+            title="通報フォーム", timeout=None, custom_id="src.exts.report.ReportModal"
+        )
         self.content: ui.TextInput = ui.TextInput(
             label="通報内容",
             placeholder="通報内容を入力してください。",
@@ -152,8 +162,12 @@ def report_user_embed(
         description=reason,
         color=Color.notice.value,
     )
-    embed.add_field(name="通報されたユーザー", value=f"{target.mention}(ID: {target.id})", inline=False)
-    embed.add_field(name="通報したユーザー", value=f"{author.mention}(ID: {author.id})", inline=False)
+    embed.add_field(
+        name="通報されたユーザー", value=f"{target.mention}(ID: {target.id})", inline=False
+    )
+    embed.add_field(
+        name="通報したユーザー", value=f"{author.mention}(ID: {author.id})", inline=False
+    )
     embed.set_footer(text=f"日時: {dt_to_str(datetime.now(JST()))}")
     return embed
 
@@ -178,7 +192,9 @@ def report_message_embed(
         value=f"{target.author.mention}(ID: {target.author.id})",
         inline=False,
     )
-    embed.add_field(name="通報したユーザー", value=f"{author.mention}(ID: {author.id})", inline=False)
+    embed.add_field(
+        name="通報したユーザー", value=f"{author.mention}(ID: {author.id})", inline=False
+    )
     embed.set_footer(text=f"日時: {dt_to_str(datetime.now(JST()))}")
     return embed
 
