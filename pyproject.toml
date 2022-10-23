@@ -11,9 +11,12 @@ python = "^3.10"
 aiofiles = "^22.1.0"
 discord-handler = "^0.0.5"
 PyYAML = "^6.0"
-discord-py = {git = "https://github.com/Rapptz/discord.py.git", rev = "master", extras = ["voice", "speed"]}
-dispander = {git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2"}
-pydantic = {extras = ["dotenv"], version = "^1.10.2"}
+discord-py = { git = "https://github.com/Rapptz/discord.py.git", rev = "master", extras = [
+    "voice",
+    "speed",
+] }
+dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2" }
+pydantic = { extras = ["dotenv"], version = "^1.10.2" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
@@ -29,7 +32,7 @@ line-length = 88
 
 [tool.flake8]
 max-line-length = 88
-extend-exclude =[ ".venv", "archive"]
+extend-exclude = [".venv", "archive"]
 extend-ignore = ["E203", "W503"]
 
 [tool.isort]
@@ -37,18 +40,24 @@ profile = "black"
 line_length = 88
 skip_gitignore = true
 
+[tool.mypy]
+python_version = "3.10"
+exclude = [".venv", "archive"]
+
 [tool.poe.tasks]
 # lint
-lint = { sequence = ["lint:flake8", "lint:isort", "lint:mypy"] }
-"lint:flake8" = "poetry run pflake8 ."
-"lint:isort" = "poetry run isort -c ."
-"lint:mypy" = "poetry run mypy ."
-"mypy-stub" = "mypy --install-types --non-interactive"
+lint.sequence = ["_pflake8", "_isort-c", "_mypy"]
+lint.ignore_fail = "return_zero"
+_pflake8 = "poetry run pflake8 ."
+_isort-c = "poetry run isort -c ."
+_mypy = "poetry run mypy ."
+mypy-stub = "mypy --install-types --non-interactive"
 
 # format
-format = { sequence = ["format:black", "format:isort"] }
-"format:black" = "poetry run black ."
-"format:isort" = "poetry run isort ."
+format.sequence = ["_black", "_isort"]
+format.ignore_fail = "return_zero"
+_black = "poetry run black ."
+_isort = "poetry run isort ."
 
 [build-system]
 requires = ["poetry-core"]
