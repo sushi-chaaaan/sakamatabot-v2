@@ -13,4 +13,4 @@ class Bot(commands.Bot):
         super().__init__(command_prefix=self.config.CommandPrefix, **kwargs)
 
     def run(self):
-        super().run(self.env_value.DISCORD_BOT_TOKEN)
+        super().run((self.env_value.DISCORD_BOT_TOKEN.get_secret_value()))
