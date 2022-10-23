@@ -23,14 +23,19 @@ pyproject-flake8 = "^5.0.4.post1"
 poethepoet = "^0.16.4"
 
 [tool.black]
-line-length = 120
+target-version = ["py310"]
+line-length = 88
 
 [tool.flake8]
-profile="black"
-lines_after_imports = 2
-ignore="W503"
-max-line-length = 120
+profile = "black"
+max-line-length = 88
 extend-exclude = ".venv"
+extend-ignore = ["E203", "W503"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip_gitignore = true
 
 [tool.poe.tasks]
 # lint
