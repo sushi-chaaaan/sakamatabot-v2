@@ -22,6 +22,19 @@ isort = "^5.10.1"
 pyproject-flake8 = "^5.0.4.post1"
 poethepoet = "^0.16.4"
 
+[tool.poe.tasks]
+# lint
+lint = { sequence = ["lint:flake8", "lint:isort", "lint:mypy"] }
+"lint:flake8" = "poetry run pflake8 ."
+"lint:isort" = "poetry run isort -c ."
+"lint:mypy" = "poetry run mypy ."
+"type-stub" = "mypy --install-types --non-interactive"
+
+# format
+format = { sequence = ["format:black", "format:isort"] }
+"format:black" = "poetry run black ."
+"format:isort" = "poetry run isort ."
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
