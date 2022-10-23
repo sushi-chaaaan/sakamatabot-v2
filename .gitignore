@@ -162,3 +162,5 @@ cython_debug/
 # dotenv
 .env*
 !.env.example
+
+archive/
