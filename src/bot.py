@@ -6,7 +6,7 @@ from tools.io import read_yaml
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
-        self.config = ConfigYaml(**read_yaml(r"config/config.yml"))
+        self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
         self.dotenv_path = f".env.{self.config.Environment}"
         self.env_value = Settings(_env_file=self.dotenv_path)  # type: ignore
 
