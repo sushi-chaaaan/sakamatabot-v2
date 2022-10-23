@@ -4,7 +4,7 @@ from schemas.config import Settings, ConfigYaml
 from tools.io import read_yaml
 
 
-class MyBot(commands.Bot):
+class Bot(commands.Bot):
     def __init__(self, **kwargs):
         self.config = ConfigYaml(**read_yaml(r"config/config.yml"))
         self.dotenv_path = f".env.{self.config.Environment}"

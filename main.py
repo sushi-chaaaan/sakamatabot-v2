@@ -1,5 +1,5 @@
 from discord import Intents
-from src.bot import MyBot
+from src.bot import Bot
 
 
 if __name__ == "__main__":
@@ -7,5 +7,5 @@ if __name__ == "__main__":
     intents.presences = False
     intents.typing = False
 
-    bot = MyBot(intents=intents)
+    bot = Bot(intents=intents)
     bot.run()
