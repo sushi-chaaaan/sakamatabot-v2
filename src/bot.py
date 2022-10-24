@@ -11,7 +11,11 @@ class Bot(commands.Bot):
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
         self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
 
-        super().__init__(command_prefix=self.config.CommandPrefix, **kwargs)
+        super().__init__(
+            command_prefix=self.config.CommandPrefix,
+            help_command=None,
+            **kwargs,
+        )
 
     async def setup_hook(self) -> None:
         if self.config.ClearAppCommands:
