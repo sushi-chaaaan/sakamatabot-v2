@@ -1,4 +1,4 @@
-from discord import Object, Intents
+import discord
 from discord.ext import commands  # type: ignore
 
 from schemas.config import ConfigYaml, DotEnv
@@ -12,7 +12,7 @@ class Bot(commands.Bot):
         self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
 
         # set intents
-        intents = Intents.all()
+        intents = discord.Intents.all()
         intents.typing = False
 
         super().__init__(
@@ -66,12 +66,12 @@ class Bot(commands.Bot):
         return
 
     @property
-    def app_commands_sync_target(self) -> Object | None:
-        target: Object | None = None
+    def app_commands_sync_target(self) -> discord.Object | None:
+        target: discord.Object | None = None
         if self.config.SyncGlobally:
             pass
         else:
-            target = Object(id=self.env.GUILD_ID)
+            target = discord.Object(id=self.env.GUILD_ID)
         return target
 
     def run(self):
