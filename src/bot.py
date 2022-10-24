@@ -1,4 +1,4 @@
-from discord import Object
+from discord import Object, Intents
 from discord.ext import commands  # type: ignore
 
 from schemas.config import ConfigYaml, DotEnv
@@ -11,9 +11,14 @@ class Bot(commands.Bot):
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
         self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
 
+        # set intents
+        intents = Intents.all()
+        intents.typing = False
+
         super().__init__(
             command_prefix=self.config.CommandPrefix,
             help_command=None,
+            intents=intents,
             **kwargs,
         )
 
