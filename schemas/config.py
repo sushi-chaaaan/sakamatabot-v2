@@ -4,7 +4,6 @@ from pydantic import BaseSettings, HttpUrl, SecretStr
 
 
 class DotEnv(BaseSettings):
-
     # general
     DISCORD_BOT_TOKEN: SecretStr
     APPLICATION_ID: int
