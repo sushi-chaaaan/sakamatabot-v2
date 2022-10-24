@@ -12,5 +12,15 @@ class Bot(commands.Bot):
 
         super().__init__(command_prefix=self.config.CommandPrefix, **kwargs)
 
+    async def setup_hook(self) -> None:
+        pass
+
+    async def on_ready(self):
+        pass
+
+    async def load_ext(self):
+
+        pass
+
     def run(self):
         super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))

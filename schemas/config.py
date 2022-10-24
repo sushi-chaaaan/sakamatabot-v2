@@ -29,10 +29,19 @@ class DotEnv(BaseSettings):
 
 
 class ConfigYaml(BaseSettings):
-    # load from /config/config.yml
+    # load from /config/config.yaml
     Environment: Literal["development", "production"]
     CommandPrefix: str
     ClearAppCommands: bool
+
+    class Config:
+        case_sensitive = True
+        env_file_encoding = "utf-8"
+
+
+class ExtensionYaml(BaseSettings):
+    # load from /config/extensions.yaml
+    Extensions: list[str]
 
     class Config:
         case_sensitive = True

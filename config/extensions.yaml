@@ -1,0 +1,3 @@
+# bot extensions path
+Extensions:
+- src.exts.utils
