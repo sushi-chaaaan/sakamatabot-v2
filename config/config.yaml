@@ -1,10 +1,17 @@
 # bot configuration file
 
+# General
 # environment variables: development or production
 Environment: development
-
 # command prefix
 CommandPrefix: //
 
+# App Commands
 # clear app command: if true, the bot will clear all app command on Discord Server
 ClearAppCommands: false
+# sync command globally: if true, the bot will sync all commands globally
+SyncGlobally: false
+
+# Extensions
+Extensions:
+  - src.exts.utils

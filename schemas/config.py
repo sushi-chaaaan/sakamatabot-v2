@@ -1,6 +1,7 @@
+import re
 from typing import Literal
 
-from pydantic import BaseSettings, HttpUrl, SecretStr
+from pydantic import BaseSettings, ConstrainedStr, HttpUrl, SecretStr
 
 
 class DotEnv(BaseSettings):
@@ -28,20 +29,20 @@ class DotEnv(BaseSettings):
         env_file_encoding = "utf-8"
 
 
+class ExtensionPath(ConstrainedStr):
+    regex = re.compile(r"^[\w+\.]+\w$")
+
+
 class ConfigYaml(BaseSettings):
     # load from /config/config.yaml
     Environment: Literal["development", "production"]
     CommandPrefix: str
+
+    # AppCommands
     ClearAppCommands: bool
+    SyncGlobally: bool
 
-    class Config:
-        case_sensitive = True
-        env_file_encoding = "utf-8"
-
-
-class ExtensionYaml(BaseSettings):
-    # load from /config/extensions.yaml
-    Extensions: list[str]
+    Extensions: list[ExtensionPath]
 
     class Config:
         case_sensitive = True
