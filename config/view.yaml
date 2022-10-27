@@ -1,11 +1,8 @@
-persistent_view:
-  - # 1
-    ClassName: InquiryView
-    CustomId:
-      - src.exts.inquiry.InquiryView
-    Path: components.inquiry
-  - # 2
-    ClassName: Start_Verify_View
-    CustomId:
-      - components.membership.Start_Verify_View
-    Path: components.membership.start_verify
+- ClassName: InquiryView
+  CustomId:
+    - src.exts.inquiry.InquiryView
+  Path: components.inquiry
+- ClassName: Start_Verify_View
+  CustomId:
+    - components.membership.Start_Verify_View
+  Path: components.membership.start_verify
