@@ -1,16 +1,23 @@
 import os
 from datetime import datetime, timedelta, timezone
+from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord.ext.commands import Bot
 
 from tools.dt import JST
 from tools.logger import command_log, getMyLogger
 
+if TYPE_CHECKING:
+    from src.bot import Bot
+
 
 class Utils(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    bot: "Bot"
+
+    def __init__(self, bot: "Bot"):
         self.bot = bot
         self.logger = getMyLogger(__name__)
 
