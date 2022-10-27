@@ -59,7 +59,7 @@ class Bot(commands.Bot):
             pass
 
     async def setup_view(self):
-        persistent_views = PersistentView.parse_file("config/ui.yaml")
+        persistent_views = PersistentView.parse_file("config/view.yaml")
         pprint(persistent_views)
         print("view loaded successfully")
         pass
