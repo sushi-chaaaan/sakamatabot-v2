@@ -9,7 +9,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from SongDBCore import SongDBClient
 
-from SongDB.embed_builder import EmbedBuilder as EB
+from SongDB.song_embed_builder import EmbedBuilder as EB
 from SongDB.many_page import PagePage
 from SongDB.match import match_url
 

@@ -1,7 +1,7 @@
 import discord
 from discord import Interaction, ui
 
-from .embeds import Embeds
+from .mem_embeds import Embeds
 
 
 class Start_Verify_View(ui.View):

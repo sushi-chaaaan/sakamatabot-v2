@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from components.membership.embeds import Embeds
+from components.membership.mem_embeds import Embeds
 from tools.logger import command_log, getMyLogger
 
 

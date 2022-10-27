@@ -4,7 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-from components.inquiry import InquiryView
+from components.cmp_inquiry import InquiryView
 from tools.logger import command_log, getMyLogger
 
 from .embeds import Embeds

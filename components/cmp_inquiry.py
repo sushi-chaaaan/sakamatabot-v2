@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from tools.logger import getMyLogger
 from tools.webhook import post_webhook
 
-from .embeds import EmbedBuilder as EB
+from .cmp_embeds import EmbedBuilder as EB
 
 
 class InquiryView(ui.View):
