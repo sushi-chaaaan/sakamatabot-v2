@@ -1,14 +1,16 @@
+from pprint import pprint
+
 import discord
 from discord.ext import commands  # type: ignore
 
 from schemas.config import ConfigYaml, DotEnv
-from tools.io import read_yaml
+from schemas.ui import PersistentView
 
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
         # load config files
-        self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
+        self.config = ConfigYaml.parse_file("config/config.yaml")
         self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
 
         # set intents
@@ -57,6 +59,9 @@ class Bot(commands.Bot):
             pass
 
     async def setup_view(self):
+        persistent_views = PersistentView.parse_file("config/ui.yaml")
+        pprint(persistent_views)
+        print("view loaded successfully")
         pass
 
     async def clear_app_commands_and_close(self) -> None:

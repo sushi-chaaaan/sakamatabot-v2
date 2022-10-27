@@ -3,6 +3,8 @@ from typing import Literal
 
 from pydantic import BaseSettings, ConstrainedStr, HttpUrl, SecretStr
 
+from .general import PyStylePath
+
 
 class DotEnv(BaseSettings):
     # general
@@ -29,10 +31,6 @@ class DotEnv(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-class ExtensionPath(ConstrainedStr):
-    regex = re.compile(r"^[\w+\.]+\w$")
-
-
 class ConfigYaml(BaseSettings):
     # load from /config/config.yaml
     Environment: Literal["development", "production"]
@@ -42,7 +40,7 @@ class ConfigYaml(BaseSettings):
     ClearAppCommands: bool
     SyncGlobally: bool
 
-    Extensions: list[ExtensionPath]
+    Extensions: list[PyStylePath]
 
     class Config:
         case_sensitive = True
