@@ -4,6 +4,11 @@ from typing import Any
 import aiofiles
 import yaml
 
+try:
+    import tomllib as toml
+except ImportError:
+    import tomli as toml
+
 
 async def download_file(url: str, /, *, filename: str):
     import aiohttp
@@ -42,6 +47,11 @@ def convert_json_to_yaml(filename: str) -> None:
         yaml.safe_dump(data, f)
         print("converted to yaml")
         return
+
+
+def read_toml(filename: str) -> dict:
+    with open(filename, mode="rb") as f:
+        return toml.load(f)
 
 
 def remove_file_extension(filename: str) -> str:

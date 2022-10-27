@@ -1,0 +1,22 @@
+[config.general]
+Environment = 'development' # 'development' or 'production'
+CommandPrefix = '//'        # The prefix for commands
+
+[config.app_commands]
+ClearAppCommands = false
+SyncGlobally = false
+
+[extensions]
+Extensions = ['src.exts.utils']
+
+[views]
+
+[[views.persistent_views]]
+ClassName = 'InquiryView'
+CustomId = ['src.exts.inquiry.InquiryView']
+Path = 'components.inquiry'
+
+[[views.persistent_views]]
+ClassName = 'Start_Verify_View'
+CustomId = ['components.membership.Start_Verify_View']
+Path = 'components.membership.start_verify'
