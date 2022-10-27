@@ -1,6 +1,6 @@
 import re
 
-from pydantic import BaseModel, ConstrainedStr
+from pydantic import ConstrainedStr
 
 
 class PyStylePath(ConstrainedStr):
