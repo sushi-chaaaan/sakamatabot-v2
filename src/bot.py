@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands  # type: ignore
+from discord.ext import commands
 
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
