@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import discord
 from discord.ext import commands  # type: ignore
 
@@ -29,14 +27,14 @@ class Bot(commands.Bot):
         if self.config.ClearAppCommands:
             await self.clear_app_commands_and_close()
 
-        await self.load_cogs()
+        await self.load_exts()
         await self.sync_app_commands()
         await self.setup_view()
 
     async def on_ready(self) -> None:
         pass
 
-    async def load_cogs(self, reload: bool = False) -> None:
+    async def load_exts(self, reload: bool = False) -> None:
         for ext in self.config.Extensions:
             try:
                 if reload:
