@@ -9,9 +9,9 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from SongDBCore import SongDBClient
 
-from SongDB.song_embed_builder import EmbedBuilder as EB
 from SongDB.many_page import PagePage
 from SongDB.match import match_url
+from SongDB.song_embed_builder import EmbedBuilder as EB
 
 load_dotenv()
 
