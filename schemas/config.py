@@ -1,7 +1,7 @@
 import re
 from typing import Literal
 
-from pydantic import BaseSettings, ConstrainedStr, HttpUrl, SecretStr
+from pydantic import BaseSettings, HttpUrl, SecretStr
 
 from .general import PyStylePath
 
