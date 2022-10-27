@@ -1,9 +1,0 @@
-{
-    "inquiry": {
-        "path": "components.inquiry",
-        "class": "InquiryView",
-        "custom_id": [
-            "src.exts.inquiry.InquiryView"
-        ]
-    }
-}
