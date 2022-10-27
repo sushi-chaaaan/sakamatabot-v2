@@ -61,7 +61,7 @@ class Bot(commands.Bot):
             pass
 
     async def setup_view(self):
-        persistent_views = [PersistentView(**i) for i in read_yaml(r"config/view.yaml")]
+        per_views = [PersistentView(**i) for i in read_yaml(r"config/view.yaml")]
         print("view loaded successfully")
         pass
 
