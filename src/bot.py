@@ -1,3 +1,5 @@
+import inspect
+
 import discord
 from discord.ext import commands
 
@@ -5,7 +7,6 @@ from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
 from tools.io import read_yaml
 from tools.logger import getMyLogger
-import inspect
 
 
 class Bot(commands.Bot):

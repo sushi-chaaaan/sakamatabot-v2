@@ -4,6 +4,7 @@ import logging.handlers
 import discord
 from discord.utils import _ColourFormatter
 from discord_handler import DiscordHandler
+
 from schemas.config import DotEnv
 
 
