@@ -4,6 +4,8 @@ from discord.ext import commands
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
 from tools.io import read_yaml
+from tools.logger import getMyLogger
+import inspect
 
 
 class Bot(commands.Bot):
@@ -11,6 +13,7 @@ class Bot(commands.Bot):
         # load config files
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
         self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
+        self.logger = getMyLogger(self.env, __name__)
 
         # set intents
         intents = discord.Intents.all()
@@ -42,26 +45,38 @@ class Bot(commands.Bot):
                 else:
                     await self.load_extension(ext)
             except Exception as e:
-                # self.logger.error(f"Failed to load extension {ext}", exc_info=e)
+                self.logger.error(f"Failed to load extension {ext}", exc_info=e)
                 pass
             else:
-                # self.logger.info(f"Loaded extension {ext}")
+                self.logger.info(f"Loaded extension {ext}")
                 pass
 
     async def sync_app_commands(self) -> None:
         try:
             await self.tree.sync(guild=self.app_commands_sync_target)
         except Exception as e:
-            # self.logger.error("Failed to sync application commands", exc_info=e)
+            self.logger.error("Failed to sync application commands", exc_info=e)
             pass
         else:
-            # self.logger.info("Application commands synced successfully")
+            self.logger.info("Application commands synced successfully")
             pass
 
-    async def setup_view(self):
-        per_views = [PersistentView(**i) for i in read_yaml(r"config/view.yaml")]
-        print("view loaded successfully")
-        pass
+    async def setup_view(self) -> None:
+        per_views = [PersistentView(**v) for v in read_yaml(r"config/view.yaml")]
+        for pv in per_views:
+            for view in self.build_view(pv):
+                self.add_view(view)
+        return
+
+    def build_view(self, view: PersistentView) -> list[discord.ui.View]:
+        import importlib
+
+        view_file = importlib.import_module(view.Path)
+        view_class: discord.ui.View = getattr(view_file, view.ClassName)
+        if not inspect.isclass(view_class):
+            raise TypeError(f"{view.ClassName} is not a class")
+
+        return [view_class(custom_id=c_id) for c_id in view.CustomId]
 
     async def clear_app_commands_and_close(self) -> None:
         self.tree.clear_commands(guild=None)

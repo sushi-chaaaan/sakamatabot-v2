@@ -1,16 +1,14 @@
 import logging
 import logging.handlers
-import os
 
 import discord
 from discord.utils import _ColourFormatter
 from discord_handler import DiscordHandler
-from dotenv import load_dotenv
+from schemas.config import DotEnv
 
 
-def getMyLogger(name, webhook_url: str | None = None):
+def getMyLogger(env: DotEnv, name: str) -> logging.Logger:  # name: __name__
 
-    load_dotenv()
     # get logger and handler
     logger = logging.getLogger(name)
     streamHandler = logging.StreamHandler()
@@ -21,11 +19,10 @@ def getMyLogger(name, webhook_url: str | None = None):
         encoding="utf-8",
         mode="w",
     )
-    if not webhook_url:
-        webhook_url = os.environ["LOGGER_WEBHOOK_URL"]
+    webhook_url = DotEnv.LOGGER_WEBHOOK_URL
     discord_handler = DiscordHandler(
         webhook_url=webhook_url,
-        notify_users=[int(os.environ["BOT_OWNER"])],
+        notify_users=[DotEnv.BOT_OWNER],
     )
 
     # set format
