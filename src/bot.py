@@ -2,6 +2,7 @@ import inspect
 
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
@@ -11,10 +12,14 @@ from tools.logger import getMyLogger
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
-        # load config files
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
-        self.env = DotEnv(_env_file=f".env.{self.config.Environment}")  # type: ignore
-        self.logger = getMyLogger(self.env, __name__)
+
+        # デコレータ内でも環境変数を使うため先にload_dotenv()する, バリデーションはpydantic任せ
+        # https://github.com/pydantic/pydantic/issues/1482
+        load_dotenv(f".env.{self.config.Environment}")
+        self.env = DotEnv()  # type: ignore
+
+        self.logger = getMyLogger(__name__)
 
         # set intents
         intents = discord.Intents.all()

@@ -68,5 +68,5 @@ class Utils(commands.Cog):
         return
 
 
-async def setup(bot: commands.Bot):
+async def setup(bot: "Bot"):
     await bot.add_cog(Utils(bot))
