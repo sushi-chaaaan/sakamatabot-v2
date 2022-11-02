@@ -1,4 +1,5 @@
 import inspect
+from pprint import pprint
 
 import discord
 from discord.ext import commands
@@ -20,7 +21,6 @@ class Bot(commands.Bot):
         self.env = DotEnv()  # type: ignore
 
         self.logger = getMyLogger(__name__)
-
         # set intents
         intents = discord.Intents.all()
         intents.typing = False
@@ -75,6 +75,8 @@ class Bot(commands.Bot):
         return
 
     def build_view(self, view: PersistentView) -> list[discord.ui.View]:
+        # https://saruhei1989.hatenablog.com/entry/2019/03/10/090000
+        # 外部ファイルベースの動的なViewインスタンス生成
         import importlib
 
         view_file = importlib.import_module(view.Path)
