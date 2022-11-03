@@ -11,4 +11,3 @@ class PersistentView(BaseModel):
 
     class Config:
         case_sensitive = True
-        env_file_encoding = "utf-8"
