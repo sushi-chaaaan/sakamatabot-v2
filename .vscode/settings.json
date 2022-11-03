@@ -9,6 +9,7 @@
     "python.languageServer": "Pylance",
     "editor.formatOnSave": true,
     "cSpell.words": [
-        "pydantic"
+        "pydantic",
+        "unban"
     ],
 }
