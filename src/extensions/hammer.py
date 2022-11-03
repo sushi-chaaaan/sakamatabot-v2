@@ -1,5 +1,5 @@
 import discord
-from discord import Forbidden, Guild, HTTPException
+from discord import Forbidden, Guild, HTTPException, NotFound
 
 from schemas.command import CommandInfo
 from tools.logger import getMyLogger
@@ -16,7 +16,9 @@ class Hammer:
 
     async def kick(self, guild: Guild) -> None:
         try:
-            await guild.kick(discord.Object(id=self.target_id), reason=self.info.reason)
+            await guild.kick(
+                user=discord.Object(id=self.target_id), reason=self.info.reason
+            )
         except* Forbidden:
             self.logger.error(
                 msg=f"Failed to kick {self.target_id} (Forbidden)", exc_info=True
@@ -24,6 +26,48 @@ class Hammer:
         except* HTTPException:
             self.logger.error(
                 msg=f"Failed to kick {self.target_id} (HTTPException)", exc_info=True
+            )
+        finally:
+            pass
+
+    async def ban(self, guild: Guild) -> None:
+        try:
+            await guild.ban(
+                user=discord.Object(id=self.target_id),
+                reason=self.info.reason,
+                delete_message_seconds=604800,
+            )
+        except* NotFound:
+            self.logger.error(
+                msg=f"Failed to ban {self.target_id} (NotFound)", exc_info=True
+            )
+        except* Forbidden:
+            self.logger.error(
+                msg=f"Failed to ban {self.target_id} (Forbidden)", exc_info=True
+            )
+        except* HTTPException:
+            self.logger.error(
+                msg=f"Failed to ban {self.target_id} (HTTPException)", exc_info=True
+            )
+        finally:
+            pass
+
+    async def unban(self, guild: Guild) -> None:
+        try:
+            await guild.unban(
+                user=discord.Object(id=self.target_id), reason=self.info.reason
+            )
+        except* NotFound:
+            self.logger.error(
+                msg=f"Failed to unban {self.target_id} (NotFound)", exc_info=True
+            )
+        except* Forbidden:
+            self.logger.error(
+                msg=f"Failed to unban {self.target_id} (Forbidden)", exc_info=True
+            )
+        except* HTTPException:
+            self.logger.error(
+                msg=f"Failed to unban {self.target_id} (HTTPException)", exc_info=True
             )
         finally:
             pass
