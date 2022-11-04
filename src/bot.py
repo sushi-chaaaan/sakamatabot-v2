@@ -13,12 +13,13 @@ from tools.logger import getMyLogger
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
+        # TODO: 将来的にtyping.dataclass_transformを使う
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
 
         # デコレータ内でも環境変数を使うため先にload_dotenv()する, バリデーションはpydantic任せ
         # https://github.com/pydantic/pydantic/issues/1482
         load_dotenv(f".env.{self.config.Environment}")
-        self.env = DotEnv()  # type: ignore
+        self.env = DotEnv()  # pyright: ignore # 環境変数から読み込まれる
 
         self.logger = getMyLogger(__name__)
         # set intents

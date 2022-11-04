@@ -12,6 +12,7 @@
     "editor.formatOnSave": true,
     "cSpell.words": [
         "pydantic",
+        "pyright",
         "unban"
     ],
 }
