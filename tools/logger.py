@@ -48,4 +48,4 @@ def getMyLogger(name: str) -> logging.Logger:  # name: __name__
 
 
 def command_log(*, name: str, author: discord.Member | discord.User) -> str:
-    return "{} [ID: {}] user {} command".format(author, author.id, name)
+    return "{} [ID: {}] user {} command".format(str(author), author.id, name)
