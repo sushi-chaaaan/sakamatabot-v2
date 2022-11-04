@@ -19,11 +19,11 @@ class Hammer:
             await guild.kick(
                 user=discord.Object(id=self.target_id), reason=self.info.reason
             )
-        except* Forbidden:
+        except Forbidden:
             self.logger.error(
                 msg=f"Failed to kick {self.target_id} (Forbidden)", exc_info=True
             )
-        except* HTTPException:
+        except HTTPException:
             self.logger.error(
                 msg=f"Failed to kick {self.target_id} (HTTPException)", exc_info=True
             )
@@ -37,15 +37,15 @@ class Hammer:
                 reason=self.info.reason,
                 delete_message_seconds=604800,
             )
-        except* NotFound:
+        except NotFound:
             self.logger.error(
                 msg=f"Failed to ban {self.target_id} (NotFound)", exc_info=True
             )
-        except* Forbidden:
+        except Forbidden:
             self.logger.error(
                 msg=f"Failed to ban {self.target_id} (Forbidden)", exc_info=True
             )
-        except* HTTPException:
+        except HTTPException:
             self.logger.error(
                 msg=f"Failed to ban {self.target_id} (HTTPException)", exc_info=True
             )
@@ -57,15 +57,15 @@ class Hammer:
             await guild.unban(
                 user=discord.Object(id=self.target_id), reason=self.info.reason
             )
-        except* NotFound:
+        except NotFound:
             self.logger.error(
                 msg=f"Failed to unban {self.target_id} (NotFound)", exc_info=True
             )
-        except* Forbidden:
+        except Forbidden:
             self.logger.error(
                 msg=f"Failed to unban {self.target_id} (Forbidden)", exc_info=True
             )
-        except* HTTPException:
+        except HTTPException:
             self.logger.error(
                 msg=f"Failed to unban {self.target_id} (HTTPException)", exc_info=True
             )
