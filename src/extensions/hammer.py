@@ -11,10 +11,10 @@ class Hammer:
         self.info = info
         self.target_id: int  # set by set_target()
 
-    def set_target(self, target_id: int) -> None:
+    def set_target_id(self, target_id: int) -> None:
         self.target_id = target_id
 
-    async def kick(self, guild: Guild) -> None:
+    async def kick_from_guild(self, guild: Guild) -> None:
         try:
             await guild.kick(
                 user=discord.Object(id=self.target_id), reason=self.info.reason
@@ -30,7 +30,7 @@ class Hammer:
         finally:
             pass
 
-    async def ban(self, guild: Guild) -> None:
+    async def ban_from_guild(self, guild: Guild) -> None:
         try:
             await guild.ban(
                 user=discord.Object(id=self.target_id),
@@ -52,7 +52,7 @@ class Hammer:
         finally:
             pass
 
-    async def unban(self, guild: Guild) -> None:
+    async def unban_from_guild(self, guild: Guild) -> None:
         try:
             await guild.unban(
                 user=discord.Object(id=self.target_id), reason=self.info.reason
