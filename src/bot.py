@@ -94,12 +94,9 @@ class Bot(commands.Bot):
 
     @property
     def app_commands_sync_target(self) -> discord.Object | None:
-        target: discord.Object | None = None
-        if self.config.SyncGlobally:
-            pass
-        else:
-            target = discord.Object(id=self.env.GUILD_ID)
-        return target
+        return (
+            None if self.config.SyncGlobally else discord.Object(id=self.env.GUILD_ID)
+        )
 
     def run(self):
         super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))
