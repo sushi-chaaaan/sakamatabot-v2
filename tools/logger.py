@@ -27,12 +27,12 @@ def getMyLogger(name: str) -> logging.Logger:  # name: __name__
 
     # set format
     formatter = _ColourFormatter()
-    discord_formatter = logging.Formatter(
-        "%(asctime)s:%(levelname)s:%(name)s: %(message)s"
+    literal_formatter = logging.Formatter(
+        "%(asctime)s:%(levelname)s:\n%(name)s:%(message)s"
     )
     streamHandler.setFormatter(formatter)
-    file_handler.setFormatter(formatter)
-    discord_handler.setFormatter(discord_formatter)
+    file_handler.setFormatter(literal_formatter)
+    discord_handler.setFormatter(literal_formatter)
 
     # set level
     logger.setLevel(logging.DEBUG)
