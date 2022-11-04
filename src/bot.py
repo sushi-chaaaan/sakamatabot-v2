@@ -16,12 +16,18 @@ class Bot(commands.Bot):
         # TODO: 将来的にtyping.dataclass_transformを使う
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
 
-        # デコレータ内でも環境変数を使うため先にload_dotenv()する, バリデーションはpydantic任せ
+        # デコレータ内でも環境変数を使うため先にload_dotenv()する, Validationはあとから
         # https://github.com/pydantic/pydantic/issues/1482
         load_dotenv(f".env.{self.config.Environment}")
-        self.env = DotEnv()  # pyright: ignore # 環境変数から読み込まれる
+        try:
+            self.env = DotEnv()  # pyright: ignore , 環境変数に対してValidation
+        except Exception:  # pydanticがエラーを吐いた時点で起動を確実に中止
+            raise
+        else:
+            pass
 
         self.logger = getMyLogger(__name__)
+
         # set intents
         intents = discord.Intents.all()
         intents.typing = False
