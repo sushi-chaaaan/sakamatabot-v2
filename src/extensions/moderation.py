@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 import discord
 from discord import app_commands
 from discord.ext import commands
-from schemas.command import CommandInfo
 
+from schemas.command import CommandInfo
 from tools.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:

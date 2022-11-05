@@ -2,12 +2,8 @@ import json
 from typing import Any
 
 import aiofiles
+import tomli as toml
 import yaml
-
-try:
-    import tomllib as toml
-except ImportError:
-    import tomli as toml
 
 
 async def download_file(url: str, /, *, filename: str):
