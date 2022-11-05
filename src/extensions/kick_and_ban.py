@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from src.bot import Bot
 
 
-class Moderation(commands.Cog):
+class KickAndBan(commands.Cog):
     def __init__(self, bot: "Bot") -> None:
         self.bot = bot
         self.logger = getMyLogger(__name__)
@@ -103,4 +103,4 @@ class Moderation(commands.Cog):
 
 
 async def setup(bot: "Bot") -> None:
-    await bot.add_cog(Moderation(bot))
+    await bot.add_cog(KickAndBan(bot))
