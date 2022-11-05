@@ -34,6 +34,7 @@ class Utils(commands.Cog):
         time: str = "1200",
     ):
         """日付をDiscordで使用できるタイムスタンプに変換します。"""
+        # TODO: EmbedとViewを使ったインタラクティブなやつ欲しくない？
         # defer and log
         await interaction.response.defer(ephemeral=True)
         self.logger.info(command_log(name="timestamp", author=interaction.user))
