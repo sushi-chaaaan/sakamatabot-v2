@@ -30,12 +30,14 @@ class Hammer:
         finally:
             pass
 
-    async def ban_from_guild(self, guild: Guild) -> None:
+    async def ban_from_guild(
+        self, guild: Guild, delete_message_seconds: int = 604800
+    ) -> None:
         try:
             await guild.ban(
                 user=discord.Object(id=self.target_id),
                 reason=self.info.reason,
-                delete_message_seconds=604800,
+                delete_message_seconds=delete_message_seconds,
             )
         except NotFound:
             self.logger.error(
@@ -48,26 +50,6 @@ class Hammer:
         except HTTPException:
             self.logger.error(
                 msg=f"Failed to ban {self.target_id} (HTTPException)", exc_info=True
-            )
-        finally:
-            pass
-
-    async def unban_from_guild(self, guild: Guild) -> None:
-        try:
-            await guild.unban(
-                user=discord.Object(id=self.target_id), reason=self.info.reason
-            )
-        except NotFound:
-            self.logger.error(
-                msg=f"Failed to unban {self.target_id} (NotFound)", exc_info=True
-            )
-        except Forbidden:
-            self.logger.error(
-                msg=f"Failed to unban {self.target_id} (Forbidden)", exc_info=True
-            )
-        except HTTPException:
-            self.logger.error(
-                msg=f"Failed to unban {self.target_id} (HTTPException)", exc_info=True
             )
         finally:
             pass
