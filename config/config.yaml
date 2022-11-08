@@ -15,5 +15,7 @@ SyncGlobally: false
 # Extensions
 Extensions:
   - src.extensions.kick_and_ban
+  - src.extensions.member_count
   - src.extensions.moderation
+  - src.extensions.poll
   - src.extensions.utils
