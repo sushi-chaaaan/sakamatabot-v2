@@ -41,11 +41,11 @@ class MemberCounter(commands.Cog):
         )
 
         # refresh member count
-        res = await self._refresh_count()
-        if not res:
-            self.logger.error("failed to refresh member count")
-        else:
+        refresh_succeed = await self._refresh_count()
+        if refresh_succeed:
             self.logger.info("refreshed member count")
+        else:
+            self.logger.error("failed to refresh member count")
 
     # wait for bot to be ready before start refresh_count task
     @refresh_count.before_loop
