@@ -15,4 +15,8 @@
         "pyright",
         "unban"
     ],
+    "isort.check": true,
+    "isort.path": [
+        ".venv/bin/isort"
+    ],
 }
