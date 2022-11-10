@@ -1,7 +1,7 @@
 import inspect
 
 import discord
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 from dotenv import load_dotenv
 
 from schemas.config import ConfigYaml, DotEnv

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.tools.logger import command_log, getMyLogger
@@ -32,11 +32,12 @@ class KickAndBan(commands.Cog):
         reason: str | None = None,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(reason=reason, author=interaction.user)
+        cmd_info = CommandInfo(
+            reason=reason, author=interaction.user  # pyright: ignore
+        )
         self.logger.info(command_log(name="kick", author=cmd_info.author))
 
         if not interaction.guild:
-            # TODO: ここでエラーを返す
             self.logger.info("Guild not found.")
             await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
             return
@@ -77,12 +78,13 @@ class KickAndBan(commands.Cog):
         reason: str | None = None,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(reason=reason, author=interaction.user)
+        cmd_info = CommandInfo(
+            reason=reason, author=interaction.user  # pyright: ignore
+        )
         self.logger.info(command_log(name="ban", author=cmd_info.author))
         delete_message_seconds: int = delete_message_days * 86400
 
         if not interaction.guild:
-            # TODO: ここでエラーを返す
             self.logger.info("Guild not found.")
             await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
             return

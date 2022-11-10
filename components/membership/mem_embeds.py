@@ -1,4 +1,5 @@
 from discord import Embed
+
 from type.color import Color
 
 
