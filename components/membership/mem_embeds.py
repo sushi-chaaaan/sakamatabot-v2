@@ -1,6 +1,5 @@
 from discord import Embed
-
-from model.color import Color
+from type.color import Color
 
 
 class Embeds:

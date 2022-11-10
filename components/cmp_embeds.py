@@ -1,8 +1,8 @@
 from datetime import datetime
 
 import discord
+from type.color import Color
 
-from model.color import Color
 from tools.dt import JST
 
 

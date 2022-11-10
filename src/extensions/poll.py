@@ -3,9 +3,9 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 
-from model.color import Color
-from tools.io import read_json
-from tools.logger import command_log, getMyLogger
+from src.tools.io import read_json
+from src.tools.logger import command_log, getMyLogger
+from type.color import Color
 
 if TYPE_CHECKING:
     from src.bot import Bot

@@ -1,5 +1,4 @@
 import inspect
-from pprint import pprint
 
 import discord
 from discord.ext import commands
@@ -7,8 +6,8 @@ from dotenv import load_dotenv
 
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
-from tools.io import read_yaml
-from tools.logger import getMyLogger
+from src.tools.io import read_yaml
+from src.tools.logger import getMyLogger
 
 
 class Bot(commands.Bot):

@@ -1,7 +1,7 @@
 import discord
-
 from model.color import Color
 from model.word import Detected
+
 from tools.dt import dt_to_str
 
 

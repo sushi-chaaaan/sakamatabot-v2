@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 
 import discord
 from discord import Guild, Member, User
-
 from model.response import HammerResponse
 from model.system_text import AuditLogText, DealText
+
 from tools.logger import getMyLogger
 
 

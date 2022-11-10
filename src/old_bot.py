@@ -2,9 +2,9 @@ import os
 
 import discord
 from discord.ext import commands
-
 from model.type_alias import Environment
 from model.view_load import RawViewObject, ViewObject
+
 from tools.finder import Finder
 from tools.io import read_yaml
 from tools.logger import getMyLogger
@@ -124,6 +124,7 @@ class Bot(commands.Bot):
         import platform
 
         from model.color import Color
+
         from tools.dt import dt_to_str
 
         embed = discord.Embed(

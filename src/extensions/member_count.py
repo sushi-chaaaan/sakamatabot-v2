@@ -5,9 +5,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
-from tools.dt import dt_to_str
-from tools.finder import Finder
-from tools.logger import command_log, getMyLogger
+from src.tools.dt import dt_to_str
+from src.tools.finder import Finder
+from src.tools.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:
     from src.bot import Bot
