@@ -12,7 +12,9 @@ class CommandInfo(BaseModel):
     date: datetime = datetime.now(JST())
     reason: DiscordReason | None = None
 
-    author: User | Member  # types inside author are not checked by pydantic
+    author: User | Member
+    """[:class:`User | Member`]: types inside author are not checked by pydantic.
+    """
 
     class Config:
         case_sensitive = True

@@ -2,6 +2,13 @@
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Path": "venv/bin/pflake8",
+    "flake8.path": [
+        "venv/bin/pflake8"
+    ],
+    "python.linting.flake8Args": [
+        "--max-line-length=88",
+        "--ignore=E203,W503"
+    ],
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": ".venv/bin/mypy",
     "python.linting.lintOnSave": true,

@@ -1,5 +1,32 @@
+import asyncio
+
 import discord
 from discord import Embed, ui
+
+
+class InputUI:
+    def __init__(self) -> None:
+        self.view: ui.View
+        self.embed: Embed
+
+        self.__stopped: asyncio.Future[
+            bool
+        ] = asyncio.get_running_loop().create_future()
+        pass
+
+    def is_finished(self) -> bool:
+        return self.__stopped.done()
+
+    def finish(self) -> None:
+        if not self.__stopped.done():
+            self.__stopped.set_result(True)
+
+    def stop(self) -> None:
+        if not self.__stopped.done():
+            self.__stopped.set_result(False)
+
+    async def wait(self) -> bool:
+        return await self.__stopped
 
 
 class InputUIEmbed(Embed):
