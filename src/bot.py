@@ -107,7 +107,8 @@ class Bot(commands.Bot):
 
     async def run(self):
         try:
-            super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))
+            async with self:
+                await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
         except KeyboardInterrupt as e:
             if self.config.Mode == "debug":
                 self.logger.info("[DEBUG] KeyboardInterrupt")
