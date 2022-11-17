@@ -38,7 +38,6 @@ class KickAndBan(commands.Cog):
         self.logger.info(command_log(name="kick", author=cmd_info.author))
 
         if not interaction.guild:
-            self.logger.info("Guild not found.")
             await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
             return
 
@@ -85,7 +84,6 @@ class KickAndBan(commands.Cog):
         delete_message_seconds: int = delete_message_days * 86400
 
         if not interaction.guild:
-            self.logger.info("Guild not found.")
             await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
             return
 

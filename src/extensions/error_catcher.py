@@ -20,13 +20,13 @@ class ErrorCatcher(commands.Cog):
 
     @commands.Cog.listener(name="on_error")
     async def on_error(self, event: str, *args, **kwargs):
-        self.logger.error(f"some error occurred by {event}:\n{args}\n\n{kwargs}")
+        self.logger.exception(f"some error occurred by {event}:\n{args}\n\n{kwargs}")
         return
 
     @commands.Cog.listener(name="on_command_error")
     async def on_command_error(self, ctx: commands.Context, exc: commands.CommandError):
         name = None if not ctx.command else ctx.command.name
-        self.logger.error(
+        self.logger.exception(
             f"on_command_error: some error occurred when\n{ctx.author} used {name} command",
             exc_info=exc,
         )
@@ -40,33 +40,35 @@ class ErrorCatcher(commands.Cog):
         err_txt = f"Error occurred when {interaction.user} used {interaction.data.name} command"  # type: ignore
         match error:
             case app_commands.CommandInvokeError:
-                self.logger.error(err_txt, exc_info=error.original)  # pyright: ignore
+                self.logger.exception(
+                    err_txt, exc_info=error.original  # pyright: ignore
+                )
                 usr_err_txt = "予期しないエラーが発生しました。"
             case app_commands.TranslationError:
-                self.logger.error(f"{err_txt}: TranslationError")
+                self.logger.exception(f"{err_txt}: TranslationError")
                 usr_err_txt = "コマンドの翻訳中にエラーが発生しました。"
             case app_commands.NoPrivateMessage:
-                self.logger.error(f"{err_txt}: NoPrivateMessage")
+                self.logger.exception(f"{err_txt}: NoPrivateMessage")
                 usr_err_txt = "このコマンドはダイレクトメッセージでは使用できません。"
             case app_commands.MissingRole:
-                self.logger.error(f"{err_txt}: MissingRole")
+                self.logger.exception(f"{err_txt}: MissingRole")
                 usr_err_txt = "このコマンドを実行する権限がありません。"
             case app_commands.MissingAnyRole:
-                self.logger.error(f"{err_txt}: MissingAnyRole")
+                self.logger.exception(f"{err_txt}: MissingAnyRole")
                 usr_err_txt = "このコマンドを実行する権限がありません。"
             case app_commands.MissingPermissions:
-                self.logger.error(f"{err_txt}: MissingPermissions")
+                self.logger.exception(f"{err_txt}: MissingPermissions")
                 usr_err_txt = f"このコマンドを実行する権限がありません。\n必要な権限: {error.missing_permissions}"  # pyright: ignore
             case app_commands.BotMissingPermissions:
-                self.logger.error(f"{err_txt}: BotMissingPermissions")
+                self.logger.exception(f"{err_txt}: BotMissingPermissions")
                 usr_err_txt = f"このコマンドを実行するためにはBotに以下の権限が必要です。\n{error.missing_permissions}"  # pyright: ignore
             case app_commands.CommandOnCooldown:
-                self.logger.error(f"{err_txt}: CommandOnCooldown")
+                self.logger.exception(f"{err_txt}: CommandOnCooldown")
                 usr_err_txt = (
                     f"このコマンドは{str(error.retry_after)}秒後にもう一度使用できます。"  # pyright: ignore
                 )
             case app_commands.CommandLimitReached:
-                self.logger.error(f"{err_txt}: CommandLimitReached")
+                self.logger.exception(f"{err_txt}: CommandLimitReached")
                 match error.type:  # pyright: ignore
                     case AppCommandType.chat_input:
                         cmd = "スラッシュコマンド"
@@ -78,19 +80,19 @@ class ErrorCatcher(commands.Cog):
                         cmd = "アプリケーションコマンド"
                 usr_err_txt = f"このサーバーにはこれ以上{cmd}を登録できません。"
             case app_commands.CommandAlreadyRegistered:
-                self.logger.error(f"{err_txt}: CommandAlreadyRegistered")
+                self.logger.exception(f"{err_txt}: CommandAlreadyRegistered")
                 usr_err_txt = "このコマンドは既に登録されています。"
             case app_commands.CommandSignatureMismatch:
-                self.logger.error(f"{err_txt}: CommandSignatureMismatch")
+                self.logger.exception(f"{err_txt}: CommandSignatureMismatch")
                 usr_err_txt = "コマンドがDiscordに同期されたものと異なります。\n同期を実行してください。"
             case app_commands.CommandNotFound:
-                self.logger.error(f"{err_txt}: CommandNotFound")
+                self.logger.exception(f"{err_txt}: CommandNotFound")
                 usr_err_txt = "そのようなコマンドは存在しません。"
             case app_commands.CommandSyncFailure:
-                self.logger.error(f"{err_txt}: CommandSyncFailure")
+                self.logger.exception(f"{err_txt}: CommandSyncFailure")
                 usr_err_txt = "コマンドの同期に失敗しました。"
             case _:
-                self.logger.error(f"{err_txt}: {error}")
+                self.logger.exception(f"{err_txt}: {str(error)}")
                 usr_err_txt = "予期しないエラーが発生しました。"
         await interaction.followup.send(usr_err_txt, ephemeral=True)
         return

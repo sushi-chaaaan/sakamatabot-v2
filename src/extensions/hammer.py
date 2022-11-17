@@ -20,11 +20,11 @@ class Hammer:
                 user=discord.Object(id=self.target_id), reason=self.info.reason
             )
         except Forbidden:
-            self.logger.error(
+            self.logger.exception(
                 msg=f"Failed to kick {self.target_id} (Forbidden)", exc_info=True
             )
         except HTTPException:
-            self.logger.error(
+            self.logger.exception(
                 msg=f"Failed to kick {self.target_id} (HTTPException)", exc_info=True
             )
         finally:
@@ -40,15 +40,15 @@ class Hammer:
                 delete_message_seconds=delete_message_seconds,
             )
         except NotFound:
-            self.logger.error(
+            self.logger.exception(
                 msg=f"Failed to ban {self.target_id} (NotFound)", exc_info=True
             )
         except Forbidden:
-            self.logger.error(
+            self.logger.exception(
                 msg=f"Failed to ban {self.target_id} (Forbidden)", exc_info=True
             )
         except HTTPException:
-            self.logger.error(
+            self.logger.exception(
                 msg=f"Failed to ban {self.target_id} (HTTPException)", exc_info=True
             )
         finally:

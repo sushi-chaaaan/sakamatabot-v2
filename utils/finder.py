@@ -23,8 +23,8 @@ class Finder:
             try:
                 channel = await resolved.fetch_channel(channel_id)
             except Exception as e:
-                self.logger.exception(text := ErrorText.notfound.value, exc_info=e)
-                raise Exception(text)
+                self.logger.exception(ErrorText.notfound.value, exc_info=e)
+                raise
         return channel
 
     def deal_guild(
@@ -40,8 +40,8 @@ class Finder:
             try:
                 guild = await self.bot.fetch_guild(guild_id)
             except Exception as e:
-                self.logger.exception(text := ErrorText.notfound.value, exc_info=e)
-                raise Exception(text)
+                self.logger.exception(ErrorText.notfound.value, exc_info=e)
+                raise
         return guild
 
     async def find_role(self, guild_id: int, role_id: int) -> discord.Role:
@@ -51,8 +51,8 @@ class Finder:
             roles = await guild.fetch_roles()
             role = discord.utils.get(roles, id=role_id)
             if not role:
-                self.logger.exception(text := ErrorText.notfound.value)
-                raise Exception(text)
+                self.logger.exception(ErrorText.notfound.value)
+                raise
         return role
 
     async def find_member(self, guild_id: int, user_id: int) -> discord.Member | None:

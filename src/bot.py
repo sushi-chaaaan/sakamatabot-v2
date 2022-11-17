@@ -65,7 +65,7 @@ class Bot(commands.Bot):
                     await asyncio.sleep(1.0)
                 await self.load_extension(ext)
             except Exception as e:
-                self.logger.error(f"Failed to load extension {ext}", exc_info=e)
+                self.logger.exception(f"Failed to load extension {ext}", exc_info=e)
                 pass
             else:
                 self.logger.info(f"Loaded extension {ext}")
@@ -75,7 +75,7 @@ class Bot(commands.Bot):
         try:
             await self.tree.sync(guild=self.app_commands_sync_target)
         except Exception as e:
-            self.logger.error("Failed to sync application commands", exc_info=e)
+            self.logger.exception("Failed to sync application commands", exc_info=e)
             pass
         else:
             self.logger.info("Application commands synced successfully")
@@ -120,7 +120,7 @@ class Bot(commands.Bot):
             if self.config.Mode == "debug":
                 self.logger.info("KeyboardInterrupt detected, shutting down...")
             else:
-                self.logger.warning(
+                self.logger.exception(
                     "KeyboardInterrupt Detected!!!, shutting down...", exc_info=e
                 )
             await self.shutdown()
@@ -135,7 +135,7 @@ class Bot(commands.Bot):
             await self.sync_app_commands()
             await self.setup_views()
         except Exception as e:
-            self.logger.error("Failed to reload", exc_info=e)
+            self.logger.exception("Failed to reload", exc_info=e)
             return False
         else:
             return True
