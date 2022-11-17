@@ -1,14 +1,21 @@
 import os
+from typing import TYPE_CHECKING
 
 import discord
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 
-from utils.dt import dt_to_str
+from utils.dt import TimeUtils
 from utils.logger import getMyLogger
+
+if TYPE_CHECKING:
+    # import some original class
+    from src.bot import Bot
+
+    pass
 
 
 class Entrance(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: "Bot"):
         self.bot = bot
         self.logger = getMyLogger(__name__)
 
@@ -27,7 +34,16 @@ class Entrance(commands.Cog):
             return
 
         # send entrance log
-        send_msg = f"時刻: {dt_to_str()}\n参加メンバー名: {member.name} (ID:{member.id})\nメンション: {member.mention}\nアカウント作成時刻: {dt_to_str(member.created_at)}\n現在のメンバー数:{member.guild.member_count}"
+        send_msg = (
+            "時刻: {}\n参加メンバー名: {} (ID:{})\nメンション: {}\nアカウント作成時刻: {}\n現在のメンバー数:{}".format(
+                TimeUtils.dt_to_str(),
+                member.name,
+                member.id,
+                member.mention,
+                TimeUtils.dt_to_str(member.created_at),
+                member.guild.member_count,
+            )
+        )
         await channel.send(send_msg)
         return
 
@@ -50,11 +66,21 @@ class Entrance(commands.Cog):
             self.logger.error("Failed to get Messageable channel")
             return
 
-        # send entrance log
-        send_msg = f"時刻: {dt_to_str()}\n参加メンバー名: {payload.user.name} (ID:{payload.user.id})\nメンション: {payload.user.mention}\nアカウント作成時刻: {dt_to_str(payload.user.created_at)}\n現在のメンバー数:{guild.member_count}"
+        # send entrance log]
+        send_msg = (
+            "時刻: {}\n参加メンバー名: {} (ID:{})\nメンション: {}\nアカウント作成時刻: {}\n現在のメンバー数:{}".format(
+                TimeUtils.dt_to_str(),
+                payload.user.name,
+                payload.user.id,
+                payload.user.mention,
+                TimeUtils.dt_to_str(payload.user.created_at),
+                guild.member_count,
+            )
+        )
+
         await channel.send(send_msg)
         return
 
 
-async def setup(bot):
-    await bot.add_cog(Entrance(bot))
+async def setup(bot: "Bot"):
+    await bot.add_cog((Entrance(bot)))
