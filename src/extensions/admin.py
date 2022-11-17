@@ -41,7 +41,7 @@ class AdminCommand(commands.Cog):
         """Botの機能を再読み込みします。admin専用に制限してください。"""
         await interaction.response.defer()
         cmd_info = CommandInfo(author=interaction.user)
-        self.logger.info(command_log(name="restart", author=cmd_info.author))
+        self.logger.info(command_log(name="reload", author=cmd_info.author))
 
         # TODO: Confirm message
         await interaction.followup.send("Botを再起動しています...")
