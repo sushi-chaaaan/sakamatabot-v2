@@ -45,9 +45,7 @@ class AdminCommand(commands.Cog):
 
         # TODO: Confirm message
         await interaction.followup.send("Botを再起動しています...")
-        await self.bot.load_exts(reload=True)
-        await self.bot.sync_app_commands()
-        await self.bot.setup_views()
+        await self.bot.reload()
         await interaction.followup.send("Botを再起動しました。")
         return
 

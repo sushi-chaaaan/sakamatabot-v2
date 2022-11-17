@@ -13,18 +13,11 @@ from utils.logger import getMyLogger
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
-        # TODO: 将来的にtyping.dataclass_transformを使う
-        self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
-
-        # デコレータ内でも環境変数を使うため先にload_dotenv()する, Validationはあとから
-        # https://github.com/pydantic/pydantic/issues/1482
-        load_dotenv(f".env.{self.config.Environment}")
-        try:
-            self.env = DotEnv()  # pyright: ignore , 環境変数に対してValidation
-        except Exception:  # pydanticがエラーを吐いた時点で起動を確実に中止
-            raise
-        else:
-            pass
+        # TODO: 将来的にtyping.dataclass_transformを使う?
+        self.config: ConfigYaml
+        self.env: DotEnv
+        self.load_config()
+        self.load_env()
 
         self.logger = getMyLogger(__name__)
 
@@ -49,6 +42,20 @@ class Bot(commands.Bot):
 
     async def on_ready(self) -> None:
         pass
+
+    def load_config(self):
+        self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
+
+    def load_env(self):
+        # デコレータ内でも環境変数を使うため先にload_dotenv()する, Validationはあとから
+        # https://github.com/pydantic/pydantic/issues/1482
+        load_dotenv(f".env.{self.config.Environment}")
+        try:
+            self.env = DotEnv()  # pyright: ignore , 環境変数に対してValidation
+        except Exception:  # pydanticがエラーを吐いた時点で起動を確実に中止
+            raise
+        else:
+            pass
 
     async def load_exts(self, reload: bool = False) -> None:
         for ext in self.config.Extensions:
@@ -118,6 +125,20 @@ class Bot(commands.Bot):
                 )
             await self.shutdown()
         pass
+
+    async def reload(self) -> bool:
+        try:
+            self.load_config()
+            self.load_env()
+            self.command_prefix = self.config.CommandPrefix
+            await self.load_exts(reload=True)
+            await self.sync_app_commands()
+            await self.setup_views()
+        except Exception as e:
+            self.logger.error("Failed to reload", exc_info=e)
+            return False
+        else:
+            return True
 
     async def shutdown(self):
         await self.close()
