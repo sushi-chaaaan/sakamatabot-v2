@@ -3,9 +3,9 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands  # type: ignore
 
-from src.tools.io import read_json
-from src.tools.logger import command_log, getMyLogger
 from type.color import Color
+from utils.io import read_json
+from utils.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:
     from src.bot import Bot

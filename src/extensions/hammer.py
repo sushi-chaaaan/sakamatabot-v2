@@ -2,7 +2,7 @@ import discord
 from discord import Forbidden, Guild, HTTPException, NotFound
 
 from schemas.command import CommandInfo
-from src.tools.logger import getMyLogger
+from utils.logger import getMyLogger
 
 
 class Hammer:

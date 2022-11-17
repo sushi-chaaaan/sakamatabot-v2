@@ -6,7 +6,6 @@ from discord import app_commands, ui
 from discord.ext import commands
 from model.color import Color
 from model.report_model import ReportInfo
-
 from tools.dt import JST, dt_to_str
 from tools.finder import Finder
 from tools.logger import command_log, getMyLogger

@@ -5,10 +5,10 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.ui.provider import InteractionProvider
 from discord.ext.ui.tracker import ViewTracker
-
-from components.ui.message_input import MessageInputView
 from tools.checker import Checker
 from tools.logger import command_log, getMyLogger
+
+from components.ui.message_input import MessageInputView
 
 
 class DM_System(commands.Cog):

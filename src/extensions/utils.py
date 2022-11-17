@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 
-from tools.dt import JST
-from tools.logger import command_log, getMyLogger
+from utils.dt import JST
+from utils.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:
     from src.bot import Bot

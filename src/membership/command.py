@@ -3,9 +3,9 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
+from tools.logger import command_log, getMyLogger
 
 from components.membership.mem_embeds import Embeds
-from tools.logger import command_log, getMyLogger
 
 
 class MemberShipCommand(commands.Cog):

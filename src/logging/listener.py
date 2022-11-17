@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-
 from tools.logger import getMyLogger
 from tools.webhook import transfer_message
 

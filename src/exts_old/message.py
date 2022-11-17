@@ -6,10 +6,10 @@ from discord.ext import commands
 from discord.ext.ui.provider import InteractionProvider
 from discord.ext.ui.tracker import ViewTracker
 from dispander import dispand
-
-from components.ui.message_input import MessageInputView
 from tools.checker import Checker
 from tools.logger import command_log, getMyLogger
+
+from components.ui.message_input import MessageInputView
 
 from .messenger import Messenger
 

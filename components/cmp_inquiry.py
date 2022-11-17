@@ -3,7 +3,6 @@ import os
 import discord
 from discord import ui
 from dotenv import load_dotenv
-
 from tools.logger import getMyLogger
 from tools.webhook import post_webhook
 

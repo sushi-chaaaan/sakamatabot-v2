@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
-from src.tools.io import read_yaml
-from src.tools.logger import getMyLogger
+from utils.io import read_yaml
+from utils.logger import getMyLogger
 
 
 class Bot(commands.Bot):
