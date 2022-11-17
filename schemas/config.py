@@ -34,7 +34,7 @@ class ConfigYaml(BaseSettings):
     # load from /config/config.yaml
     Environment: Literal["development", "production"]
     CommandPrefix: str
-    Mode: Literal["normal", "maintenance"]
+    Mode: Literal["normal", "maintenance", "debug"]
 
     # AppCommands
     ClearAppCommands: bool

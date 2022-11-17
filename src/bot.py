@@ -105,8 +105,18 @@ class Bot(commands.Bot):
             None if self.config.SyncGlobally else discord.Object(id=self.env.GUILD_ID)
         )
 
-    def run(self):
-        super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))
+    async def run(self):
+        try:
+            super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))
+        except KeyboardInterrupt as e:
+            if self.config.Mode == "debug":
+                self.logger.info("[DEBUG] KeyboardInterrupt")
+            else:
+                self.logger.warning(
+                    "[WARNING] KeyboardInterrupt Detected!!!", exc_info=e
+                )
+            await self.shutdown()
+        pass
 
     async def shutdown(self):
         await self.close()

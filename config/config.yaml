@@ -3,8 +3,8 @@
 # General
 # environment variables: development or production
 Environment: development
-# mode: normal or maintenance
-Mode: normal
+# mode: normal or maintenance or debug
+Mode: debug
 # command prefix
 CommandPrefix: //
 
