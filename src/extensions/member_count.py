@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
-from utils.dt import dt_to_str
+from utils.dt import TimeUtils
 from utils.finder import Finder
 from utils.logger import command_log, getMyLogger
 
@@ -30,7 +30,7 @@ class MemberCounter(commands.Cog):
     async def refresh_count(self):
         self.logger.info(
             "next refresh is scheduled at {}".format(
-                dt_to_str(self.refresh_count.next_iteration)
+                TimeUtils.dt_to_str(self.refresh_count.next_iteration)
                 if self.refresh_count.next_iteration
                 else "cannot get next iteration"
             )
