@@ -20,45 +20,63 @@ class JST(tzinfo):
         return timedelta(0)
 
 
-def get_now() -> datetime:
-    return datetime.now(JST())
+class TimeUtils:
+    @classmethod
+    def get_now(cls, timezone: tzinfo = timezone.utc) -> datetime:
+        """get current datetime object in specific timezone.
+        default is UTC.
 
+        Returns:
+            datetime: [:class:`datetime.datetime`]
+        """
+        return datetime.now(timezone)
 
-def dt_to_str(
-    datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S"
-) -> str:
-    """convert datetime object to string.
+    @classmethod
+    def get_now_jst(cls) -> datetime:
+        """get current datetime object in JST.
 
-    Args:
-        datetime (datetime, optional): a datetime object. Defaults to datetime.now(JST()).
-        if there is no tzinfo, this function will replace with UTC timezone.
-        format (str, optional): a format used in strfttime(). Defaults to "%Y/%m/%d %H:%M:%S".
+        Returns:
+            datetime: [:class:`datetime.datetime`]
+        """
+        return cls.get_now(JST())
 
-    Returns:
-        str: converted string.
-    """
-    if not datetime.tzinfo:
-        datetime.replace(tzinfo=timezone.utc)
-    if datetime.tzinfo != JST:
-        datetime = datetime.astimezone(JST())
-    return datetime.strftime(format)
+    @classmethod
+    def dt_to_str(
+        cls, datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S"
+    ) -> str:
+        """convert datetime object to string.
 
+        Args:
+            datetime (datetime, optional): a datetime object. Defaults to datetime.now(JST()).
+            if there is no tzinfo, this function will replace with UTC timezone.
+            format (str, optional): a format used in strfttime(). Defaults to "%Y/%m/%d %H:%M:%S".
 
-def str_to_dt(
-    string: str,
-    /,
-    *,
-    timezone: tzinfo = timezone.utc,
-    format: str = "%Y.%m.%d %H:%M:%S",
-) -> datetime:
-    """convert string to datetime object.
+        Returns:
+            str: converted string.
+        """
+        if not datetime.tzinfo:
+            datetime.replace(tzinfo=timezone.utc)
+        if datetime.tzinfo != JST:
+            datetime = datetime.astimezone(JST())
+        return datetime.strftime(format)
 
-    Args:
-        string (str): a string to convert.
-        timezone (timezone): a timezone object.
-        format (str, optional): a format used in strptime(). Defaults to "%Y/%m/%d %H:%M:%S".
+    @classmethod
+    def str_to_dt(
+        cls,
+        string: str,
+        /,
+        *,
+        timezone: tzinfo = timezone.utc,
+        format: str = "%Y.%m.%d %H:%M:%S",
+    ) -> datetime:
+        """convert string to datetime object.
 
-    Returns:
-        datetime: converted datetime object. If there is no tzinfo, this function will replace it with UTC timezone.
-    """
-    return datetime.strptime(string, format).replace(tzinfo=timezone)
+        Args:
+            string (str): a string to convert.
+            timezone (timezone): a timezone object.
+            format (str, optional): a format used in strptime(). Defaults to "%Y/%m/%d %H:%M:%S".
+
+        Returns:
+            datetime: converted datetime object. If there is no tzinfo, this function will replace it with UTC timezone.
+        """
+        return datetime.strptime(string, format).replace(tzinfo=timezone)
