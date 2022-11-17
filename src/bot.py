@@ -1,3 +1,4 @@
+import asyncio
 import inspect
 
 import discord
@@ -44,7 +45,7 @@ class Bot(commands.Bot):
 
         await self.load_exts()
         await self.sync_app_commands()
-        await self.setup_view()
+        await self.setup_views()
 
     async def on_ready(self) -> None:
         pass
@@ -53,9 +54,9 @@ class Bot(commands.Bot):
         for ext in self.config.Extensions:
             try:
                 if reload:
-                    await self.reload_extension(ext)
-                else:
-                    await self.load_extension(ext)
+                    await self.unload_extension(ext)
+                    await asyncio.sleep(1.0)
+                await self.load_extension(ext)
             except Exception as e:
                 self.logger.error(f"Failed to load extension {ext}", exc_info=e)
                 pass
@@ -73,7 +74,7 @@ class Bot(commands.Bot):
             self.logger.info("Application commands synced successfully")
             pass
 
-    async def setup_view(self) -> None:
+    async def setup_views(self) -> None:
         per_views = [PersistentView(**v) for v in read_yaml(r"config/view.yaml")]
         for pv in per_views:
             for view in self.build_view(pv):
@@ -106,3 +107,6 @@ class Bot(commands.Bot):
 
     def run(self):
         super().run((self.env.DISCORD_BOT_TOKEN.get_secret_value()))
+
+    async def shutdown(self):
+        await self.close()
