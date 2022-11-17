@@ -2,7 +2,8 @@ import os
 
 import discord
 from dotenv import load_dotenv
-from model.system_text import ErrorText
+
+from type.system_text import ErrorText
 
 from .logger import getMyLogger
 
