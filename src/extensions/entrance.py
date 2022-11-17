@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands  # type: ignore
 
 from utils.dt import TimeUtils
+from utils.finder import Finder
 from utils.logger import getMyLogger
 
 if TYPE_CHECKING:
@@ -21,13 +22,11 @@ class Entrance(commands.Cog):
 
     @commands.Cog.listener(name="on_member_join")
     async def on_join(self, member: discord.Member):
-        # log
         self.logger.info(f"{member} joined")
 
         # get channel
-        channel = self.bot.get_channel(c_id := int(os.environ["ENTRANCE_CHANNEL"]))
-        if not channel:
-            channel = await self.bot.fetch_channel(c_id)
+        finder = Finder(self.bot)
+        channel = await finder.find_channel(int(os.environ["ENTRANCE_CHANNEL_ID"]))
 
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")
@@ -53,20 +52,17 @@ class Entrance(commands.Cog):
         self.logger.info(f"{payload.user} left")
 
         # get guild
-        guild = self.bot.get_guild(g_id := payload.guild_id)
-        if not guild:
-            guild = await self.bot.fetch_guild(g_id)
+        finder = Finder(self.bot)
+        guild = await finder.find_guild(payload.guild_id)
 
         # get channel
-        channel = self.bot.get_channel(c_id := int(os.environ["ENTRANCE_CHANNEL"]))
-        if not channel:
-            channel = await self.bot.fetch_channel(c_id)
+        channel = await finder.find_channel(int(os.environ["ENTRANCE_CHANNEL_ID"]))
 
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")
             return
 
-        # send entrance log]
+        # send entrance log
         send_msg = (
             "時刻: {}\n参加メンバー名: {} (ID:{})\nメンション: {}\nアカウント作成時刻: {}\n現在のメンバー数:{}".format(
                 TimeUtils.dt_to_str(),
