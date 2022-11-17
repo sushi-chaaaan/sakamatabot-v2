@@ -5,6 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
+from embeds.extensions.moderation import user_embed
 from schemas.command import CommandInfo
 from utils.logger import command_log, getMyLogger
 
@@ -30,8 +31,10 @@ class Moderation(commands.Cog):
         await ctx.defer()
         cmd_info = CommandInfo(author=ctx.author)
         self.logger.info(command_log(name="user", author=cmd_info.author))
-        # TODO: Embed
-        pass
+
+        embed = user_embed(target)
+        await ctx.send(embeds=[embed])
+        return
 
 
 async def setup(bot: "Bot"):
