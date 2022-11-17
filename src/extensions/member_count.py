@@ -21,17 +21,13 @@ class MemberCounter(commands.Cog):
         self.logger = getMyLogger(__name__)
 
     async def cog_load(self) -> None:
-        # init refresh count task
         self.refresh_count.start()
 
     async def cog_unload(self) -> None:
-        # stop refresh count task
         self.refresh_count.cancel()
 
-    # set up a task to refresh the member count every 30 minutes
     @tasks.loop(minutes=30.0)
     async def refresh_count(self):
-        # log
         self.logger.info(
             "next refresh is scheduled at {}".format(
                 dt_to_str(self.refresh_count.next_iteration)
@@ -47,7 +43,6 @@ class MemberCounter(commands.Cog):
         else:
             self.logger.error("failed to refresh member count")
 
-    # wait for bot to be ready before start refresh_count task
     @refresh_count.before_loop
     async def before_refresh_count(self):
         await self.bot.wait_until_ready()
@@ -57,7 +52,6 @@ class MemberCounter(commands.Cog):
     @app_commands.guild_only()
     async def refresh_count_command(self, interaction: discord.Interaction):
         """MemberCountを手動で更新します。"""
-        # defer and log
         await interaction.response.defer(ephemeral=True)
         self.logger.info(
             command_log(name="refresh-member-count", author=interaction.user)

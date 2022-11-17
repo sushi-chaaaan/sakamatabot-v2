@@ -41,9 +41,10 @@ def getMyLogger(name: str) -> logging.Logger:  # name: __name__
     discord_handler.setLevel(logging.WARNING)
 
     # add handler
-    logger.addHandler(streamHandler)
-    logger.addHandler(file_handler)
-    logger.addHandler(discord_handler)
+    if not logger.hasHandlers():
+        logger.addHandler(streamHandler)
+        logger.addHandler(file_handler)
+        logger.addHandler(discord_handler)
     return logger
 
 
