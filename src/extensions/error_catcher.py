@@ -39,6 +39,12 @@ class ErrorCatcher(commands.Cog):
         await interaction.response.defer(ephemeral=True)
         err_txt = f"Error occurred when {interaction.user} used {interaction.data.name} command"  # type: ignore
         match error:
+            case app_commands.CommandInvokeError:
+                self.logger.error(err_txt, exc_info=error.original)  # pyright: ignore
+                usr_err_txt = "予期しないエラーが発生しました。"
+            case app_commands.TranslationError:
+                self.logger.error(f"{err_txt}: TranslationError")
+                usr_err_txt = "コマンドの翻訳中にエラーが発生しました。"
             case app_commands.NoPrivateMessage:
                 self.logger.error(f"{err_txt}: NoPrivateMessage")
                 usr_err_txt = "このコマンドはダイレクトメッセージでは使用できません。"
@@ -71,6 +77,12 @@ class ErrorCatcher(commands.Cog):
                     case _:
                         cmd = "アプリケーションコマンド"
                 usr_err_txt = f"このサーバーにはこれ以上{cmd}を登録できません。"
+            case app_commands.CommandAlreadyRegistered:
+                self.logger.error(f"{err_txt}: CommandAlreadyRegistered")
+                usr_err_txt = "このコマンドは既に登録されています。"
+            case app_commands.CommandSignatureMismatch:
+                self.logger.error(f"{err_txt}: CommandSignatureMismatch")
+                usr_err_txt = "コマンドがDiscordに同期されたものと異なります。\n同期を実行してください。"
             case app_commands.CommandNotFound:
                 self.logger.error(f"{err_txt}: CommandNotFound")
                 usr_err_txt = "そのようなコマンドは存在しません。"
