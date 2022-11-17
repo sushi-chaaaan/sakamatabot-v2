@@ -35,6 +35,7 @@ class AdminCommand(commands.Cog):
         return
 
     @app_commands.command(name="reload")
+    @app_commands.checks.cooldown(1, 60, key=None)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
     async def reload(self, interaction: discord.Interaction):
