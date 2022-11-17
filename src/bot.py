@@ -111,10 +111,10 @@ class Bot(commands.Bot):
                 await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
         except KeyboardInterrupt as e:
             if self.config.Mode == "debug":
-                self.logger.info("[DEBUG] KeyboardInterrupt")
+                self.logger.info("KeyboardInterrupt detected, shutting down...")
             else:
                 self.logger.warning(
-                    "[WARNING] KeyboardInterrupt Detected!!!", exc_info=e
+                    "KeyboardInterrupt Detected!!!, shutting down...", exc_info=e
                 )
             await self.shutdown()
         pass
