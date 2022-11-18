@@ -10,7 +10,7 @@ from schemas.ui import PersistentView
 from utils.io import read_yaml
 from utils.logger import getMyLogger
 
-from .command_tree import BotCommandTree
+from .command_tree import AppCommandTree
 
 
 class Bot(commands.Bot):
@@ -31,7 +31,7 @@ class Bot(commands.Bot):
             command_prefix=self.config.CommandPrefix,
             help_command=None,
             intents=intents,
-            tree_cls=BotCommandTree,
+            tree_cls=AppCommandTree,
             **kwargs,
         )
 

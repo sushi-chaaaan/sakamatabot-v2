@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from src.bot import Bot
 
 
-class BotCommandTree(app_commands.CommandTree[discord.Client]):
+class AppCommandTree(app_commands.CommandTree[discord.Client]):
     def __init__(self, client: "Bot", *, fallback_to_global: bool = True):
         super().__init__(client, fallback_to_global=fallback_to_global)
         self.bot: "Bot" = client
