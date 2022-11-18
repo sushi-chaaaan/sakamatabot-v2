@@ -10,8 +10,8 @@ from tools.checker import Checker
 from tools.dt import JST, str_to_dt
 from tools.logger import command_log, getMyLogger
 
+from ...archive.hammer import Hammer
 from .embeds import Embeds
-from .hammer import Hammer
 
 
 class Deal(commands.Cog):

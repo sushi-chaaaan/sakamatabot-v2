@@ -11,7 +11,7 @@ from tools.logger import command_log, getMyLogger
 
 from components.ui.message_input import MessageInputView
 
-from .messenger import Messenger
+from ...archive.messenger import Messenger
 
 
 class Message_System(commands.Cog):
