@@ -23,6 +23,7 @@ class AdminCommand(commands.Cog):
     @app_commands.command(name="shutdown")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
+    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def shutdown(self, interaction: discord.Interaction):
         """Botをシャットダウンします。admin専用に制限してください。"""
         await interaction.response.defer()
@@ -38,6 +39,8 @@ class AdminCommand(commands.Cog):
     @app_commands.checks.cooldown(1, 60, key=None)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
+    @app_commands.checks.cooldown(1, 120, key=None)
+    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def reload(self, interaction: discord.Interaction):
         """Botの機能を再読み込みします。admin専用に制限してください。"""
         await interaction.response.defer()

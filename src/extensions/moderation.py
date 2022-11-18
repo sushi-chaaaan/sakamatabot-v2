@@ -19,21 +19,22 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.logger = getMyLogger(__name__)
 
-    @commands.hybrid_command(name="user")
+    @app_commands.command(name="user")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.describe(target="照会するユーザーを選択してください。")
     @app_commands.rename(target="ユーザー")
+    @app_commands.checks.cooldown(1, 30, key=None)
     async def user(
         self,
-        ctx: commands.Context,
+        interaction: discord.Interaction,
         target: discord.Member | discord.User,
     ):
-        await ctx.defer()
-        cmd_info = CommandInfo(author=ctx.author)
+        await interaction.response.defer()
+        cmd_info = CommandInfo(author=interaction.user)
         self.logger.info(command_log(name="user", author=cmd_info.author))
 
         embed = user_embed(target)
-        await ctx.send(embeds=[embed])
+        await interaction.followup.send(embeds=[embed])
         return
 
 

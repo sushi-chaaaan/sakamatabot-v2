@@ -10,6 +10,8 @@ from schemas.ui import PersistentView
 from utils.io import read_yaml
 from utils.logger import getMyLogger
 
+from .command_tree import BotCommandTree
+
 
 class Bot(commands.Bot):
     def __init__(self, **kwargs):
@@ -29,10 +31,12 @@ class Bot(commands.Bot):
             command_prefix=self.config.CommandPrefix,
             help_command=None,
             intents=intents,
+            tree_cls=BotCommandTree,
             **kwargs,
         )
 
     async def setup_hook(self) -> None:
+
         if self.config.ClearAppCommands:
             await self.clear_app_commands_and_close()
 
@@ -103,7 +107,7 @@ class Bot(commands.Bot):
     async def clear_app_commands_and_close(self) -> None:
         self.tree.clear_commands(guild=None)
         await self.tree.sync(guild=None)
-        await self.close()
+        await self.shutdown()
         return
 
     @property
@@ -111,20 +115,6 @@ class Bot(commands.Bot):
         return (
             None if self.config.SyncGlobally else discord.Object(id=self.env.GUILD_ID)
         )
-
-    async def run(self):
-        try:
-            async with self:
-                await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
-        except KeyboardInterrupt as e:
-            if self.config.Mode == "debug":
-                self.logger.info("KeyboardInterrupt detected, shutting down...")
-            else:
-                self.logger.exception(
-                    "KeyboardInterrupt Detected!!!, shutting down...", exc_info=e
-                )
-            await self.shutdown()
-        pass
 
     async def reload(self) -> bool:
         try:
@@ -140,5 +130,23 @@ class Bot(commands.Bot):
         else:
             return True
 
+    def run(self):
+        try:
+            asyncio.run(self.runner())
+        except KeyboardInterrupt as e:
+            if self.config.Mode == "debug":
+                self.logger.info("KeyboardInterrupt detected, shutting down...")
+            else:
+                self.logger.exception(
+                    "KeyboardInterrupt Detected!!!, shutting down...", exc_info=e
+                )
+            asyncio.run(self.shutdown())
+            return
+
+    async def runner(self):
+        async with self:
+            await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
+
     async def shutdown(self):
+        self.logger.info("Shutting down...")
         await self.close()
