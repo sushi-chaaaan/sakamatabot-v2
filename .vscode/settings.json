@@ -6,9 +6,6 @@
         "unban"
     ],
     "editor.formatOnSave": true,
-    "flake8.path": [
-        "venv/bin/pflake8"
-    ],
     "isort.check": true,
     "isort.importStrategy": "fromEnvironment",
     "isort.path": [

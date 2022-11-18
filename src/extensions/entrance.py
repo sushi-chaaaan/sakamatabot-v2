@@ -1,4 +1,3 @@
-import os
 from typing import TYPE_CHECKING
 
 import discord
@@ -26,7 +25,7 @@ class Entrance(commands.Cog):
 
         # get channel
         finder = Finder(self.bot)
-        channel = await finder.find_channel(int(os.environ["ENTRANCE_CHANNEL_ID"]))
+        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
 
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")
@@ -56,7 +55,7 @@ class Entrance(commands.Cog):
         guild = await finder.find_guild(payload.guild_id)
 
         # get channel
-        channel = await finder.find_channel(int(os.environ["ENTRANCE_CHANNEL_ID"]))
+        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
 
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")

@@ -8,7 +8,7 @@ class Hammer:
     def __init__(self, info: CommandInfo) -> None:
         self.logger = getMyLogger(__name__)
         self.info = info
-        self.target_id: int  # set by set_target()
+        self.target_id: int  # set by set_target_id()
 
     def set_target_id(self, target_id: int) -> None:
         self.target_id = target_id

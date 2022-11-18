@@ -57,6 +57,7 @@ class Bot(commands.Bot):
         try:
             self.env = DotEnv()  # pyright: ignore , 環境変数に対してValidation
         except Exception:  # pydanticがエラーを吐いた時点で起動を確実に中止
+            asyncio.run(self.shutdown())
             raise
         else:
             pass

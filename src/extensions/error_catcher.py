@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from discord import AppCommandType, Interaction, app_commands
 from discord.ext import commands  # type: ignore
 
 from utils.logger import getMyLogger
