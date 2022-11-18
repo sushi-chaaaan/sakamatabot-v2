@@ -3,7 +3,7 @@ from datetime import datetime
 import discord
 
 from type.color import Color
-from utils.dt import JST
+from utils.time import JST
 
 
 class EmbedBuilder:

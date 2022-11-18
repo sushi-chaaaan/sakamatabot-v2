@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands  # type: ignore
 
-from utils.dt import TimeUtils
 from utils.finder import Finder
 from utils.logger import getMyLogger
+from utils.time import TimeUtils
 
 if TYPE_CHECKING:
     # import some original class
@@ -64,7 +64,7 @@ class Entrance(commands.Cog):
 
         # send entrance log
         send_msg = (
-            "時刻: {}\n参加メンバー名: {} (ID:{})\nメンション: {}\nアカウント作成時刻: {}\n現在のメンバー数:{}".format(
+            "時刻: {}\n退出メンバー名: {} (ID:{})\nメンション: {}\nアカウント作成時刻: {}\n現在のメンバー数:{}".format(
                 TimeUtils.dt_to_str(),
                 payload.user.name,
                 payload.user.id,

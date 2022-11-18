@@ -1,7 +1,7 @@
 import discord
 
 from type.color import Color
-from utils.dt import TimeUtils
+from utils.time import TimeUtils
 
 
 def user_embed(target: discord.Member | discord.User) -> discord.Embed:

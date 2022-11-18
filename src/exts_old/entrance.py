@@ -3,8 +3,8 @@ import os
 import discord
 from discord.ext import commands
 
-from utils.dt import dt_to_str
 from utils.logger import getMyLogger
+from utils.time import dt_to_str
 
 
 class Entrance(commands.Cog):

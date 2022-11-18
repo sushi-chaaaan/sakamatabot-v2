@@ -5,9 +5,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
-from utils.dt import TimeUtils
 from utils.finder import Finder
 from utils.logger import command_log, getMyLogger
+from utils.time import TimeUtils
 
 if TYPE_CHECKING:
     from src.bot import Bot

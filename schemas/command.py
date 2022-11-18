@@ -3,7 +3,7 @@ from datetime import datetime
 from discord import Member, User
 from pydantic import BaseModel
 
-from utils.dt import JST
+from utils.time import JST
 
 from .general import DiscordReason
 

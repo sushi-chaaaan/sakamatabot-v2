@@ -6,8 +6,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from utils.dt import JST
 from utils.logger import command_log, getMyLogger
+from utils.time import JST
 
 if TYPE_CHECKING:
     from src.bot import Bot
