@@ -36,7 +36,6 @@ class Bot(commands.Bot):
         )
 
     async def setup_hook(self) -> None:
-
         if self.config.ClearAppCommands:
             await self.clear_app_commands_and_close()
 
@@ -45,12 +44,16 @@ class Bot(commands.Bot):
         await self.setup_views()
 
     async def on_ready(self) -> None:
-        pass
+        self.logger.info(
+            f"Logged in as {self.user} (ID: {self.user.id})"  # pyright: ignore
+        )
+        self.logger.info(f"Connected to {len(self.guilds)} guilds")  # pyright: ignore
+        self.logger.info("Bot is ready")
 
-    def load_config(self):
+    def load_config(self) -> None:
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
 
-    def load_env(self):
+    def load_env(self) -> None:
         # デコレータ内でも環境変数を使うため先にload_dotenv()する, Validationはあとから
         # https://github.com/pydantic/pydantic/issues/1482
         load_dotenv(f".env.{self.config.Environment}")
@@ -131,7 +134,7 @@ class Bot(commands.Bot):
         else:
             return True
 
-    def run(self):
+    def run(self) -> None:
         try:
             asyncio.run(self.runner())
         except KeyboardInterrupt as e:
@@ -144,10 +147,10 @@ class Bot(commands.Bot):
             asyncio.run(self.shutdown())
             return
 
-    async def runner(self):
+    async def runner(self) -> None:
         async with self:
             await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
 
-    async def shutdown(self):
+    async def shutdown(self) -> None:
         self.logger.info("Shutting down...")
         await self.close()
