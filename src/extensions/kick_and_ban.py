@@ -37,17 +37,17 @@ class KickAndBan(commands.Cog):
         )
         self.logger.info(command_log(name="kick", author=cmd_info.author))
 
-        if not interaction.guild:
-            await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
-            return
-
         # TODO: 認証
         approved: bool = False
 
         if approved:
             hammer = Hammer(cmd_info)
             hammer.set_target_id(target.id)
-            await hammer.kick_from_guild(guild=interaction.guild)
+            succeed = await hammer.kick_from_guild(
+                guild=interaction.guild  # pyright: ignore checked by discord
+            )
+            if not succeed:
+                await interaction.followup.send(hammer.message)
             return
 
         else:
@@ -83,19 +83,18 @@ class KickAndBan(commands.Cog):
         self.logger.info(command_log(name="ban", author=cmd_info.author))
         delete_message_seconds: int = delete_message_days * 86400
 
-        if not interaction.guild:
-            await interaction.followup.send("このコマンドはサーバー内でのみ使用できます。")
-            return
-
         # TODO: 認証
         approved: bool = False
 
         if approved:
             hammer = Hammer(cmd_info)
             hammer.set_target_id(target.id)
-            await hammer.ban_from_guild(
-                guild=interaction.guild, delete_message_seconds=delete_message_seconds
+            succeed = await hammer.ban_from_guild(
+                guild=interaction.guild,  # pyright: ignore checked by discord
+                delete_message_seconds=delete_message_seconds,
             )
+            if not succeed:
+                await interaction.followup.send(hammer.message)
             return
 
         else:

@@ -6,6 +6,7 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
+from text.extensions import AdminText
 from utils.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:
@@ -20,36 +21,34 @@ class AdminCommand(commands.Cog):
         self.bot = bot
         self.logger = getMyLogger(__name__)
 
-    @app_commands.command(name="shutdown")
+    @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def shutdown(self, interaction: discord.Interaction):
-        """Botをシャットダウンします。admin専用に制限してください。"""
         await interaction.response.defer()
         cmd_info = CommandInfo(author=interaction.user)
         self.logger.info(command_log(name="shutdown", author=cmd_info.author))
 
         # TODO: Confirm message
-        await interaction.followup.send("Botをシャットダウンしています...")
+        await interaction.followup.send(AdminText.SHUTDOWN_MESSAGE)
         await self.bot.shutdown()
         return
 
-    @app_commands.command(name="reload")
+    @app_commands.command(name="reload", description=AdminText.RELOAD_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
     @app_commands.checks.cooldown(1, 120, key=None)
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def reload(self, interaction: discord.Interaction):
-        """Botの機能を再読み込みします。admin専用に制限してください。"""
         await interaction.response.defer()
         cmd_info = CommandInfo(author=interaction.user)
         self.logger.info(command_log(name="reload", author=cmd_info.author))
 
         # TODO: Confirm message
-        await interaction.followup.send("Botを再起動しています...")
+        await interaction.followup.send(AdminText.RELOAD_MESSAGE)
         await self.bot.reload()
-        await interaction.followup.send("Botを再起動しました。")
+        await interaction.followup.send(AdminText.RELOAD_COMPLETE_MESSAGE)
         return
 
 

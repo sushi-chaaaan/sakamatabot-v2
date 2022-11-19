@@ -23,4 +23,5 @@ Extensions:
   - src.extensions.member_count
   - src.extensions.moderation
   - src.extensions.poll
+  - src.extensions.thread
   - src.extensions.utils

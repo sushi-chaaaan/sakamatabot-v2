@@ -7,6 +7,7 @@ from discord.ext import commands  # type: ignore
 
 from embeds.extensions.moderation import user_embed
 from schemas.command import CommandInfo
+from text.extensions import ModerationText
 from utils.logger import command_log, getMyLogger
 
 if TYPE_CHECKING:
@@ -19,11 +20,10 @@ class Moderation(commands.Cog):
         self.bot = bot
         self.logger = getMyLogger(__name__)
 
-    @app_commands.command(name="user")
+    @app_commands.command(name="user", description=ModerationText.USER_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.describe(target="照会するユーザーを選択してください。")
     @app_commands.rename(target="ユーザー")
-    @app_commands.checks.cooldown(1, 30, key=None)
     async def user(
         self,
         interaction: discord.Interaction,

@@ -20,6 +20,7 @@ class DotEnv(BaseSettings):
     LOG_CHANNEL_ID: int
     ENTRANCE_CHANNEL_ID: int
     MEMBER_COUNT_CHANNEL_ID: int
+    REPORT_FORUM_CHANNEL_ID: int
 
     # webhook
     LOGGER_WEBHOOK_URL: HttpUrl

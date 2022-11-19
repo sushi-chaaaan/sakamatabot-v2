@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands  # type: ignore
 
+from text.extensions import PollText
 from type.color import Color
 from utils.io import read_json
 from utils.logger import command_log, getMyLogger
@@ -24,13 +25,13 @@ class Poll(commands.Cog):
     @commands.command(name="poll")
     @commands.guild_only()
     async def poll(self, ctx: commands.Context, title: str, *select: str):
-        """投票を作成します。"""
+        PollText.POLL_DESCRIPTION
         # log
         self.logger.info(command_log(name="poll", author=ctx.author))
 
         # too many options
         if (options := len(select)) > 20:
-            await ctx.reply("選択肢は最大20個までです。")
+            await ctx.reply(PollText.TOO_MANY_OPTIONS)
             return
 
         # load emoji

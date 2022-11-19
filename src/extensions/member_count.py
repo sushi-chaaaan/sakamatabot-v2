@@ -5,6 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
+from text.extensions import MemberCountText
 from utils.finder import Finder
 from utils.logger import command_log, getMyLogger
 from utils.time import TimeUtils
@@ -21,59 +22,69 @@ class MemberCounter(commands.Cog):
         self.logger = getMyLogger(__name__)
 
     async def cog_load(self) -> None:
-        self.refresh_count.start()
+        self.refresh_count_task.start()
 
     async def cog_unload(self) -> None:
-        self.refresh_count.cancel()
+        self.refresh_count_task.cancel()
 
     @tasks.loop(minutes=30.0)
-    async def refresh_count(self):
-        self.logger.info(
-            "next refresh is scheduled at {}".format(
-                TimeUtils.dt_to_str(self.refresh_count.next_iteration)
-                if self.refresh_count.next_iteration
-                else "cannot get next iteration"
+    async def refresh_count_task(self):
+        if self.refresh_count_task.next_iteration:
+            self.logger.info(
+                MemberCountText.TASK_SETUP_SUCCEED.format(
+                    time=TimeUtils.dt_to_str(self.refresh_count_task.next_iteration)
+                )
             )
-        )
+        else:
+            self.logger.info(MemberCountText.TASK_SETUP_FAILED)
 
         # refresh member count
-        refresh_succeed = await self._refresh_count()
+        refresh_succeed = await self.refresh_count()
         if refresh_succeed:
-            self.logger.info("refreshed member count")
+            self.logger.info(MemberCountText.REFRESH_SUCCEED)
         else:
-            self.logger.error("failed to refresh member count")
+            self.logger.error(MemberCountText.REFRESH_FAILED)
 
-    @refresh_count.before_loop
+    @refresh_count_task.before_loop
     async def before_refresh_count(self):
         await self.bot.wait_until_ready()
 
-    @app_commands.command(name="refresh-member-count")
+    @app_commands.command(
+        name="refresh-member-count",
+        description=MemberCountText.REFRESH_MEMBER_COUNT_DESCRIPTION,
+    )
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
     async def refresh_count_command(self, interaction: discord.Interaction):
-        """MemberCountを手動で更新します。"""
         await interaction.response.defer(ephemeral=True)
         self.logger.info(
             command_log(name="refresh-member-count", author=interaction.user)
         )
 
         # refresh member count
-        refresh_succeed = await self._refresh_count()
+        refresh_succeed = await self.refresh_count()
 
         # command response
-        text = "更新しました" if refresh_succeed else "更新に失敗しました"
+        text = (
+            MemberCountText.REFRESH_SUCCEED
+            if refresh_succeed
+            else MemberCountText.REFRESH_FAILED
+        )
         await interaction.followup.send(text, ephemeral=True)
         return
 
-    async def _refresh_count(self) -> bool:
+    async def refresh_count(self) -> bool:
         # get guild
         finder = Finder(self.bot)
-        guild = await finder.find_guild(int(os.environ["GUILD_ID"]))
+        try:
+            guild = await finder.find_guild(self.bot.env.GUILD_ID)
+        except Exception as e:
+            return False
 
         # get channel
 
         channel = await finder.find_channel(
-            int(os.environ["MEMBER_COUNT_CHANNEL_ID"]), guild=guild
+            self.bot.env.MEMBER_COUNT_CHANNEL_ID, guild=guild
         )
 
         # check channel
@@ -84,7 +95,7 @@ class MemberCounter(commands.Cog):
         # refresh member count
         try:
             await channel.edit(
-                name="Member Count: {count}".format(
+                name=MemberCountText.MEMBER_COUNT_CHANNEL_NAME.format(
                     count=guild.member_count
                     if guild.member_count
                     else len(guild.members)
