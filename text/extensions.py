@@ -21,6 +21,10 @@ class HammerText:
     FAILED_TO_BAN = """Failed to ban {target} ({exception})"""
     TARGET_ID_NOT_SET = """Target ID is not set"""
 
+    KICK_AUDIT_LOG = """kicked by: {author}\nCustom_Reason: {reason}"""
+    BAN_AUDIT_LOG = """banned by: {author}\nCustom_Reason: {reason}"""
+    TIMEOUT_AUDIT_LOG = """timed out by: {author}\nCustom_Reason: {reason}"""
+
 
 class MemberCountText:
     MEMBER_COUNT_CHANNEL_NAME = """Member Count: {count}"""

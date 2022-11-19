@@ -2,7 +2,7 @@ import os
 
 import discord
 
-from type.system_text import ErrorText
+from text import error as error_text
 
 from .logger import getMyLogger
 
@@ -23,7 +23,7 @@ class Finder:
             try:
                 channel = await resolved.fetch_channel(channel_id)
             except Exception as e:
-                self.logger.exception(ErrorText.notfound.value, exc_info=e)
+                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
         return channel
 
@@ -40,7 +40,7 @@ class Finder:
             try:
                 guild = await self.bot.fetch_guild(guild_id)
             except Exception as e:
-                self.logger.exception(ErrorText.notfound.value, exc_info=e)
+                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
         return guild
 
@@ -51,7 +51,7 @@ class Finder:
             roles = await guild.fetch_roles()
             role = discord.utils.get(roles, id=role_id)
             if not role:
-                self.logger.exception(ErrorText.notfound.value)
+                self.logger.exception(error_text.CHANNEL_NOT_FOUND)
                 raise
         return role
 
@@ -63,7 +63,7 @@ class Finder:
             try:
                 member = await guild.fetch_member(user_id)
             except Exception as e:
-                self.logger.exception(ErrorText.notfound.value, exc_info=e)
+                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
                 member = None
         return member
 

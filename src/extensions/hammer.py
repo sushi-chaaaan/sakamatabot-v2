@@ -21,10 +21,12 @@ class Hammer:
             self.message = "kickする対象のIDが設定されていません。"
             return False
 
+        reason = HammerText.KICK_AUDIT_LOG.format(
+            author=self.info.author.id, reason=self.info.reason
+        )
+
         try:
-            await guild.kick(
-                user=discord.Object(id=self.target_id), reason=self.info.reason
-            )
+            await guild.kick(user=discord.Object(id=self.target_id), reason=reason)
         except Exception as e:
             msg = HammerText.FAILED_TO_KICK.format(
                 target=self.target_id, exception=e.__class__.__name__
@@ -46,10 +48,14 @@ class Hammer:
             self.message = "BANする対象のIDが設定されていません。"
             return False
 
+        reason = HammerText.BAN_AUDIT_LOG.format(
+            author=self.info.author.id, reason=self.info.reason
+        )
+
         try:
             await guild.ban(
                 user=discord.Object(id=self.target_id),
-                reason=self.info.reason,
+                reason=reason,
                 delete_message_seconds=delete_message_seconds,
             )
         except Exception as e:
@@ -61,3 +67,5 @@ class Hammer:
             return False
         finally:
             return True
+
+    # TODO: timeout
