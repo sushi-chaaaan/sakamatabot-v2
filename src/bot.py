@@ -1,5 +1,4 @@
 import asyncio
-import inspect
 
 import discord
 from discord.ext import commands  # type: ignore
@@ -101,6 +100,7 @@ class Bot(commands.Bot):
         # https://saruhei1989.hatenablog.com/entry/2019/03/10/090000
         # 外部ファイルベースの動的なViewインスタンス生成
         import importlib
+        import inspect
 
         view_file = importlib.import_module(view.Path)
         view_class: discord.ui.View = getattr(view_file, view.ClassName)
