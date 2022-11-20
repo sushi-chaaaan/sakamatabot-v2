@@ -32,6 +32,7 @@ class Bot(commands.Bot):
             help_command=None,
             intents=intents,
             tree_cls=AppCommandTree,
+            application_id=self.env.APPLICATION_ID,
             **kwargs,
         )
 
