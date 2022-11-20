@@ -107,6 +107,9 @@ class Bot(commands.Bot):
         if not inspect.isclass(view_class):
             raise TypeError(f"{view.ClassName} is not a class")
 
+        if not isinstance(view_class, discord.ui.View):
+            raise TypeError(f"{view.ClassName} is not a subclass of discord.ui.View")
+
         return [view_class(custom_id=c_id) for c_id in view.CustomId]
 
     async def clear_app_commands_and_close(self) -> None:
