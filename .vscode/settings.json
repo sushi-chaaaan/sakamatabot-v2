@@ -8,9 +8,6 @@
     "editor.formatOnSave": true,
     "isort.check": true,
     "isort.importStrategy": "fromEnvironment",
-    "isort.path": [
-        ".venv/bin/isort"
-    ],
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.formatting.provider": "black",
@@ -23,6 +20,5 @@
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Path": "venv/bin/pflake8",
     "python.linting.lintOnSave": true,
-    "python.linting.mypyEnabled": true,
-    "python.linting.mypyPath": ".venv/bin/mypy"
+    "python.linting.mypyEnabled": true
 }
