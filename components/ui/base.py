@@ -4,7 +4,21 @@ import discord
 from discord import Embed, ui
 
 
-class ViewBase:
+class BaseView(ui.View):
+    def __init__(self, *, timeout: float | None = 180, custom_id: str = ""):
+        super().__init__(timeout=timeout)
+        self.__custom_id = custom_id
+
+    @property
+    def custom_id(self) -> str:
+        return self.__custom_id
+
+    @custom_id.setter
+    def custom_id(self, value: str) -> None:
+        self.__custom_id = value
+
+
+class __ViewBase:
     def __init__(self) -> None:
         self._content: str | None
         self._view: ui.View
