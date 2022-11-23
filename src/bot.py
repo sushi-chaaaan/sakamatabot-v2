@@ -1,9 +1,11 @@
 import asyncio
+import inspect
 
 import discord
 from discord.ext import commands  # type: ignore
 from dotenv import load_dotenv
 
+from components.ui.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
 from utils.io import read_yaml
@@ -38,6 +40,7 @@ class Bot(commands.Bot):
     async def setup_hook(self) -> None:
         if self.config.ClearAppCommands:
             await self.clear_app_commands_and_close()
+            return
 
         await self.load_exts()
         await self.sync_app_commands()
@@ -103,18 +106,22 @@ class Bot(commands.Bot):
         import inspect
 
         view_file = importlib.import_module(view.Path)
-        view_class: discord.ui.View = getattr(view_file, view.ClassName)
+        view_class: BaseView = getattr(view_file, view.ClassName)
         if not inspect.isclass(view_class):
             raise TypeError(f"{view.ClassName} is not a class")
 
-        if not isinstance(view_class, discord.ui.View):
+        if not issubclass(view_class, discord.ui.View):
             raise TypeError(f"{view.ClassName} is not a subclass of discord.ui.View")
 
-        return [view_class(custom_id=c_id) for c_id in view.CustomId]
+        if not issubclass(view_class, BaseView):
+            raise TypeError(f"{view.ClassName} is not a subclass of BaseView")
+
+        return [view_class(custom_id=c_id) for c_id in view.CustomId]  # type: ignore
 
     async def clear_app_commands_and_close(self) -> None:
         self.tree.clear_commands(guild=None)
         await self.tree.sync(guild=None)
+        self.logger.info("Application commands cleared successfully")
         await self.shutdown()
         return
 
