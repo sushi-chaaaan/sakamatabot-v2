@@ -8,7 +8,7 @@ from discord.ext import commands  # type: ignore
 from embeds.extensions.moderation import user_embed
 from schemas.command import CommandInfo
 from text.extensions import ModerationText
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 
 if TYPE_CHECKING:
     from src.bot import Bot
@@ -18,7 +18,7 @@ class Moderation(commands.Cog):
     # TODO: Timeout
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @app_commands.command(name="user", description=ModerationText.USER_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))

@@ -2,8 +2,6 @@ from typing import TYPE_CHECKING
 
 from discord.ext import commands  # type: ignore
 
-from utils.logger import getMyLogger
-
 if TYPE_CHECKING:
     # import some original class
     from src.bot import Bot
@@ -14,7 +12,7 @@ if TYPE_CHECKING:
 class ErrorCatcher(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @commands.Cog.listener(name="on_error")
     async def on_error(self, event: str, *args, **kwargs):

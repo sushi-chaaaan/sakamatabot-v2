@@ -5,7 +5,6 @@ from discord.ext import commands  # type: ignore
 
 from text.extensions import EntranceText
 from utils.finder import Finder
-from utils.logger import getMyLogger
 from utils.time import TimeUtils
 
 if TYPE_CHECKING:
@@ -18,7 +17,7 @@ if TYPE_CHECKING:
 class Entrance(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @commands.Cog.listener(name="on_member_join")
     async def on_join(self, member: discord.Member):
@@ -39,6 +38,7 @@ class Entrance(commands.Cog):
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")
             return
+
         await channel.send(msg)
         return
 
@@ -63,6 +63,7 @@ class Entrance(commands.Cog):
         if not isinstance(channel, discord.abc.Messageable):
             self.logger.error("Failed to get Messageable channel")
             return
+
         await channel.send(msg)
         return
 

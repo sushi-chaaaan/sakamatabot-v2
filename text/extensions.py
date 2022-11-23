@@ -2,6 +2,8 @@ class AdminText:
     # APP COMMAND DESCRIPTIONS
     SHUTDOWN_DESCRIPTION = """Botをシャットダウンします。admin専用に制限してください。"""
     RELOAD_DESCRIPTION = """Botの機能を再読み込みします。admin専用に制限してください。"""
+    LOG_DESCRIPTION = """ログに関するコマンドです。admin専用に制限してください。"""
+    GET_TODAY_LOG_DESCRIPTION = """今日のログを取得します。admin専用に制限してください。"""
 
     # APP COMMAND MESSAGES
     SHUTDOWN_MESSAGE = """Botをシャットダウンしています..."""

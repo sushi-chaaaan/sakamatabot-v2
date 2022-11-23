@@ -12,13 +12,20 @@ def getMyLogger(name: str) -> logging.Logger:  # name: __name__
     # get logger and handler
     logger = logging.getLogger(name)
     streamHandler = logging.StreamHandler()
-    file_handler = logging.handlers.RotatingFileHandler(
+    # debug_file_handler = logging.handlers.RotatingFileHandler(
+    #     f"./log/{name}.log",
+    #     maxBytes=10**6,
+    #     backupCount=10,
+    #     encoding="utf-8",
+    #     mode="w",
+    # )
+    file_handler = logging.handlers.TimedRotatingFileHandler(
         f"./log/{name}.log",
-        maxBytes=10**6,
-        backupCount=10,
+        when="midnight",
         encoding="utf-8",
-        mode="w",
+        backupCount=10,
     )
+
     webhook_url = os.environ["LOGGER_WEBHOOK_URL"]
     discord_handler = DiscordHandler(
         webhook_url=webhook_url,

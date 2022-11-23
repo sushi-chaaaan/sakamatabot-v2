@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 
 from .hammer import Hammer
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class KickAndBan(commands.Cog):
     def __init__(self, bot: "Bot") -> None:
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @app_commands.command(name="kick")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))

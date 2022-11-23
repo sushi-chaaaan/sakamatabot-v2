@@ -6,7 +6,7 @@ from discord.ext import commands  # type: ignore
 from text.extensions import PollText
 from type.color import Color
 from utils.io import read_json
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 
 if TYPE_CHECKING:
     from src.bot import Bot
@@ -20,7 +20,7 @@ class Poll(commands.Cog):
         self.bot = bot
 
         # init logger
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @commands.command(name="poll")
     @commands.guild_only()

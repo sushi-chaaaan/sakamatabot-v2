@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 class Thread(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
+        self.logger = self.bot.logger
 
 
 async def setup(bot: "Bot"):

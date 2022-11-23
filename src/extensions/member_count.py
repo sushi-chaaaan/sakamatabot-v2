@@ -7,7 +7,7 @@ from discord.ext import commands, tasks  # type: ignore
 
 from text.extensions import MemberCountText
 from utils.finder import Finder
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 from utils.time import TimeUtils
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ class MemberCounter(commands.Cog):
 
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     async def cog_load(self) -> None:
         self.refresh_count_task.start()

@@ -7,7 +7,7 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from text.extensions import UtilsText
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 from utils.time import JST
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ class Utils(commands.Cog):
 
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
     @app_commands.command(name="timestamp", description=UtilsText.TIMESTAMP_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))

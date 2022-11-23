@@ -1,13 +1,14 @@
 import os
 from typing import TYPE_CHECKING
 
+import aiofiles
 import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from text.extensions import AdminText
-from utils.logger import command_log, getMyLogger
+from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -19,7 +20,14 @@ if TYPE_CHECKING:
 class AdminCommand(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
+
+    log_command_group = app_commands.Group(
+        name="log",
+        description=AdminText.LOG_DESCRIPTION,
+        guild_ids=[int(os.environ["GUILD_ID"])],
+        guild_only=True,
+    )
 
     @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
@@ -49,6 +57,20 @@ class AdminCommand(commands.Cog):
         await interaction.followup.send(AdminText.RELOAD_MESSAGE)
         await self.bot.reload()
         await interaction.followup.send(AdminText.RELOAD_COMPLETE_MESSAGE)
+        return
+
+    @log_command_group.command(
+        name="today", description=AdminText.GET_TODAY_LOG_DESCRIPTION
+    )
+    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
+    async def get_today_log(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        cmd_info = CommandInfo(author=interaction.user)
+
+        with open("./log/src.bot.log", "rb") as fp:
+            log_file = discord.File(fp, filename="src.bot.log")
+
+        await interaction.followup.send("Today's log file", file=log_file)
         return
 
 
