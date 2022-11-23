@@ -15,7 +15,9 @@ class AppCommandTree(app_commands.CommandTree[discord.Client]):
     async def on_error(
         self, interaction: discord.Interaction, error: app_commands.AppCommandError, /
     ) -> None:
-        await interaction.response.defer(ephemeral=True)
+        if not interaction.response.is_done() and not interaction.is_expired():
+            await interaction.response.defer(ephemeral=True)
+
         cmd_name = interaction.data["name"]  # type: ignore
         err_txt = f"Error occurred when {interaction.user} used {cmd_name} command"
         usr_err_txt = f"Error occurred when you used {cmd_name} command"
@@ -68,7 +70,7 @@ class AppCommandTree(app_commands.CommandTree[discord.Client]):
 
         elif isinstance(error, app_commands.CommandSignatureMismatch):
             self.bot.logger.exception(err_txt, exc_info=error)
-            usr_err_txt = "このコマンドは既に登録されています。"
+            usr_err_txt = "Discordに登録されたコマンド情報と一致しません。"
 
         elif isinstance(error, app_commands.CommandNotFound):
             self.bot.logger.exception(err_txt, exc_info=error)
@@ -82,5 +84,8 @@ class AppCommandTree(app_commands.CommandTree[discord.Client]):
             self.bot.logger.exception(err_txt, exc_info=error)
             usr_err_txt = "予期しないエラーが発生しました。"
 
-        await interaction.followup.send(usr_err_txt, ephemeral=True)
+        if not interaction.is_expired():
+            await interaction.followup.send(usr_err_txt, ephemeral=True)
+        else:
+            await interaction.channel.send(usr_err_txt, ephemeral=True)  # type: ignore
         return
