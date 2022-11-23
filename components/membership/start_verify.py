@@ -1,16 +1,18 @@
 import discord
 from discord import Interaction, ui
 
+from components.ui.base import BaseView
+
 from .mem_embeds import Embeds
 
 
-class Start_Verify_View(ui.View):
-    def __init__(self, custom_id: str):
-        super().__init__(timeout=None)
+class Start_Verify_View(BaseView):
+    def __init__(self, *, custom_id: str = ""):
+        super().__init__(timeout=None, custom_id=custom_id)
         self.add_item(Start_Verify_Button(custom_id=custom_id))
 
 
-class Start_Verify_Button(ui.Button):
+class Start_Verify_Button(ui.Button):  # type: ignore
     def __init__(self, custom_id: str):
         super().__init__(custom_id=custom_id)
 
