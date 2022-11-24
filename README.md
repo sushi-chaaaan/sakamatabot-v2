@@ -20,7 +20,7 @@ pre-commit install
 ## Environment Variables
 
 必要な環境変数は`.env.example`に記載されています。<br>
-<u>.env.exampleに直接環境変数を書き込んではいけません</u><br>
+<ins>.env.exampleに直接環境変数を書き込んではいけません</ins><br>
 開発環境で起動する際は`.env.development`を作成して<br>
 そこに環境変数を書き込んでください。<br>
 
