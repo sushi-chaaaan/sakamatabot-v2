@@ -1,5 +1,4 @@
 import asyncio
-import inspect
 
 import discord
 from discord.ext import commands  # type: ignore
@@ -28,6 +27,11 @@ class Bot(commands.Bot):
         intents = discord.Intents.all()
         intents.typing = False
 
+        # info params
+        self.failed_extensions: list[str] = []
+        self.failed_views: list[str] = []
+        self.synced_app_commands: list[str] = []
+
         super().__init__(
             command_prefix=self.config.CommandPrefix,
             help_command=None,
@@ -52,6 +56,7 @@ class Bot(commands.Bot):
         )
         self.logger.info(f"Connected to {len(self.guilds)} guilds")  # pyright: ignore
         self.logger.info("Bot is ready")
+        await self.send_boot_message()
 
     def load_config(self) -> None:
         self.config = ConfigYaml(**read_yaml(r"config/config.yaml"))
@@ -77,6 +82,7 @@ class Bot(commands.Bot):
                 await self.load_extension(ext)
             except Exception as e:
                 self.logger.exception(f"Failed to load extension {ext}", exc_info=e)
+                self.failed_extensions.append(ext)
                 pass
             else:
                 self.logger.info(f"Loaded extension {ext}")
@@ -87,9 +93,14 @@ class Bot(commands.Bot):
             await self.tree.sync(guild=self.app_commands_sync_target)
         except Exception as e:
             self.logger.exception("Failed to sync application commands", exc_info=e)
+            self.synced_app_commands = []
             pass
         else:
             self.logger.info("Application commands synced successfully")
+            self.synced_app_commands = [
+                cmd.name
+                for cmd in self.tree.get_commands(guild=self.app_commands_sync_target)
+            ]
             pass
 
     async def setup_views(self) -> None:
@@ -144,6 +155,25 @@ class Bot(commands.Bot):
             return False
         else:
             return True
+
+    async def send_boot_message(self):
+        from embeds.bot import boot_message_embed
+        from utils.finder import Finder
+
+        embed = boot_message_embed(self)
+        finder = Finder(self)
+        channel = await finder.find_channel(self.env.LOG_CHANNEL_ID)
+
+        if not isinstance(channel, discord.abc.Messageable):
+            self.logger.error("Failed to get Messageable channel")
+            return
+        else:
+            try:
+                await channel.send(embed=embed)
+            except Exception as e:
+                self.logger.exception("Failed to send boot message", exc_info=e)
+                return
+            return
 
     def run(self) -> None:
         try:
