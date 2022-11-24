@@ -62,3 +62,6 @@ python main.py
 
 `.env.{環境}`と`config/config.yaml`の形式が正しくなかった場合、<br>
 VallidationErrorが発生して起動しません。
+
+DockerがよくわからないのでDockerには未対応ということにします。<br>
+うまくいかぬ、誰か助けて...<br>
