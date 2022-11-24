@@ -1,10 +1,14 @@
 import os
+from typing import TYPE_CHECKING
 
 import discord
 
 from text import error as error_text
 
 from .logger import getMyLogger
+
+if TYPE_CHECKING:
+    from src.bot import Bot
 
 
 class Finder:
@@ -25,6 +29,17 @@ class Finder:
             except Exception as e:
                 self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
+        return channel
+
+    async def find_log_channel(self) -> discord.TextChannel:
+        if not isinstance(self.bot, Bot):
+            raise TypeError("Bot is not a CustomizedBot")
+
+        channel = await self.find_channel(self.bot.env.LOG_CHANNEL_ID)
+
+        if not isinstance(channel, discord.TextChannel):
+            raise TypeError("Log channel is not a TextChannel")
+
         return channel
 
     def deal_guild(

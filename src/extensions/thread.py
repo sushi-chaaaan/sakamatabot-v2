@@ -35,11 +35,7 @@ class Thread(commands.Cog):
             return
 
         finder = Finder(self.bot)
-
-        channel = await finder.find_channel(self.bot.env.LOG_CHANNEL_ID)
-        if not isinstance(channel, discord.abc.Messageable):
-            self.logger.error("Failed to get Messageable channel")
-            return
+        channel = await finder.find_log_channel()
 
         await channel.send(embeds=[on_thread_create_embed(thread)])
         return

@@ -162,18 +162,14 @@ class Bot(commands.Bot):
 
         embed = boot_message_embed(self)
         finder = Finder(self)
-        channel = await finder.find_channel(self.env.LOG_CHANNEL_ID)
+        channel = await finder.find_log_channel()
 
-        if not isinstance(channel, discord.abc.Messageable):
-            self.logger.error("Failed to get Messageable channel")
+        try:
+            await channel.send(embed=embed)
+        except Exception as e:
+            self.logger.exception("Failed to send boot message", exc_info=e)
             return
-        else:
-            try:
-                await channel.send(embed=embed)
-            except Exception as e:
-                self.logger.exception("Failed to send boot message", exc_info=e)
-                return
-            return
+        return
 
     def run(self) -> None:
         try:
