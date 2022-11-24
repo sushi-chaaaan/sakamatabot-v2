@@ -16,10 +16,7 @@ class Poll(commands.Cog):
     bot: "Bot"
 
     def __init__(self, bot: "Bot"):
-        # init cog
         self.bot = bot
-
-        # init logger
         self.logger = self.bot.logger
 
     @commands.command(name="poll")

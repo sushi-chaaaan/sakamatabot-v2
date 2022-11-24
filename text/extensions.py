@@ -41,7 +41,7 @@ class MemberCountText:
 
 
 class ModerationText:
-    USER_DESCRIPTION = """ユーザー情報を照会します。"""
+    USER_DESCRIPTION = """ユーザー情報を照会します。ユーザー名やIDで指定できます。"""
 
 
 class PollText:

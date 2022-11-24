@@ -22,8 +22,8 @@ class Moderation(commands.Cog):
 
     @app_commands.command(name="user", description=ModerationText.USER_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
-    @app_commands.describe(target="照会するユーザーを選択してください。")
-    @app_commands.rename(target="ユーザー")
+    @app_commands.describe(target="照会するユーザーを選択してください。(IDの貼り付けもできます)")
+    @app_commands.rename(target="ユーザー:sushi:")
     async def user(
         self,
         interaction: discord.Interaction,
