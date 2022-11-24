@@ -7,7 +7,7 @@ from tools.logger import command_log, getMyLogger
 
 from components.cmp_inquiry import InquiryView
 
-from .embeds import Embeds
+from ...archive.embeds import Embeds
 
 
 class Inquiry(commands.Cog):
