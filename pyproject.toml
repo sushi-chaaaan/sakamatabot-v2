@@ -15,7 +15,7 @@ discord-py = { git = "https://github.com/Rapptz/discord.py.git", rev = "master",
     "voice",
     "speed",
 ] }
-dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2" }
+dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2-return-embeds" }
 pydantic = { extras = ["dotenv"], version = "^1.10.2" }
 # discord-py = "^2.1.0"
 
