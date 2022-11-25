@@ -15,7 +15,6 @@ def user_embed(target: discord.Member | discord.User) -> discord.Embed:
         description=f"対象ユーザー: {target.mention}",
         color=Color.default.value,
     )
-    embed.set_footer(text=f"{TimeUtils.dt_to_str()}")
     embed.set_thumbnail(url=avatar_url)
     embed.add_field(
         name="Bot?",

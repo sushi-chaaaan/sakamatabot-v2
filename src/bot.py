@@ -90,17 +90,14 @@ class Bot(commands.Bot):
 
     async def sync_app_commands(self) -> None:
         try:
-            await self.tree.sync(guild=self.app_commands_sync_target)
+            synced = await self.tree.sync(guild=self.app_commands_sync_target)
         except Exception as e:
             self.logger.exception("Failed to sync application commands", exc_info=e)
             self.synced_app_commands = []
             pass
         else:
             self.logger.info("Application commands synced successfully")
-            self.synced_app_commands = [
-                cmd.name
-                for cmd in self.tree.get_commands(guild=self.app_commands_sync_target)
-            ]
+            self.synced_app_commands = [c.mention for c in synced]
             pass
 
     async def setup_views(self) -> None:

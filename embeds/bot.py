@@ -18,17 +18,19 @@ def boot_message_embed(bot: "Bot") -> discord.Embed:
     )
     embed.add_field(
         name="Extensions failed to load",
-        value="\n".join([f"`{v}`" for v in bot.failed_extensions]) or "None",
+        value="\n".join([f"`{v}`" for v in bot.failed_extensions]) or "`None`",
         inline=False,
     )
     embed.add_field(
         name="Views failed to add",
-        value="\n".join([f"`{v}`" for v in bot.failed_views]) or "None",
+        value="\n".join([f"`{v}`" for v in bot.failed_views]) or "`None`",
         inline=False,
     )
     embed.add_field(
         name="loaded app_commands",
-        value="\n".join([f"`{v}`" for v in bot.synced_app_commands]) or "None",
+        value="\n".join(bot.synced_app_commands)
+        if bot.synced_app_commands
+        else "`None`",
         inline=False,
     )
     embed.add_field(

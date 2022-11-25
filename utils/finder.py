@@ -32,10 +32,7 @@ class Finder:
         return channel
 
     async def find_log_channel(self) -> discord.TextChannel:
-        if not isinstance(self.bot, Bot):
-            raise TypeError("Bot is not a CustomizedBot")
-
-        channel = await self.find_channel(self.bot.env.LOG_CHANNEL_ID)
+        channel = await self.find_channel(int(os.environ["LOG_CHANNEL_ID"]))
 
         if not isinstance(channel, discord.TextChannel):
             raise TypeError("Log channel is not a TextChannel")
