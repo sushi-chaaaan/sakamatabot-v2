@@ -80,8 +80,9 @@ VallidationErrorが発生して起動しません。
 
 タグなどは自由につけてください。
 
+
 ```bash
-docker build -f multi-stage.Dockerfile .
+docker-compose up -d --build
 ```
 
 ### PR Environment

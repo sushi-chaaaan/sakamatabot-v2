@@ -8,17 +8,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONUTF8=1 \
     PYTHONIOENCODING=UTF-8 \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_NO_CACHE_DIR=off
+    PIP_DISABLE_PIP_VERSION_CHECK=on
 
 # requirements.txtをCOPY
 COPY requirements.txt* ./
 
 # pipでライブラリをインストール
-RUN pip install --upgrade pip \
-    && pip install --upgrade setuptools \
-    && pip install --upgrade wheel \
-    && pip install -r requirements.txt
+RUN pip install --no-cache-dir -U pip  &&\
+    pip install --no-cache-dir -U setuptools  && \
+    pip install --no-cache-dir -U wheel  && \
+    pip install --no-cache-dir -r requirements.txt
 
 # プロジェクトをコピー
 COPY . ./

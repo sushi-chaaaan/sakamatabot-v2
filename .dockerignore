@@ -9,6 +9,7 @@ docker-compose.yaml
 .python-version
 poetry.lock
 pyproject.toml
+.hadolint.yaml
 
 # deprecated
 archive
