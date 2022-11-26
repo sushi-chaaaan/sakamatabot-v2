@@ -4,39 +4,79 @@ version = "0.1.0"
 description = ""
 authors = ["sushi-chaaaan <sushi_code@outlook.jp>"]
 readme = "README.md"
+# packages = [{include = "sakamatabot_v2"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+aiofiles = "^22.1.0"
+discord-handler = "^0.0.5"
+PyYAML = "^6.0"
+discord-py = { git = "https://github.com/Rapptz/discord.py.git", rev = "master", extras = [
+    "voice",
+    "speed",
+] }
+dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2-return-embeds" }
+pydantic = { extras = ["dotenv"], version = "^1.10.2" }
+# discord-py = "^2.1.0"
+tomli = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
 mypy = "^0.982"
 isort = "^5.10.1"
 pyproject-flake8 = "^5.0.4.post1"
-flake8-isort = "^5.0.0"
 poethepoet = "^0.16.4"
+flake8-isort = "^5.0.0"
 
 [tool.black]
-line-length = 120
+target-version = ["py310"]
+line-length = 125
 
 [tool.flake8]
-ignore="W503"
-max-line-length = 120
-extend-exclude = ".venv"
+max-line-length = 125
+extend-exclude = [".venv", "archive", "src/core_old", "src/exts_old"]
+extend-ignore = ["E203", "W503"]
+
+[tool.isort]
+profile = "black"
+line_length = 125
+skip_gitignore = true
+
+[tool.mypy]
+python_version = "3.10"
+exclude = [".venv", "archive", "src/core_old", "src/exts_old"]
+plugins = ["pydantic.mypy"]
+follow_imports = "silent"
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+
+[[tool.mypy.overrides]]
+module = "discord.*"
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
 
 [tool.poe.tasks]
 # lint
-lint = ["lint-flake8", "lint-isort", "lint-mypy"]
-"lint-flake8" = "poetry run pflake8 ."
-"lint-isort" = "poetry run isort -c ."
-"lint-mypy" = "poetry run mypy ."
+lint.sequence = ["_pflake8", "_isort-c", "_mypy"]
+lint.ignore_fail = "return_zero"
+_pflake8 = "poetry run pflake8 ."
+_isort-c = "poetry run isort -c ."
+_mypy = "poetry run mypy ."
+mypy-stub = "mypy --install-types --non-interactive"
 
 # format
-format = ["format-black", "format-isort"]
-"format-black" = "poetry run black ."
-"format-isort" = "poetry run isort ."
-
-"mypy-types" = "mypy --install-types --non-interactive"
+format.sequence = ["_black", "_isort"]
+format.ignore_fail = "return_zero"
+_black = "poetry run black ."
+_isort = "poetry run isort ."
 
 [build-system]
 requires = ["poetry-core"]

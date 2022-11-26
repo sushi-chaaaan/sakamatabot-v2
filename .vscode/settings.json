@@ -1,0 +1,25 @@
+{
+    "cSpell.words": [
+        "cooldown",
+        "pydantic",
+        "pyright",
+        "unban"
+    ],
+    "editor.formatOnSave": true,
+    "flake8.args": [
+        "--max-line-length=125",
+        "--ignore=E203,W503"
+    ],
+    "flake8.path": [
+        ".venv/bin/pflake8"
+    ],
+    "isort.check": true,
+    "isort.importStrategy": "fromEnvironment",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.formatting.provider": "black",
+    "python.languageServer": "Pylance",
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.mypyEnabled": true
+}
