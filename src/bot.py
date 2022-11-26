@@ -34,7 +34,6 @@ class Bot(commands.Bot):
 
         super().__init__(
             command_prefix=self.config.CommandPrefix,
-            help_command=None,
             intents=intents,
             tree_cls=AppCommandTree,
             application_id=self.env.APPLICATION_ID,
