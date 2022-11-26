@@ -21,13 +21,6 @@ class AdminCommand(commands.Cog):
         self.bot = bot
         self.logger = self.bot.logger
 
-    log_command_group = app_commands.Group(
-        name="log",
-        description=AdminText.LOG_DESCRIPTION,
-        guild_ids=[int(os.environ["GUILD_ID"])],
-        guild_only=True,
-    )
-
     @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
@@ -56,20 +49,6 @@ class AdminCommand(commands.Cog):
         await interaction.followup.send(AdminText.RELOAD_MESSAGE)
         await self.bot.reload()
         await interaction.followup.send(AdminText.RELOAD_COMPLETE_MESSAGE)
-        return
-
-    @log_command_group.command(
-        name="today", description=AdminText.GET_TODAY_LOG_DESCRIPTION
-    )
-    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
-    async def get_today_log(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        cmd_info = CommandInfo(author=interaction.user)
-
-        with open("./log/src.bot.log", "rb") as fp:
-            log_file = discord.File(fp, filename="src.bot.log")
-
-        await interaction.followup.send("Today's log file", file=log_file)
         return
 
 

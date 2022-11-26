@@ -22,6 +22,7 @@ Extensions:
   - src.extensions.kick_and_ban
   - src.extensions.member_count
   - src.extensions.moderation
+  - src.extensions.log
   - src.extensions.poll
   - src.extensions.send
   - src.extensions.thread
