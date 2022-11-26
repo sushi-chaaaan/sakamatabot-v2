@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from components.ui.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
-from utils.cui import cui_y_or_n
+from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
 
@@ -204,6 +204,6 @@ class Bot(commands.Bot):
 
     def confirm_production_boot(self) -> None:
         if self.config.Environment == "production":
-            ans: bool = cui_y_or_n("あなたはBotを本番環境で起動しようとしています。本当に続けますか？", default=False)
+            ans: bool = CommandLineUtils.y_or_n("あなたはBotを本番環境で起動しようとしています。本当に続けますか？", default=False)
             if not ans:
                 raise SystemExit
