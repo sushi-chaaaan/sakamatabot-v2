@@ -1,10 +1,22 @@
-# unused files/directories
-*/archive*
-*/exts_old*
-
-# dev files/directories
+# ignore plz...
+.mypy_cache
+.vscode
+.venv
 README.md
 LICENSE
+
+# deprecated
+archive
+src/exts_old
+src/old*
+
+# dev files/directories
+.git
+.gitignore
 .pre-commit-config.yaml
-.vscode*
+/.env.*
+!/.env.example
+README.md
+LICENSE
 docker-compose.yaml
+.python-version
