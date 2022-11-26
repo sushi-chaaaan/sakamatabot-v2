@@ -14,13 +14,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # requirements.txtをCOPY
 COPY requirements.txt* ./
 
-# pipでライブラリをインストール (requirements.txtが既にある場合)
-RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
-RUN pip install --upgrade wheel
-RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-
+# pipでライブラリをインストール
+RUN pip install --upgrade pip \
+    && pip install --upgrade setuptools \
+    && pip install --upgrade wheel \
+    && pip install -r requirements.txt
 
 FROM python:3.10-slim-buster as runner
 
@@ -30,14 +28,12 @@ WORKDIR /app
 # パッケージのコピー
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 
-# プロジェクトをフルコピー
+# プロジェクトをコピー
 COPY . ./
 
-# 一時ディレクトリの作成
-RUN mkdir -p /app/log
-RUN mkdir -p /app/tmp
-
-RUN ls -la
+# 一時ファイル用ディレクトリを作成
+# 正しいディレクトリ構成になっているか確認するls
+RUN mkdir -p /app/log && mkdir -p /app/tmp && ls -la
 
 # start process
 ENTRYPOINT ["python", "main.py"]
