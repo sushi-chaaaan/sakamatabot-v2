@@ -179,18 +179,27 @@ class Bot(commands.Bot):
         except KeyboardInterrupt as e:
             if self.config.Mode == "debug":
                 self.logger.info("KeyboardInterrupt detected, shutting down...")
+                status = True
             else:
                 self.logger.critical("KeyboardInterrupt Detected!!!, shutting down...", exc_info=e)
-            asyncio.run(self.shutdown())
+                status = False
+            asyncio.run(self.shutdown(status=status))
+            return
+        except SystemExit as e:
+            self.logger.critical("SystemExit Detected!!!, shutting down...", exc_info=e)
+            asyncio.run(self.shutdown(status=False))
             return
 
     async def runner(self) -> None:
         async with self:
             await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
 
-    async def shutdown(self) -> None:
+    async def shutdown(self, status: bool = True) -> None:
+        import sys
+
         self.logger.info("Shutting down...")
         await self.close()
+        sys.exit(0 if status else 1)
 
     def confirm_production_boot(self) -> None:
         if self.config.Environment == "production":
