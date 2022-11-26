@@ -1,22 +1,24 @@
-# ignore plz...
+# dev tools
 .mypy_cache
 .vscode
 .venv
-README.md
-LICENSE
+.git
+**/.gitignore
+.pre-commit-config.yaml
+docker-compose.yaml
+.python-version
+poetry.lock
+pyproject.toml
+
+# environment variables
+/.env.*
+!/.env.example
 
 # deprecated
 archive
 src/exts_old
 src/old*
 
-# dev files/directories
-.git
-.gitignore
-.pre-commit-config.yaml
-/.env.*
-!/.env.example
+# docs
 README.md
 LICENSE
-docker-compose.yaml
-.python-version

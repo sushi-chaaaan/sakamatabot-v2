@@ -33,13 +33,11 @@ COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/pytho
 # プロジェクトをフルコピー
 COPY . ./
 
-RUN ls -las
-
 # 一時ディレクトリの作成
 RUN mkdir -p /app/log
 RUN mkdir -p /app/tmp
 
-RUN ls -las
+RUN ls -la
 
 # start process
 ENTRYPOINT ["python", "main.py"]
