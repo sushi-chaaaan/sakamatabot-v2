@@ -1,8 +1,7 @@
 FROM python:3.10-buster
 
 # set work directory
-ENV APP_HOME=/app
-WORKDIR $APP_HOME
+WORKDIR /app
 
 # python environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
