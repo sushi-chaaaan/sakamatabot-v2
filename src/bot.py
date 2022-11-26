@@ -21,6 +21,7 @@ class Bot(commands.Bot):
         self.env: DotEnv
         self.load_config()
 
+        # mainブランチでは, GithubActionsによって本番環境へのデプロイ前にコメントアウトされます
         # 本番環境が起動されようとしている場合チェック
         self.confirm_production_boot()
 
