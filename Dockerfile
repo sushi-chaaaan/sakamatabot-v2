@@ -11,6 +11,7 @@ COPY requirements.txt* ./
 # pipでライブラリをインストール (requirements.txtが既にある場合)
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
+RUN pip install --upgrade wheel
 RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
 # 一時ディレクトリの作成
