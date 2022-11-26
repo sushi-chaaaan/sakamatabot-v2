@@ -1,12 +1,10 @@
 # unused files/directories
-archive/*
-src/exts_old/*
+*/archive*
+*/exts_old*
 
 # dev files/directories
 README.md
 LICENSE
 .pre-commit-config.yaml
-.vscode/*
-log/*
-tmp/*
+.vscode*
 docker-compose.yaml
