@@ -74,5 +74,16 @@ python main.py
 `.env.{環境}`と`config/config.yaml`の形式が正しくなかった場合、<br>
 VallidationErrorが発生して起動しません。
 
-DockerがよくわからないのでDockerには未対応ということにします。<br>
-うまくいかぬ、誰か助けて...<br>
+## Run in Docker
+
+### ローカルで
+
+タグなどは自由につけてください。
+
+```bash
+docker build -f multi-stage.Dockerfile .
+```
+
+### PR Environment
+
+devブランチにPRを出すとRailway側でテスト用の環境が立ち上がります。

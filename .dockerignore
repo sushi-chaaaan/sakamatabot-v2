@@ -10,10 +10,6 @@ docker-compose.yaml
 poetry.lock
 pyproject.toml
 
-# environment variables
-/.env.*
-!/.env.example
-
 # deprecated
 archive
 src/exts_old
