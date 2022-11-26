@@ -174,7 +174,7 @@ class Bot(commands.Bot):
             if self.config.Mode == "debug":
                 self.logger.info("KeyboardInterrupt detected, shutting down...")
             else:
-                self.logger.exception("KeyboardInterrupt Detected!!!, shutting down...", exc_info=e)
+                self.logger.critical("KeyboardInterrupt Detected!!!, shutting down...", exc_info=e)
             asyncio.run(self.shutdown())
             return
 
