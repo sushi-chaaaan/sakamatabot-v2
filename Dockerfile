@@ -1,4 +1,4 @@
-FROM python:3.10-buster
+FROM python:3.10-slim-buster
 
 WORKDIR /app
 
@@ -10,10 +10,11 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-RUN ls -las
+# 一時ディレクトリの作成
 RUN mkdir -p /app/log
 RUN mkdir -p /app/tmp
 
+# プロジェクトをフルコピー
 COPY . ./
 
 RUN ls -la
