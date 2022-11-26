@@ -39,6 +39,6 @@ repos:
             "requirements.txt",
             "-o",
             "requirements.txt",
-            "--without",
-            "dev",
+            "--only",
+            "main",
           ]
