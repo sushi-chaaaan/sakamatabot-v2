@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from components.ui.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
+from utils.cui import cui_y_or_n
 from utils.io import read_yaml
 from utils.logger import getMyLogger
 
@@ -19,8 +20,11 @@ class Bot(commands.Bot):
         self.config: ConfigYaml
         self.env: DotEnv
         self.load_config()
-        self.load_env()
 
+        # 本番環境が起動されようとしている場合チェック
+        self.confirm_production_boot()
+
+        self.load_env()
         self.logger = getMyLogger(__name__)
 
         # set intents
@@ -181,3 +185,9 @@ class Bot(commands.Bot):
     async def shutdown(self) -> None:
         self.logger.info("Shutting down...")
         await self.close()
+
+    def confirm_production_boot(self) -> None:
+        if self.config.Environment == "production":
+            ans: bool = cui_y_or_n("あなたはBotを本番環境で起動しようとしています。続けますか？", default=False)
+            if not ans:
+                raise SystemExit
