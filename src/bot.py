@@ -204,6 +204,6 @@ class Bot(commands.Bot):
 
     def confirm_production_boot(self) -> None:
         if self.config.Environment == "production":
-            ans: bool = cui_y_or_n("あなたはBotを本番環境で起動しようとしています。続けますか？", default=False)
+            ans: bool = cui_y_or_n("あなたはBotを本番環境で起動しようとしています。本当に続けますか？", default=False)
             if not ans:
                 raise SystemExit
