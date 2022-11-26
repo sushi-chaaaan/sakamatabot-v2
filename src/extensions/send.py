@@ -93,4 +93,4 @@ class Sender(commands.GroupCog, group_name="send"):  # type: ignore
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Sender(bot)), guilds=[discord.Object(id=bot.env.GUILD_ID)])
+    await bot.add_cog(Sender(bot), guilds=[discord.Object(id=bot.env.GUILD_ID)])

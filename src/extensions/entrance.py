@@ -69,4 +69,4 @@ class Entrance(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Entrance(bot)))
+    await bot.add_cog(Entrance(bot))

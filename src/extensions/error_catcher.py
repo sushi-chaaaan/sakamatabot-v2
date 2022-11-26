@@ -38,4 +38,4 @@ class ErrorCatcher(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((ErrorCatcher(bot)))
+    await bot.add_cog(ErrorCatcher(bot))

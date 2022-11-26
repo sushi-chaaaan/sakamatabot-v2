@@ -17,4 +17,4 @@ class Report(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Report(bot)))
+    await bot.add_cog(Report(bot))

@@ -53,4 +53,4 @@ class AdminCommand(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((AdminCommand(bot)))
+    await bot.add_cog(AdminCommand(bot))

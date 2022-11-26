@@ -17,4 +17,4 @@ class Inquiry(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Inquiry(bot)))
+    await bot.add_cog(Inquiry(bot))

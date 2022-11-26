@@ -32,4 +32,4 @@ class Dispander(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Dispander(bot)))
+    await bot.add_cog(Dispander(bot))

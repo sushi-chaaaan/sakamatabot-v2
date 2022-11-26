@@ -184,4 +184,4 @@ class Thread(commands.Cog):
 
 
 async def setup(bot: "Bot"):
-    await bot.add_cog((Thread(bot)))
+    await bot.add_cog(Thread(bot))

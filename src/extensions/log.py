@@ -36,6 +36,6 @@ class Log(commands.GroupCog, group_name="log", group_description=LogText.LOG_DES
 
 async def setup(bot: "Bot"):
     await bot.add_cog(
-        (Log(bot)),
+        Log(bot),
         guild=None if bot.config.SyncGlobally else discord.Object(bot.env.GUILD_ID),
     )
