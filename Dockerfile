@@ -1,6 +1,6 @@
 FROM python:3.10-buster
 
-WORKDIR /src
+WORKDIR /app
 
 # pipを使ってpoetryをインストール
 RUN pip install poetry
@@ -15,6 +15,8 @@ COPY pyproject.toml* poetry.lock* ./
 RUN poetry config virtualenvs.create false
 RUN if [ -f pyproject.toml ]; then poetry install --without dev; fi
 RUN ls -las
+RUN mkdir -p /app/log
+RUN mkdir -p /app/tmp
 
 COPY . ./
 

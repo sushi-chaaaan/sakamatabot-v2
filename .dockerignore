@@ -1,2 +1,4 @@
 archive/*
 src/exts_old/*
+log/*
+tmp/*
