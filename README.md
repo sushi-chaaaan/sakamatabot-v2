@@ -8,14 +8,25 @@ a VTuber belonging to Cover Corp.
 
 ## Contributing
 
+### requirements
+
+- Python 3.10
+- VSCode (highly recommended)
+- poetry (dependency management)
+
+依存関係のインストール
+
+```bash
+poetry config virtualenvs.in-project true
+poetry install
+```
+
 このプロジェクトには[pre-commit](https://pre-commit.com/)が導入されています。<br>
 ローカルにpre-commitをインストールしたあと、以下のコマンドを必ず実行してください。
 
 ```bash
 pre-commit install
 ```
-
-また、poetryを使用した環境構築が推奨されています。
 
 ## Environment Variables
 
@@ -29,7 +40,7 @@ pre-commit install
 このBotは一部の設定を`config/config.yaml`で管理しています。<br>
 
 - Environment<br>
-読み込む環境の設定を行います。<br>
+読み込む環境変数の設定を行います。<br>
 `development`を指定すると`.env.development`を読み込みます。<br>
 `production`を指定した場合何が起こるかはおわかりですね？やめてください。
 
