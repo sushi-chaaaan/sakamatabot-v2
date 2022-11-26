@@ -13,7 +13,10 @@ jobs:
         uses: actions/checkout@v2
         
       - name: replace confirm_production_boot
-        run: sed -i 's/self.confirm_production_boot()/# self.confirm_production_boot()/' src/bot.py
+        run: |
+          mv src/bot.py src/bot.before.py
+          cat src/bot.before.py | sed -e 's/self.confirm_production_boot()/# self.confirm_production_boot()/' > src/bot.py
+          diff src/bot.before.py src/bot.py
 
       - name: Use Node 12
         uses: actions/setup-node@v1
