@@ -10,7 +10,6 @@
         "--max-line-length=125",
         "--ignore=E203,W503"
     ],
-    "flake8.importStrategy": "useBundled",
     "flake8.path": [
         ".venv/bin/pflake8"
     ],
