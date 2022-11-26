@@ -5,9 +5,21 @@ from discord import Embed, ui
 
 
 class BaseView(ui.View):
+    """Viewをより簡単に扱えるクラス
+
+    Args:
+        timeout (float | None, optional): Viewのタイムアウト時間. Defaults to 180.
+        custom_id (str, optional): Viewのcustom_id. Defaults to "".
+
+    Attributes:
+        message (discord.Message | None): Viewを送信したメッセージ
+        送信したときの返り値Messageを格納することで, timeout時に自動でdisabledになる.
+    """
+
     def __init__(self, *, timeout: float | None = 180, custom_id: str = ""):
         super().__init__(timeout=timeout)
         self.__custom_id = custom_id
+        self.message: discord.Message | None = None
 
     @property
     def custom_id(self) -> str:
@@ -16,6 +28,14 @@ class BaseView(ui.View):
     @custom_id.setter
     def custom_id(self, value: str) -> None:
         self.__custom_id = value
+
+    async def on_timeout(self) -> None:
+        if self.message:
+            for i in self.children:
+                if isinstance(i, (ui.Button, ui.Select)):
+                    i.disabled = True
+
+            await self.message.edit(view=self)
 
 
 class __ViewBase:
