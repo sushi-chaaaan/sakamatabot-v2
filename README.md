@@ -6,6 +6,15 @@
 Discord Bot to assist managing a Fandom server of Chloe Sakamata,<br>
 a VTuber belonging to Cover Corp.
 
+## Branches
+
+- main <br>
+本番環境。直接のpushは不可。devからPR
+
+- dev <br>
+開発環境。ここからブランチを切って、適宜devへPR <br>
+作業ブランチからmainへのPRはダメ。
+
 ## Contributing
 
 ### requirements
