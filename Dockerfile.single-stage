@@ -3,11 +3,6 @@ FROM python:3.10-buster
 # set work directory
 WORKDIR /app
 
-RUN groupadd -r app && useradd -r -g app app
-RUN chown -R app:app /app
-
-USER app
-
 # python environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -23,6 +18,11 @@ RUN pip install --no-cache-dir -U pip  &&\
     pip install --no-cache-dir -U setuptools  && \
     pip install --no-cache-dir -U wheel  && \
     pip install --no-cache-dir -r requirements.txt
+
+# permission settings
+RUN groupadd -r app && useradd -r -g app app
+RUN chown -R app:app /app
+USER app
 
 # プロジェクトをコピー
 COPY --chown=app:app . ./

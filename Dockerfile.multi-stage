@@ -24,9 +24,9 @@ FROM python:3.10-slim-buster as runner
 # set work directory
 WORKDIR /app
 
+# permission settings
 RUN groupadd -r app && useradd -r -g app app
 RUN chown -R app:app /app
-
 USER app
 
 # パッケージのコピー
