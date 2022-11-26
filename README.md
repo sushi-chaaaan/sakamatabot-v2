@@ -87,4 +87,4 @@ docker-compose up -d --build
 
 ### PR Environment
 
-devブランチにPRを出すとRailway側でテスト用の環境が立ち上がります。
+mainかdevブランチにPRを出すとRailway側でテスト用の環境が立ち上がります。
