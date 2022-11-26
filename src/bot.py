@@ -65,7 +65,13 @@ class Bot(commands.Bot):
     def load_env(self) -> None:
         # デコレータ内でも環境変数を使うため先にload_dotenv()する, Validationはあとから
         # https://github.com/pydantic/pydantic/issues/1482
-        load_dotenv(f".env.{self.config.Environment}")
+        try:
+            load_dotenv(f".env.{self.config.Environment}")
+        except Exception:
+            # raised when run in docker image
+            # Docker buildのとき環境変数ファイルはCOPYされない
+            pass
+
         try:
             self.env = DotEnv()  # pyright: ignore , 環境変数に対してValidation
         except Exception:  # pydanticがエラーを吐いた時点で起動を確実に中止
