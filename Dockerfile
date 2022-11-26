@@ -28,4 +28,5 @@ COPY . ./
 RUN ls -la
 
 # uvicornのサーバーを立ち上げる
-ENTRYPOINT ["poetry", "run", "python", "main.py"]
+# ENTRYPOINT ["poetry", "run", "python", "main.py"]
+ENTRYPOINT ["python", "main.py"]

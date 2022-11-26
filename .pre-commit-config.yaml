@@ -33,11 +33,4 @@ repos:
       - id: poetry-lock
       - id: poetry-export
         args:
-          [
-            "-f",
-            "requirements.txt",
-            "-o",
-            "requirements.txt",
-            "--only",
-            "main",
-          ]
+          ["-f", "requirements.txt", "-o", "requirements.txt", "--only", "main"]
