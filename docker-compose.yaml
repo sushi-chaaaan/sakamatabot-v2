@@ -2,8 +2,8 @@ version: '3'
 services:
   bot:
     build: .
-    volumes:
-      - .:/src
+    # volumes:
+    #   - .:/src
     # ports:
     #   - 8000:8000
     #   db:
