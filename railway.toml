@@ -1,0 +1,2 @@
+[deploy]
+startCommand = 'echo current directory: && ls -la && poetry run python main.py'
