@@ -1,14 +1,10 @@
 import os
-from typing import TYPE_CHECKING
 
 import discord
 
-from text import error as error_text
+from text.error import ErrorText
 
 from .logger import getMyLogger
-
-if TYPE_CHECKING:
-    from src.bot import Bot
 
 
 class Finder:
@@ -27,7 +23,7 @@ class Finder:
             try:
                 channel = await resolved.fetch_channel(channel_id)
             except Exception as e:
-                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
+                self.logger.exception(ErrorText.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
         return channel
 
@@ -39,9 +35,7 @@ class Finder:
 
         return channel
 
-    def deal_guild(
-        self, guild: discord.Guild | None = None
-    ) -> discord.Guild | discord.Client:
+    def deal_guild(self, guild: discord.Guild | None = None) -> discord.Guild | discord.Client:
         if guild:
             return guild
         return self.bot
@@ -52,7 +46,7 @@ class Finder:
             try:
                 guild = await self.bot.fetch_guild(guild_id)
             except Exception as e:
-                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
+                self.logger.exception(ErrorText.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
         return guild
 
@@ -63,7 +57,7 @@ class Finder:
             roles = await guild.fetch_roles()
             role = discord.utils.get(roles, id=role_id)
             if not role:
-                self.logger.exception(error_text.CHANNEL_NOT_FOUND)
+                self.logger.exception(ErrorText.CHANNEL_NOT_FOUND)
                 raise
         return role
 
@@ -75,7 +69,7 @@ class Finder:
             try:
                 member = await guild.fetch_member(user_id)
             except Exception as e:
-                self.logger.exception(error_text.CHANNEL_NOT_FOUND, exc_info=e)
+                self.logger.exception(ErrorText.CHANNEL_NOT_FOUND, exc_info=e)
                 member = None
         return member
 

@@ -32,9 +32,7 @@ class ErrorCatcher(commands.Cog):
         # FIXME: ハイブリッドコマンドのエラーハンドリングがうまくいかず、tree側に引き渡せない
         # src.extensions.error_catcher.logの 131~151行
         if isinstance(exc, commands.HybridCommandError):
-            await self.bot.tree.on_error(
-                ctx.interaction, exc.original  # pyright: ignore
-            )
+            await self.bot.tree.on_error(ctx.interaction, exc.original)  # pyright: ignore
 
         return
 

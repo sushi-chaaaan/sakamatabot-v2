@@ -63,9 +63,7 @@ class Utils(commands.Cog):
         self.logger.info(command_log(name="ping", author=ctx.author))
 
         await ctx.send(
-            content=UtilsText.PING_RESPONSE.format(
-                ping=round(self.bot.latency * 1000, 2)
-            ),
+            content=UtilsText.PING_RESPONSE.format(ping=round(self.bot.latency * 1000, 2)),
             ephemeral=True,
         )
         return

@@ -44,14 +44,14 @@ class Checker:
         watch_mentions = "\n".join([f"<@&{i}>" for i in watch_ids])
 
         # send message to watch
-        suffix = f"\n------------------------\nコマンド承認:{watch_mentions}\n実行に必要な承認人数: {str(run_num)}\n中止に必要な承認人数: {str(stop_num)}"
+        suffix = (
+            f"\n------------------------\nコマンド承認:{watch_mentions}\n実行に必要な承認人数: {str(run_num)}\n中止に必要な承認人数: {str(stop_num)}"
+        )
 
         if not text:
             send_text = f"【コマンド実行確認】\n{header}" + suffix
         else:
-            send_text = (
-                f"【コマンド実行確認】\n{header}\n------------------------\n{text}" + suffix
-            )
+            send_text = f"【コマンド実行確認】\n{header}\n------------------------\n{text}" + suffix
         conf_message = await ctx.send(content=send_text)
         await conf_message.add_reaction(accept_emoji)
         await conf_message.add_reaction(reject_emoji)
@@ -108,14 +108,14 @@ class Checker:
         watch_mentions = "\n".join([f"<@&{i}>" for i in ids])
 
         # send message to watch
-        suffix = f"\n------------------------\nコマンド承認:{watch_mentions}\n実行に必要な承認人数: {str(run_num)}\n中止に必要な承認人数: {str(stop_num)}"
+        suffix = (
+            f"\n------------------------\nコマンド承認:{watch_mentions}\n実行に必要な承認人数: {str(run_num)}\n中止に必要な承認人数: {str(stop_num)}"
+        )
 
         if not text:
             send_text = f"【コマンド実行確認】\n{header}" + suffix
         else:
-            send_text = (
-                f"【コマンド実行確認】\n{header}\n------------------------\n{text}" + suffix
-            )
+            send_text = f"【コマンド実行確認】\n{header}\n------------------------\n{text}" + suffix
         conf_message = await ctx.send(content=send_text)
         await conf_message.add_reaction(accept_emoji)
         await conf_message.add_reaction(reject_emoji)
@@ -149,22 +149,12 @@ class Checker:
         stop_num: int,
     ):
         # convert emoji to str
-        executable = [
-            r.count
-            for r in message.reactions
-            if str(r.emoji) == accept_emoji and r.count == run_num + 1
-        ]
-        cancelable = [
-            r.count
-            for r in message.reactions
-            if str(r.emoji) == reject_emoji and r.count == stop_num + 1
-        ]
+        executable = [r.count for r in message.reactions if str(r.emoji) == accept_emoji and r.count == run_num + 1]
+        cancelable = [r.count for r in message.reactions if str(r.emoji) == reject_emoji and r.count == stop_num + 1]
         return bool(executable or cancelable)
 
     @staticmethod
-    def check_content_type(
-        attachment: discord.Attachment, valid_content_type: str | list[str]
-    ) -> bool:
+    def check_content_type(attachment: discord.Attachment, valid_content_type: str | list[str]) -> bool:
         if isinstance(valid_content_type, str):
             valid_content_type = [valid_content_type]
 

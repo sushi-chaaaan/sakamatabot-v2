@@ -24,9 +24,7 @@ class __ViewBase:
         self._view: ui.View
         self._embeds: list[Embed]
 
-        self.__stopped: asyncio.Future[
-            bool
-        ] = asyncio.get_running_loop().create_future()
+        self.__stopped: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
 
     @property
     def content(self) -> str | None:

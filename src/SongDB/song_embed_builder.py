@@ -74,9 +74,7 @@ class EmbedBuilder:
                         value=f"[クリックして視聴]({song.latest.url})",
                         inline=False,
                     )
-                    embed.set_thumbnail(
-                        url=f"https://img.youtube.com/vi/{song.latest.raw_id}/maxresdefault.jpg"
-                    )
+                    embed.set_thumbnail(url=f"https://img.youtube.com/vi/{song.latest.raw_id}/maxresdefault.jpg")
                 else:
                     embed.add_field(
                         name="視聴不可",
@@ -97,9 +95,7 @@ class EmbedBuilder:
                             value=f"[クリックして視聴]({availables[0].url})",
                             inline=False,
                         )
-                        embed.set_thumbnail(
-                            url=f"https://img.youtube.com/vi/{availables[0].raw_id}/maxresdefault.jpg"
-                        )
+                        embed.set_thumbnail(url=f"https://img.youtube.com/vi/{availables[0].raw_id}/maxresdefault.jpg")
                         if availables[0].note:
                             embed.add_field(
                                 name="備考",
@@ -170,9 +166,7 @@ class EmbedBuilder:
                         value=f"[クリックして視聴]({song.latest.url})",
                         inline=False,
                     )
-                    embed.set_thumbnail(
-                        url=f"https://img.youtube.com/vi/{song.latest.raw_id}/maxresdefault.jpg"
-                    )
+                    embed.set_thumbnail(url=f"https://img.youtube.com/vi/{song.latest.raw_id}/maxresdefault.jpg")
                 else:
                     embed.add_field(
                         name="視聴不可",
@@ -193,9 +187,7 @@ class EmbedBuilder:
                             value=f"[クリックして視聴]({availables[0].url})",
                             inline=False,
                         )
-                        embed.set_thumbnail(
-                            url=f"https://img.youtube.com/vi/{availables[0].raw_id}/maxresdefault.jpg"
-                        )
+                        embed.set_thumbnail(url=f"https://img.youtube.com/vi/{availables[0].raw_id}/maxresdefault.jpg")
                         if availables[0].note:
                             embed.add_field(
                                 name="備考",

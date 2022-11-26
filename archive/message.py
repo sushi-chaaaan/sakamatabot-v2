@@ -76,9 +76,7 @@ class Message_System(commands.Cog):
         # prepare for do confirm
         checker = Checker(self.bot)
         header = (
-            f"{channel.mention}へ次のメッセージを送信します。"
-            if not attachment
-            else f"{channel.mention}へ次のメッセージを送信します。\n添付ファイルの数は1件です。"
+            f"{channel.mention}へ次のメッセージを送信します。" if not attachment else f"{channel.mention}へ次のメッセージを送信します。\n添付ファイルの数は1件です。"
         )
 
         # do confirm

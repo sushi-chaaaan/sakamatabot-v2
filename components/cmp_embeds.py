@@ -14,12 +14,7 @@ class EmbedBuilder:
     def message_input_preview_embed(
         author: discord.User | discord.Member,
         command: bool,
-        target: discord.TextChannel
-        | discord.VoiceChannel
-        | discord.Thread
-        | discord.User
-        | discord.Member
-        | None = None,
+        target: discord.TextChannel | discord.VoiceChannel | discord.Thread | discord.User | discord.Member | None = None,
     ) -> discord.Embed:
         embed = discord.Embed(
             color=Color.default.value,
@@ -28,17 +23,13 @@ class EmbedBuilder:
             timestamp=datetime.now(JST()),
         )
         if command:
-            embed.set_footer(
-                text=f"Started by: {author}", icon_url=author.display_avatar.url
-            )
+            embed.set_footer(text=f"Started by: {author}", icon_url=author.display_avatar.url)
         if target:
             embed.add_field(name="送信先", value=target.mention)
         return embed
 
     @staticmethod
-    def inquiry_view_embed(
-        *, value: str, target: discord.User | discord.Member
-    ) -> discord.Embed:
+    def inquiry_view_embed(*, value: str, target: discord.User | discord.Member) -> discord.Embed:
         from tools.dt import dt_to_str
 
         embed = discord.Embed(

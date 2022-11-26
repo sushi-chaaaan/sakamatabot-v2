@@ -25,9 +25,7 @@ def user_embed(target: discord.Member | discord.User) -> discord.Embed:
         value=f"{TimeUtils.dt_to_str(target.created_at)}",
     )
     if isinstance(target, discord.Member):
-        joined = (
-            TimeUtils.dt_to_str(target.joined_at) if target.joined_at else "取得できませんでした"
-        )
+        joined = TimeUtils.dt_to_str(target.joined_at) if target.joined_at else "取得できませんでした"
         embed.add_field(
             name="サーバー参加日時",
             value=f"{joined}",
@@ -40,7 +38,5 @@ def user_embed(target: discord.Member | discord.User) -> discord.Embed:
             inline=False,
         )
     else:
-        embed.description = (
-            f"\N{Warning Sign}このサーバーにいないユーザーです。\n対象ユーザー: {target.mention}"
-        )
+        embed.description = f"\N{Warning Sign}このサーバーにいないユーザーです。\n対象ユーザー: {target.mention}"
     return embed

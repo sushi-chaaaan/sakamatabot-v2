@@ -27,9 +27,7 @@ class InquiryView(ui.View):
         emoji="\N{Pencil}",
         row=0,
     )
-    async def inquiry_button(
-        self, interaction: discord.Interaction, button: ui.Button
-    ) -> None:
+    async def inquiry_button(self, interaction: discord.Interaction, button: ui.Button) -> None:
 
         # get text
 
@@ -49,7 +47,5 @@ class InquiryView(ui.View):
         self.logger.error(
             f"Failed to send inquiry.\nPosted by:{interaction.user.mention}(ID: {interaction.user.id})\nException: {str(res.exception)}"
         )
-        await interaction.followup.send(
-            "お問い合わせの送信に失敗しました。\n管理者による対応をお待ちください。", ephemeral=True
-        )
+        await interaction.followup.send("お問い合わせの送信に失敗しました。\n管理者による対応をお待ちください。", ephemeral=True)
         return

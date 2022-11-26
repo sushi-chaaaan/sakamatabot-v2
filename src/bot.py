@@ -51,9 +51,7 @@ class Bot(commands.Bot):
         await self.setup_views()
 
     async def on_ready(self) -> None:
-        self.logger.info(
-            f"Logged in as {self.user} (ID: {self.user.id})"  # pyright: ignore
-        )
+        self.logger.info(f"Logged in as {self.user} (ID: {self.user.id})")  # pyright: ignore
         self.logger.info(f"Connected to {len(self.guilds)} guilds")  # pyright: ignore
         self.logger.info("Bot is ready")
         await self.send_boot_message()
@@ -135,9 +133,7 @@ class Bot(commands.Bot):
 
     @property
     def app_commands_sync_target(self) -> discord.Object | None:
-        return (
-            None if self.config.SyncGlobally else discord.Object(id=self.env.GUILD_ID)
-        )
+        return None if self.config.SyncGlobally else discord.Object(id=self.env.GUILD_ID)
 
     async def reload(self) -> bool:
         try:
@@ -175,9 +171,7 @@ class Bot(commands.Bot):
             if self.config.Mode == "debug":
                 self.logger.info("KeyboardInterrupt detected, shutting down...")
             else:
-                self.logger.exception(
-                    "KeyboardInterrupt Detected!!!, shutting down...", exc_info=e
-                )
+                self.logger.exception("KeyboardInterrupt Detected!!!, shutting down...", exc_info=e)
             asyncio.run(self.shutdown())
             return
 

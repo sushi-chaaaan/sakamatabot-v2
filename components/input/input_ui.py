@@ -9,9 +9,7 @@ class InputUI:
         self.view: ui.View
         self._embed: Embed
 
-        self.__stopped: asyncio.Future[
-            bool
-        ] = asyncio.get_running_loop().create_future()
+        self.__stopped: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
         pass
 
     @property

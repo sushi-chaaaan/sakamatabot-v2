@@ -12,9 +12,7 @@ class AppCommandTree(app_commands.CommandTree[discord.Client]):
         super().__init__(client, fallback_to_global=fallback_to_global)
         self.bot: "Bot" = client
 
-    async def on_error(
-        self, interaction: discord.Interaction, error: app_commands.AppCommandError, /
-    ) -> None:
+    async def on_error(self, interaction: discord.Interaction, error: app_commands.AppCommandError) -> None:
         if not interaction.response.is_done() and not interaction.is_expired():
             await interaction.response.defer(ephemeral=True)
 

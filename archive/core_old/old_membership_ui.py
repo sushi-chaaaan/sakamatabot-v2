@@ -73,14 +73,8 @@ class ConfirmView(View):
         return Message(
             embeds=embed_list,
             components=[
-                Button(self.ok_str)
-                .style(discord.ButtonStyle.green)
-                .disabled(self.status is not None)
-                .on_click(self.ok),
-                Button(self.ng_str)
-                .style(discord.ButtonStyle.red)
-                .disabled(self.status is not None)
-                .on_click(self.ng),
+                Button(self.ok_str).style(discord.ButtonStyle.green).disabled(self.status is not None).on_click(self.ok),
+                Button(self.ng_str).style(discord.ButtonStyle.red).disabled(self.status is not None).on_click(self.ng),
             ],
         )
 
@@ -134,9 +128,6 @@ class RemoveView(View):
                 .style(discord.ButtonStyle.link)
                 .disabled(self.status is not None)
                 .url(os.environ["MEMBERSHIP_SPREADSHEET"]),
-                Button(self.complete)
-                .style(discord.ButtonStyle.green)
-                .disabled(self.status is not None)
-                .on_click(self.done),
+                Button(self.complete).style(discord.ButtonStyle.green).disabled(self.status is not None).on_click(self.done),
             ],
         )

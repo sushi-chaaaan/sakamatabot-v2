@@ -97,9 +97,7 @@ class Thread(commands.Cog):
             msg = await thread.send(content="test message")
         except Exception as e:
             self.logger.exception(f"{thread.name} is not accessible", exc_info=e)
-            await interaction.followup.send(
-                content=f"{thread.mention}にアクセスできません。\n処理を停止します。"
-            )
+            await interaction.followup.send(content=f"{thread.mention}にアクセスできません。\n処理を停止します。")
             return
 
         # add members to thread
@@ -125,9 +123,7 @@ class Thread(commands.Cog):
     @app_commands.command(name="thread-board")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
-    @app_commands.describe(
-        category="スレッドツリーを作るカテゴリを指定してください。指定されなかった場合、自動的に実行したチャンネルのカテゴリが選択されます。"
-    )
+    @app_commands.describe(category="スレッドツリーを作るカテゴリを指定してください。指定されなかった場合、自動的に実行したチャンネルのカテゴリが選択されます。")
     @app_commands.rename(category="対象カテゴリ")
     async def thread_board(
         self,
@@ -146,17 +142,13 @@ class Thread(commands.Cog):
                 or not isinstance(interaction.channel, discord.abc.GuildChannel)
                 or not (_category := interaction.channel.category)
             ):
-                await interaction.followup.send(
-                    content="有効なカテゴリを認識できませんでした。", ephemeral=True
-                )
+                await interaction.followup.send(content="有効なカテゴリを認識できませんでした。", ephemeral=True)
                 return
             category = _category
 
         # get threads
         channels = sorted(category.channels, key=lambda channel: channel.position)
-        filtered_channels = [
-            ch for ch in channels if not isinstance(ch, discord.CategoryChannel)
-        ]
+        filtered_channels = [ch for ch in channels if not isinstance(ch, discord.CategoryChannel)]
 
         # parse threads
         board_text = "\n\n".join([self.parse_thread(ch) for ch in filtered_channels])
@@ -168,10 +160,7 @@ class Thread(commands.Cog):
 
     @staticmethod
     def parse_thread(
-        channel: discord.TextChannel
-        | discord.VoiceChannel
-        | discord.StageChannel
-        | discord.ForumChannel,
+        channel: discord.TextChannel | discord.VoiceChannel | discord.StageChannel | discord.ForumChannel,
     ) -> str:
         # チャンネルの型から、スレッドの有無を判断してparse
 
@@ -180,9 +169,7 @@ class Thread(commands.Cog):
             return channel.mention
 
         # スレッドが存在しないまたは、プライベートスレッドしかないテキストチャンネルもchannel.mentionを返す
-        if not channel.threads or not (
-            escaped_threads := [t for t in channel.threads if not t.is_private()]
-        ):
+        if not channel.threads or not (escaped_threads := [t for t in channel.threads if not t.is_private()]):
             return channel.mention
 
         # スレッドがある場合
@@ -193,10 +180,7 @@ class Thread(commands.Cog):
 
         # many threads
         else:
-            return (
-                "\n┣".join([f"{channel.mention}"] + [t.mention for t in threads[:-1]])
-                + f"\n┗{threads[-1].mention}"
-            )
+            return "\n┣".join([f"{channel.mention}"] + [t.mention for t in threads[:-1]]) + f"\n┗{threads[-1].mention}"
 
 
 async def setup(bot: "Bot"):

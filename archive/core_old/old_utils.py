@@ -54,9 +54,7 @@ class Utils_Command(commands.Cog):
         if member.default_avatar in avatars:
             avatar_url = member.default_avatar.url
         else:
-            avatar_url = member.display_avatar.replace(
-                size=1024, static_format="webp"
-            ).url
+            avatar_url = member.display_avatar.replace(size=1024, static_format="webp").url
         desc = desc + f"\n[Avatar url]({avatar_url})"
         deal = []
         if member.communication_disabled_until:

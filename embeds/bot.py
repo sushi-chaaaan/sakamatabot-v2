@@ -28,9 +28,7 @@ def boot_message_embed(bot: "Bot") -> discord.Embed:
     )
     embed.add_field(
         name="loaded app_commands",
-        value="\n".join(bot.synced_app_commands)
-        if bot.synced_app_commands
-        else "`None`",
+        value="\n".join(bot.synced_app_commands) if bot.synced_app_commands else "`None`",
         inline=False,
     )
     embed.add_field(

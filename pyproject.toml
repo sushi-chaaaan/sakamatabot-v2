@@ -29,16 +29,16 @@ flake8-isort = "^5.0.0"
 
 [tool.black]
 target-version = ["py310"]
-line-length = 88
+line-length = 125
 
 [tool.flake8]
-max-line-length = 88
+max-line-length = 125
 extend-exclude = [".venv", "archive", "src/core_old", "src/exts_old"]
 extend-ignore = ["E203", "W503"]
 
 [tool.isort]
 profile = "black"
-line_length = 88
+line_length = 125
 skip_gitignore = true
 
 [tool.mypy]

@@ -41,9 +41,7 @@ class TimeUtils:
         return cls.get_now(JST())
 
     @classmethod
-    def dt_to_str(
-        cls, datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S"
-    ) -> str:
+    def dt_to_str(cls, datetime: datetime = datetime.now(JST()), format: str = "%Y.%m.%d %H:%M:%S") -> str:
         """convert datetime object to string.
 
         Args:

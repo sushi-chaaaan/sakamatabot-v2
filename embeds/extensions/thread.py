@@ -17,9 +17,7 @@ def on_thread_create_embed(thread: discord.Thread) -> discord.Embed:
     if thread.parent:
         embed.add_field(name="Parent channel", value=thread.parent.mention)
     embed.add_field(name="Thread link", value=thread.mention)
-    embed.add_field(
-        name="Owner", value=thread.owner.mention if thread.owner else "Unknown"
-    )
+    embed.add_field(name="Owner", value=thread.owner.mention if thread.owner else "Unknown")
     visibility = "public" if not thread.is_private() else "private"
     embed.add_field(name="Visibility", value=visibility)
     if thread.created_at:

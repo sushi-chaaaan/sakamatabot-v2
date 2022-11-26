@@ -2,20 +2,28 @@ class AdminText:
     # APP COMMAND DESCRIPTIONS
     SHUTDOWN_DESCRIPTION = """Botをシャットダウンします。admin専用に制限してください。"""
     RELOAD_DESCRIPTION = """Botの機能を再読み込みします。admin専用に制限してください。"""
-    LOG_DESCRIPTION = """ログに関するコマンドです。admin専用に制限してください。"""
-    GET_TODAY_LOG_DESCRIPTION = """今日のログを取得します。admin専用に制限してください。"""
 
     # APP COMMAND MESSAGES
     SHUTDOWN_MESSAGE = """Botをシャットダウンしています..."""
     RELOAD_MESSAGE = """Botを再読み込みしています..."""
-    RELOAD_COMPLETE_MESSAGE = (
-        """Botを再読み込みしました。一部機能はこの機能で再読み込みできないため、Bot本体の再起動が必要な場合があります。"""
-    )
+    RELOAD_COMPLETE_MESSAGE = """Botを再読み込みしました。一部機能はこの機能で再読み込みできないため、Bot本体の再起動が必要な場合があります。"""
 
 
 class EntranceText:
-    JOIN_MESSAGE = """時刻: {joined}\n参加メンバー名: {name} (ID:{id})\nメンション: {mention}\nアカウント作成時刻: {created}\n現在のメンバー数:{count}"""
-    LEAVE_MESSAGE = """時刻: {left}\n退出メンバー名: {name} (ID:{id})\nメンション: {mention}\nアカウント作成時刻: {created}\n現在のメンバー数:{count}"""
+    JOIN_MESSAGE = """
+時刻: {joined}
+参加メンバー名: {name} (ID:{id})
+メンション: {mention}
+アカウント作成時刻: {created}
+現在のメンバー数:{count}
+"""
+    LEAVE_MESSAGE = """
+時刻: {left}
+退出メンバー名: {name} (ID:{id})
+メンション: {mention}
+アカウント作成時刻: {created}
+現在のメンバー数:{count}
+"""
 
 
 class HammerText:
@@ -42,6 +50,11 @@ class MemberCountText:
 
 class ModerationText:
     USER_DESCRIPTION = """ユーザー情報を照会します。ユーザー名やIDで指定できます。"""
+
+
+class LogText:
+    LOG_DESCRIPTION = """ログに関するコマンドです。admin専用に制限してください。"""
+    GET_TODAY_LOG_DESCRIPTION = """今日のログを取得します。admin専用に制限してください。"""
 
 
 class PollText:

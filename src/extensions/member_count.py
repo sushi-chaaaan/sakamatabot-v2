@@ -31,9 +31,7 @@ class MemberCounter(commands.Cog):
     async def refresh_count_task(self):
         if self.refresh_count_task.next_iteration:
             self.logger.info(
-                MemberCountText.TASK_SETUP_SUCCEED.format(
-                    time=TimeUtils.dt_to_str(self.refresh_count_task.next_iteration)
-                )
+                MemberCountText.TASK_SETUP_SUCCEED.format(time=TimeUtils.dt_to_str(self.refresh_count_task.next_iteration))
             )
         else:
             self.logger.info(MemberCountText.TASK_SETUP_FAILED)
@@ -57,19 +55,13 @@ class MemberCounter(commands.Cog):
     @app_commands.guild_only()
     async def refresh_count_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        self.logger.info(
-            command_log(name="refresh-member-count", author=interaction.user)
-        )
+        self.logger.info(command_log(name="refresh-member-count", author=interaction.user))
 
         # refresh member count
         refresh_succeed = await self.refresh_count()
 
         # command response
-        text = (
-            MemberCountText.REFRESH_SUCCEED
-            if refresh_succeed
-            else MemberCountText.REFRESH_FAILED
-        )
+        text = MemberCountText.REFRESH_SUCCEED if refresh_succeed else MemberCountText.REFRESH_FAILED
         await interaction.followup.send(text, ephemeral=True)
         return
 
@@ -78,14 +70,12 @@ class MemberCounter(commands.Cog):
         finder = Finder(self.bot)
         try:
             guild = await finder.find_guild(self.bot.env.GUILD_ID)
-        except Exception as e:
+        except Exception:
             return False
 
         # get channel
 
-        channel = await finder.find_channel(
-            self.bot.env.MEMBER_COUNT_CHANNEL_ID, guild=guild
-        )
+        channel = await finder.find_channel(self.bot.env.MEMBER_COUNT_CHANNEL_ID, guild=guild)
 
         # check channel
         if not isinstance(channel, discord.VoiceChannel):
@@ -96,9 +86,7 @@ class MemberCounter(commands.Cog):
         try:
             await channel.edit(
                 name=MemberCountText.MEMBER_COUNT_CHANNEL_NAME.format(
-                    count=guild.member_count
-                    if guild.member_count
-                    else len(guild.members)
+                    count=guild.member_count if guild.member_count else len(guild.members)
                 )
             )
         except Exception as e:
