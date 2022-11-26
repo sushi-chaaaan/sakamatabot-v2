@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: replace confirm_production_boot
         run: |
@@ -18,10 +18,10 @@ jobs:
           cat src/bot.before.py | sed -e 's/self.confirm_production_boot()/# self.confirm_production_boot()/' > src/bot.py
           diff src/bot.before.py src/bot.py
 
-      - name: Use Node 12
-        uses: actions/setup-node@v1
+      - name: Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: 16
 
       - name: Install Railway
         run: npm i -g @railway/cli
