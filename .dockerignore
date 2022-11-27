@@ -5,17 +5,15 @@
 .git
 .github
 **/.gitignore
-.pre-commit-config.yaml
-docker-compose.yaml
 .python-version
+.pre-commit-config.yaml
+.hadolint.yaml
+docker-compose.yaml
 poetry.lock
 pyproject.toml
-.hadolint.yaml
 
 # deprecated
 archive
-src/exts_old
-src/old*
 
 # docs
 README.md
