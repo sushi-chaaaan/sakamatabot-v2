@@ -57,8 +57,8 @@ class Thread(commands.Cog):
         """特定のロールを持つメンバーをスレッドに一括追加します。"""
         # defer and log
         await interaction.response.defer(thinking=True)
-        cmd_info = CommandInfo(author=interaction.user)
-        self.logger.info(command_log(name="add-role-to-thread", author=cmd_info.author))
+        cmd_info = CommandInfo(name="add-role-to-thread", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         # TODO: 認証
 

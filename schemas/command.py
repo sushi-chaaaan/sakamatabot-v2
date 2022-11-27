@@ -9,6 +9,7 @@ from .general import DiscordReason
 
 
 class CommandInfo(BaseModel):
+    name: str
     date: datetime = datetime.now(JST())
     reason: DiscordReason | None = None
 

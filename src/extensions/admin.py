@@ -27,7 +27,7 @@ class AdminCommand(commands.Cog):
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def shutdown(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        cmd_info = CommandInfo(author=interaction.user)
+        cmd_info = CommandInfo(name="shutdown", author=interaction.user)
         self.logger.info(command_log(name="shutdown", author=cmd_info.author))
 
         # TODO: Confirm message
@@ -42,8 +42,8 @@ class AdminCommand(commands.Cog):
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def reload(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        cmd_info = CommandInfo(author=interaction.user)
-        self.logger.info(command_log(name="reload", author=cmd_info.author))
+        cmd_info = CommandInfo(name="reload", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         # TODO: Confirm message
         await interaction.followup.send(AdminText.RELOAD_MESSAGE)

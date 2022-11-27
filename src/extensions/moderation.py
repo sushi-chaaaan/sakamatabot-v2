@@ -31,8 +31,8 @@ class Moderation(commands.Cog):
         target: discord.Member | discord.User,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(author=interaction.user)
-        self.logger.info(command_log(name="user", author=cmd_info.author))
+        cmd_info = CommandInfo(name="user", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         embed = user_embed(target)
         embed = attach_cmd_info(embed, cmd_info)

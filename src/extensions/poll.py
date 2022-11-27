@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands  # type: ignore
 
+from schemas.command import CommandInfo
 from text.extensions import PollText
 from type.color import Color
 from utils.io import read_json
@@ -22,9 +23,9 @@ class Poll(commands.Cog):
     @commands.command(name="poll")
     @commands.guild_only()
     async def poll(self, ctx: commands.Context, title: str, *select: str):
-        PollText.POLL_DESCRIPTION
         # log
-        self.logger.info(command_log(name="poll", author=ctx.author))
+        cmd_info = CommandInfo(name="poll", author=ctx.author)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         # too many options
         if (options := len(select)) > 20:

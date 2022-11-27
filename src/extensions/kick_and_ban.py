@@ -32,8 +32,8 @@ class KickAndBan(commands.Cog):
         reason: str | None = None,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.info(command_log(name="kick", author=cmd_info.author))
+        cmd_info = CommandInfo(name="kick", reason=reason, author=interaction.user)  # pyright: ignore
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         # TODO: 認証
         approved: bool = False
@@ -73,8 +73,8 @@ class KickAndBan(commands.Cog):
         reason: str | None = None,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.info(command_log(name="ban", author=cmd_info.author))
+        cmd_info = CommandInfo(name="ban", reason=reason, author=interaction.user)  # pyright: ignore
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
         delete_message_seconds: int = delete_message_days * 86400
 
         # TODO: 認証

@@ -185,7 +185,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py.git"
 reference = "master"
-resolved_reference = "324dfe016313961198f4d791fa1c255c72cb9448"
+resolved_reference = "4122bef8eeb0121c5f04fdd927e7e70b5301a2a7"
 
 [[package]]
 name = "dispander"

@@ -5,6 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
+from schemas.command import CommandInfo
 from text.extensions import MemberCountText
 from utils.finder import Finder
 from utils.logger import command_log
@@ -55,7 +56,8 @@ class MemberCounter(commands.Cog):
     @app_commands.guild_only()
     async def refresh_count_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
-        self.logger.info(command_log(name="refresh-member-count", author=interaction.user))
+        cmd_info = CommandInfo(name="refresh_member_count", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
         # refresh member count
         refresh_succeed = await self.refresh_count()
