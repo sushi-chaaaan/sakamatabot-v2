@@ -4,7 +4,7 @@ from discord import Interaction, Object, app_commands
 from discord.ext import commands
 from tools.logger import command_log, getMyLogger
 
-from old_bot import Bot
+from archive.old_bot import Bot
 
 
 class Reload(commands.Cog):
