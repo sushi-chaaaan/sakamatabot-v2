@@ -9,4 +9,5 @@ if __name__ == "__main__":
         bot = Bot()
         bot.run()
     except RestartInvoked:
-        os.execv(sys.executable, ["python"] + sys.argv)
+        sys.stdout.flush()
+        os.execv(__file__, sys.argv)
