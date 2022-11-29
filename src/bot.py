@@ -202,6 +202,12 @@ class Bot(commands.Bot):
         await self.close()
         sys.exit(0 if status else 1)
 
+    async def restart(self) -> None:
+        self.logger.info("Restarting...")
+        await self.close()
+        await asyncio.sleep(1.0)
+        self.run()
+
     def confirm_production_boot(self) -> None:
         if self.config.Environment == "production":
             ans: bool = CommandLineUtils.y_or_n("あなたはBotを本番環境で起動しようとしています。本当に続けますか？", default=False)

@@ -2,10 +2,12 @@ class AdminText:
     # APP COMMAND DESCRIPTIONS
     SHUTDOWN_DESCRIPTION = """Botをシャットダウンします。admin専用に制限してください。"""
     RELOAD_DESCRIPTION = """Botの機能を再読み込みします。admin専用に制限してください。"""
+    RESTART_DESCRIPTION = """Botを再起動します。admin専用に制限してください。"""
 
     # APP COMMAND MESSAGES
     SHUTDOWN_MESSAGE = """Botをシャットダウンしています..."""
     RELOAD_MESSAGE = """Botを再読み込みしています..."""
+    RESTART_MESSAGE = """Botを再起動しています..."""
     RELOAD_COMPLETE_MESSAGE = """Botを再読み込みしました。一部機能はこの機能で再読み込みできないため、Bot本体の再起動が必要な場合があります。"""
 
 

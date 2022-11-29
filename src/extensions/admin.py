@@ -51,6 +51,21 @@ class AdminCommand(commands.Cog):
         await interaction.followup.send(AdminText.RELOAD_COMPLETE_MESSAGE)
         return
 
+    @app_commands.command(name="restart", description=AdminText.RESTART_DESCRIPTION)
+    @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
+    @app_commands.guild_only()
+    @app_commands.checks.cooldown(1, 120, key=None)
+    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
+    async def restart(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        cmd_info = CommandInfo(name="restart", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+
+        # TODO: Confirm message
+        await interaction.followup.send(AdminText.RESTART_MESSAGE)
+        await self.bot.restart()
+        return
+
 
 async def setup(bot: "Bot"):
     await bot.add_cog(AdminCommand(bot))
