@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from components.ui.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
+from type.exception import RestartInvoked
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
@@ -206,7 +207,7 @@ class Bot(commands.Bot):
         self.logger.info("Restarting...")
         await self.close()
         await asyncio.sleep(1.0)
-        self.run()
+        raise RestartInvoked
 
     def confirm_production_boot(self) -> None:
         if self.config.Environment == "production":

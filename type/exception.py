@@ -1,0 +1,2 @@
+class RestartInvoked(Exception):
+    pass
