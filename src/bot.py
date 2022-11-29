@@ -191,27 +191,22 @@ class Bot(commands.Bot):
             self.logger.critical("SystemExit Detected!!!, shutting down...", exc_info=e)
             asyncio.run(self.shutdown(status=False))
             return
-        except RestartInvoked:
-            raise
 
     async def runner(self) -> None:
         async with self:
             await self.start(self.env.DISCORD_BOT_TOKEN.get_secret_value())
 
-    async def shutdown(self, status: bool = True, close: bool = True) -> None:
+    async def shutdown(self, status: bool = True) -> None:
         import sys
 
         self.logger.info("Shutting down...")
-
-        # DB系の終了処理はココ
-
         await self.close()
-        if close:
-            sys.exit(0 if status else 1)
+        sys.exit(0 if status else 1)
 
     async def restart(self) -> None:
         self.logger.info("Restarting...")
-        await self.shutdown(status=True, close=False)
+        await self.close()
+        await asyncio.sleep(1.0)
         raise RestartInvoked
 
     def confirm_production_boot(self) -> None:
