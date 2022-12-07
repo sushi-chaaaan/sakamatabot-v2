@@ -43,4 +43,12 @@ def boot_message_embed(bot: "Bot") -> discord.Embed:
         name="discord.py",
         value=f"{discord.__version__}",
     )
+    embed.add_field(
+        name="environment",
+        value=f"{bot.config.Environment}",
+    )
+    embed.add_field(
+        name="mode",
+        value=f"{bot.config.Mode}",
+    )
     return embed
