@@ -161,7 +161,7 @@ requests = "*"
 
 [[package]]
 name = "discord.py"
-version = "2.2.0a4646+ga098867a"
+version = "2.2.0a4650+g799e3c5b"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
