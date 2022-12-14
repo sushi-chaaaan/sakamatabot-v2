@@ -10,12 +10,13 @@ def report_user_embed(
         title="通報が届きました",
         color=Color.default.value,
     )
-    embed.set_author(
-        name=author.name,
-        icon_url=author.display_avatar.url,
+    embed.add_field(
+        name="通報したユーザー",
+        value=author.mention,
+        inline=False,
     )
     embed.add_field(
-        name="対象者",
+        name="通報されたユーザー",
         value=target.mention,
         inline=False,
     )
@@ -32,9 +33,15 @@ def report_message_embed(content: str, author: discord.User | discord.Member, ta
         title="通報が届きました",
         color=Color.default.value,
     )
-    embed.set_author(
-        name=author.name,
-        icon_url=author.display_avatar.url,
+    embed.add_field(
+        name="通報したユーザー",
+        value=author.mention,
+        inline=False,
+    )
+    embed.add_field(
+        name="通報されたユーザー",
+        value=target.author.mention,
+        inline=False,
     )
     embed.add_field(
         name="通報対象メッセージ(リンク切れの可能性あり)",
