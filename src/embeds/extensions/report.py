@@ -45,11 +45,11 @@ def report_message_embed(content: str, author: discord.User | discord.Member, ta
     )
     embed.add_field(
         name="通報対象メッセージ(リンク切れの可能性あり)",
-        value=f"[対象メッセージへ移動]({target.jump_url})]",
+        value=f"[対象メッセージへ移動]({target.jump_url})",
         inline=False,
     )
     embed.add_field(
-        name="転送済みメッセージ",
+        name="転送されたメッセージ",
         value="通報対象となったメッセージを転送しています...",
         inline=False,
     )

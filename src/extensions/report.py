@@ -118,7 +118,7 @@ class Report(commands.Cog):
 
         # この操作で発生するエラーは,mypyがdiscord.Embedの型をソース通りのtyping.Selfにしているために発生するので無視する
         edited_embed = message_report.embeds[0].copy()
-        edited_embed.set_field_at(1, name="通報対象となったメッセージ", value=f"[転送されたメッセージへ移動]({transferred.jump_url})")  # type: ignore
+        edited_embed.set_field_at(3, name="転送されたメッセージ", value=f"[転送されたメッセージへ移動]({transferred.jump_url})", inline=False)  # type: ignore
 
         await message_report.edit(embed=edited_embed)
 
