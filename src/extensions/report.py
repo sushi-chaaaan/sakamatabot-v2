@@ -36,31 +36,19 @@ class Report(commands.Cog):
 
     async def report_user_callback(self, interaction: discord.Interaction, user: discord.Member) -> None:
         modal = ReportUserModal(
-            custom_id="src.extensions.report.report_user_callback", call_back=self.submit_user_report_to_forum, target=user
+            custom_id="src.extensions.report.report_user_callback",
+            call_back=self.report_user_modal_callback,
+            target=user,
         )
         await interaction.response.send_modal(modal)
-
         cmd_info = CommandInfo(name="report_user", author=interaction.user)
         self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
         return
 
-    async def report_message_callback(self, interaction: discord.Interaction, message: discord.Message) -> None:
-        modal = ReportMessageModal(
-            custom_id="src.extensions.report.report_message_callback",
-            call_back=self.submit_message_report_to_forum,
-            target=message,
-        )
-        await interaction.response.send_modal(modal)
-
-        cmd_info = CommandInfo(name="report_message", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
-        return
-
-    async def submit_user_report_to_forum(
+    async def report_user_modal_callback(
         self, interaction: discord.Interaction, content: str, target: discord.User | discord.Member
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
-
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
 
@@ -81,14 +69,23 @@ class Report(commands.Cog):
 
         if not interaction.is_expired():
             await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
-
         return
 
-    async def submit_message_report_to_forum(
+    async def report_message_callback(self, interaction: discord.Interaction, message: discord.Message) -> None:
+        modal = ReportMessageModal(
+            custom_id="src.extensions.report.report_message_callback",
+            call_back=self.report_message_modal_callback,
+            target=message,
+        )
+        await interaction.response.send_modal(modal)
+        cmd_info = CommandInfo(name="report_message", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        return
+
+    async def report_message_modal_callback(
         self, interaction: discord.Interaction, content: str, target: discord.Message
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
-
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
 
@@ -124,7 +121,6 @@ class Report(commands.Cog):
 
         if not interaction.is_expired():
             await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
-
         return
 
     async def get_message_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
