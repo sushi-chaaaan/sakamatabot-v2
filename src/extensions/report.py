@@ -6,7 +6,7 @@ from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.components.extensions.report import ReportMessageModal, ReportUserModal
-from src.embeds.extensions.report import report_embed
+from src.embeds.extensions.report import report_message_embed, report_user_embed
 from utils.finder import Finder
 from utils.logger import command_log
 
@@ -36,7 +36,7 @@ class Report(commands.Cog):
 
     async def report_user_callback(self, interaction: discord.Interaction, user: discord.Member) -> None:
         modal = ReportUserModal(
-            custom_id="src.extensions.report.report_user_callback", call_back=self.submit_user_report_to_forum
+            custom_id="src.extensions.report.report_user_callback", call_back=self.submit_user_report_to_forum, target=user
         )
         await interaction.response.send_modal(modal)
 
@@ -46,7 +46,9 @@ class Report(commands.Cog):
 
     async def report_message_callback(self, interaction: discord.Interaction, message: discord.Message) -> None:
         modal = ReportMessageModal(
-            custom_id="src.extensions.report.report_message_callback", call_back=self.submit_message_report_to_forum
+            custom_id="src.extensions.report.report_message_callback",
+            call_back=self.submit_message_report_to_forum,
+            target=message,
         )
         await interaction.response.send_modal(modal)
 
@@ -54,7 +56,9 @@ class Report(commands.Cog):
         self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
         return
 
-    async def submit_user_report_to_forum(self, interaction: discord.Interaction, content: str) -> None:
+    async def submit_user_report_to_forum(
+        self, interaction: discord.Interaction, content: str, target: discord.User | discord.Member
+    ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
 
         finder = Finder(self.bot)
@@ -69,10 +73,10 @@ class Report(commands.Cog):
         await report_forum.create_thread(
             name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
             auto_archive_duration=10080,
-            allowed_mentions=discord.AllowedMentions.none(),
+            allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embed=report_embed(content, interaction.user),
+            embed=report_user_embed(content, interaction.user, target=target),
         )
 
         if not interaction.is_expired():
@@ -80,10 +84,10 @@ class Report(commands.Cog):
 
         return
 
-    async def submit_message_report_to_forum(self, interaction: discord.Interaction, content: str) -> None:
+    async def submit_message_report_to_forum(
+        self, interaction: discord.Interaction, content: str, target: discord.Message
+    ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
-
-        self.bot.logger.info("submit_message_report_to_forum")
 
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
@@ -94,16 +98,29 @@ class Report(commands.Cog):
 
         tags = await self.get_message_report_forum_tags(report_forum)
 
-        self.bot.logger.info("submit_message_report_to_forum: create_thread")
-
-        await report_forum.create_thread(
+        thread, message_report = await report_forum.create_thread(
             name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
             auto_archive_duration=10080,
             allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embed=report_embed(content, interaction.user),
+            embed=report_message_embed(content, interaction.user, target=target),
         )
+
+        await thread.send(content="通報対象となったメッセージの内容を転送しています...")
+        transferred = await thread.send(
+            content=target.content,
+            embeds=target.embeds,
+            stickers=target.stickers,
+            files=[await a.to_file() for a in target.attachments],
+            allowed_mentions=discord.AllowedMentions.none(),
+        )
+
+        # この操作で発生するエラーは,mypyがdiscord.Embedの型をソース通りのtyping.Selfにしているために発生するので無視する
+        edited_embed = message_report.embeds[0].copy()
+        edited_embed.set_field_at(1, name="通報対象となったメッセージ", value=f"[転送されたメッセージへ移動]({transferred.jump_url})")  # type: ignore
+
+        await message_report.edit(embed=edited_embed)
 
         if not interaction.is_expired():
             await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)

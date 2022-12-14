@@ -13,10 +13,8 @@ class ReportBaseModal(ui.Modal):
         title: str,
         timeout: float | None = None,
         custom_id: str,
-        call_back: Callable[[discord.Interaction, str], Coroutine[Any, Any, None] | None],
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
-        self.call_back = call_back
 
         # pyright: reportGeneralTypeIssues=false
         # あとから、report対象に合わせてlabelをセットする。
@@ -31,34 +29,44 @@ class ReportBaseModal(ui.Modal):
             row=0,
         )
 
-    async def on_submit(self, interaction: discord.Interaction, /) -> None:
-        await interaction.response.defer(ephemeral=True)
-        await call_any_func(self.call_back, interaction, self.input.value)
-
 
 class ReportUserModal(ReportBaseModal):
     def __init__(
         self,
         *,
+        target: discord.Member,
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        call_back: Callable[[discord.Interaction, str], Coroutine[Any, Any, None] | None],
+        call_back: Callable[[discord.Interaction, str, discord.Member | discord.User], Coroutine[Any, Any, None] | None],
     ) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id, call_back=call_back)
+        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
+        self.call_back = call_back
+        self.target = target
+
+    async def on_submit(self, interaction: discord.Interaction, /) -> None:
+        await interaction.response.defer(ephemeral=True)
+        await call_any_func(self.call_back, interaction, self.input.value, self.target)
 
 
 class ReportMessageModal(ReportBaseModal):
     def __init__(
         self,
         *,
+        target: discord.Message,
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        call_back: Callable[[discord.Interaction, str], Coroutine[Any, Any, None] | None],
+        call_back: Callable[[discord.Interaction, str, discord.Message], Coroutine[Any, Any, None] | None],
     ) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id, call_back=call_back)
+        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
+        self.call_back = call_back
+        self.target = target
+
+    async def on_submit(self, interaction: discord.Interaction, /) -> None:
+        await interaction.response.defer(ephemeral=True)
+        await call_any_func(self.call_back, interaction, self.input.value, self.target)
