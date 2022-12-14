@@ -3,6 +3,8 @@
 # General
 # environment variables: development or production
 Environment: development
+# mode: normal or maintenance or debug
+Mode: debug
 # command prefix
 CommandPrefix: //
 
@@ -14,5 +16,15 @@ SyncGlobally: false
 
 # Extensions
 Extensions:
+  - src.extensions.admin
+  - src.extensions.entrance
+  - src.extensions.error_catcher
+  - src.extensions.kick_and_ban
+  - src.extensions.member_count
   - src.extensions.moderation
+  - src.extensions.log
+  - src.extensions.poll
+  - src.extensions.report
+  - src.extensions.send
+  - src.extensions.thread
   - src.extensions.utils

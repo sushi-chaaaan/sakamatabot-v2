@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 
-from tools.dt import JST
-from tools.logger import command_log, getMyLogger
+from src.text.extensions import UtilsText
+from utils.logger import command_log
+from utils.time import JST
 
 if TYPE_CHECKING:
     from src.bot import Bot
@@ -18,9 +19,9 @@ class Utils(commands.Cog):
 
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
-    @app_commands.command(name="timestamp")
+    @app_commands.command(name="timestamp", description=UtilsText.TIMESTAMP_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     @app_commands.guild_only()
     @app_commands.describe(date="日付を入力してください。(例: 20220101→2021年1月1日)")
@@ -33,7 +34,7 @@ class Utils(commands.Cog):
         date: str = "20220101",
         time: str = "1200",
     ):
-        """日付をDiscordで使用できるタイムスタンプに変換します。"""
+        # TODO: EmbedとViewを使ったインタラクティブなやつ欲しくない？
         # defer and log
         await interaction.response.defer(ephemeral=True)
         self.logger.info(command_log(name="timestamp", author=interaction.user))
@@ -54,16 +55,16 @@ class Utils(commands.Cog):
         await interaction.followup.send(f"```{timestamp}```", ephemeral=True)
         return
 
-    @commands.hybrid_command(name="ping")
+    @commands.hybrid_command(name="ping", description=UtilsText.PING_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     async def ping(self, ctx: commands.Context):
-        """ping!pong!"""
         # defer and log
         await ctx.defer(ephemeral=True)
         self.logger.info(command_log(name="ping", author=ctx.author))
 
         await ctx.send(
-            content=f"pong!\nping is {self.bot.latency * 1000:.2f}ms", ephemeral=True
+            content=UtilsText.PING_RESPONSE.format(ping=round(self.bot.latency * 1000, 2)),
+            ephemeral=True,
         )
         return
 

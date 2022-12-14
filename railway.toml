@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile.multi-stage"
+
+[deploy]
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

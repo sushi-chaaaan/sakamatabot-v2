@@ -1,0 +1,38 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: replace confirm_production_boot
+        run: |
+          mv src/bot.py src/bot.before.py
+          cat src/bot.before.py | sed -E 's/self.confirm_production_boot()/# self.confirm_production_boot()/g' > src/bot.py
+          diff src/bot.before.py src/bot.py
+
+      - name: replace config file
+        run: |
+          mv config/config.yaml config/config.before.yaml
+          cat config/config.before.yaml | sed -E 's/Environment: development/Environment: production/g; s/Mode: debug/Mode: normal/g' > config/config.yaml
+          diff config/config.before.yaml config/config.yaml
+
+      - name: Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

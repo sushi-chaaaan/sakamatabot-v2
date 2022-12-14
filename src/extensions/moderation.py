@@ -3,55 +3,42 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from tools.logger import command_log, getMyLogger
-
-from .hammer import Hammer
+from src.embeds.command_info import attach_cmd_info
+from src.embeds.extensions.moderation import user_info_embed
+from src.text.extensions import ModerationText
+from utils.logger import command_log
 
 if TYPE_CHECKING:
     from src.bot import Bot
 
 
 class Moderation(commands.Cog):
-    def __init__(self, bot: "Bot") -> None:
+    # TODO: Timeout
+    def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = getMyLogger(__name__)
+        self.logger = self.bot.logger
 
-    @app_commands.command(name="kick")
+    @app_commands.command(name="user", description=ModerationText.USER_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
-    @app_commands.guild_only()
-    @app_commands.describe(target="kickするユーザーを選択してください。")
-    @app_commands.rename(target="kickするユーザー")
-    @app_commands.rename(reason="理由")
-    async def kick(
+    @app_commands.describe(target="照会するユーザーを選択してください。(IDの貼り付けもできます)")
+    @app_commands.rename(target="ユーザー")
+    async def user(
         self,
         interaction: discord.Interaction,
-        target: discord.Member,
-        reason: str | None = None,
+        target: discord.Member | discord.User,
     ):
         await interaction.response.defer()
-        cmd_info = CommandInfo(reason=reason, author=interaction.user)
-        self.logger.info(command_log(name="kick", author=cmd_info.author))
+        cmd_info = CommandInfo(name="user", author=interaction.user)
+        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
-        if not interaction.guild:
-            # TODO: ここでエラーを返す
-            self.logger.info("Guild not found.")
-            return
-
-        # TODO: 認証
-        approved: bool = False
-
-        if approved:
-            hammer = Hammer(cmd_info)
-            hammer.set_target_id(target.id)
-            await hammer.kick_from_guild(guild=interaction.guild)
-            return
-
-        else:
-            return
+        embed = user_info_embed(target)
+        embed = attach_cmd_info(embed, cmd_info)
+        await interaction.followup.send(embeds=[embed])
+        return
 
 
-async def setup(bot: "Bot") -> None:
+async def setup(bot: "Bot"):
     await bot.add_cog(Moderation(bot))

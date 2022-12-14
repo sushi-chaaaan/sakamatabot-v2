@@ -3,16 +3,19 @@ from datetime import datetime
 from discord import Member, User
 from pydantic import BaseModel
 
-from tools.dt import JST
+from utils.time import JST
 
 from .general import DiscordReason
 
 
 class CommandInfo(BaseModel):
+    name: str
     date: datetime = datetime.now(JST())
     reason: DiscordReason | None = None
 
-    author: User | Member  # types inside author are not checked by pydantic
+    author: User | Member
+    """[:class:`User | Member`]: types inside author are not checked by pydantic.
+    """
 
     class Config:
         case_sensitive = True

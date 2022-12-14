@@ -1,0 +1,20 @@
+# dev tools
+.mypy_cache
+.vscode
+.venv
+.git
+.github
+**/.gitignore
+.python-version
+.pre-commit-config.yaml
+.hadolint.yaml
+docker-compose.yaml
+poetry.lock
+pyproject.toml
+
+# deprecated
+archive
+
+# docs
+README.md
+LICENSE
