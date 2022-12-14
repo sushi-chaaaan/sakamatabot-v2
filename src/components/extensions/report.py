@@ -33,40 +33,40 @@ class ReportBaseModal(ui.Modal):
 class ReportUserModal(ReportBaseModal):
     def __init__(
         self,
+        target: discord.Member | discord.User,
         *,
-        target: discord.Member,
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        call_back: Callable[[discord.Interaction, str, discord.Member | discord.User], Coroutine[Any, Any, None] | None],
+        callback_func: Callable[[discord.Interaction, discord.Member | discord.User, str], Coroutine[Any, Any, None] | None],
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
-        self.call_back = call_back
+        self.callback_func = callback_func
         self.target = target
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
         await interaction.response.defer(ephemeral=True)
-        await call_any_func(self.call_back, interaction, self.input.value, self.target)
+        await call_any_func(self.callback_func, interaction, self.input.value, self.target)
 
 
 class ReportMessageModal(ReportBaseModal):
     def __init__(
         self,
-        *,
         target: discord.Message,
+        *,
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        call_back: Callable[[discord.Interaction, str, discord.Message], Coroutine[Any, Any, None] | None],
+        callback_func: Callable[[discord.Interaction, discord.Message, str], Coroutine[Any, Any, None] | None],
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
-        self.call_back = call_back
+        self.callback_func = callback_func
         self.target = target
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
         await interaction.response.defer(ephemeral=True)
-        await call_any_func(self.call_back, interaction, self.input.value, self.target)
+        await call_any_func(self.callback_func, interaction, self.input.value, self.target)

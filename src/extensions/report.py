@@ -34,12 +34,18 @@ class Report(commands.Cog):
         )
         self.bot.tree.add_command(self.ctx_report_user)
         self.bot.tree.add_command(self.ctx_report_message)
+        self.allowed_mentions = discord.AllowedMentions(
+            everyone=False,
+            users=False,
+            roles=[discord.Object(self.bot.env.ADMIN_ROLE_ID)],
+            replied_user=False,
+        )
 
     async def report_user_callback(self, interaction: discord.Interaction, user: discord.Member) -> None:
         modal = ReportUserModal(
+            user,
             custom_id="src.extensions.report.report_user_callback",
-            call_back=self.report_user_modal_callback,
-            target=user,
+            callback_func=self.report_user_modal_callback,
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_user", author=interaction.user)
@@ -47,7 +53,10 @@ class Report(commands.Cog):
         return
 
     async def report_user_modal_callback(
-        self, interaction: discord.Interaction, content: str, target: discord.User | discord.Member
+        self,
+        interaction: discord.Interaction,
+        target: discord.User | discord.Member,
+        content: str,
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
         finder = Finder(self.bot)
@@ -57,13 +66,13 @@ class Report(commands.Cog):
             self.logger.exception("Report forum is not a ForumChannel")
             return
 
-        tags = await self.get_user_report_forum_tags(report_forum)
+        tags = self.get_user_report_forum_tags(report_forum)
 
         user_info = user_info_embed(target)
         await report_forum.create_thread(
             name=f"通報 by {interaction.user.name}",
             auto_archive_duration=10080,
-            allowed_mentions=discord.AllowedMentions.all(),
+            allowed_mentions=self.allowed_mentions,
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
             embeds=[report_user_embed(content, interaction.user, target=target), user_info],
@@ -75,9 +84,9 @@ class Report(commands.Cog):
 
     async def report_message_callback(self, interaction: discord.Interaction, message: discord.Message) -> None:
         modal = ReportMessageModal(
+            message,
             custom_id="src.extensions.report.report_message_callback",
-            call_back=self.report_message_modal_callback,
-            target=message,
+            callback_func=self.report_message_modal_callback,
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_message", author=interaction.user)
@@ -85,7 +94,10 @@ class Report(commands.Cog):
         return
 
     async def report_message_modal_callback(
-        self, interaction: discord.Interaction, content: str, target: discord.Message
+        self,
+        interaction: discord.Interaction,
+        target: discord.Message,
+        content: str,
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
         finder = Finder(self.bot)
@@ -95,13 +107,13 @@ class Report(commands.Cog):
             self.logger.exception("Report forum is not a ForumChannel")
             return
 
-        tags = await self.get_message_report_forum_tags(report_forum)
+        tags = self.get_message_report_forum_tags(report_forum)
 
         user_info = user_info_embed(target.author)
         thread, message_report = await report_forum.create_thread(
             name=f"通報 by {interaction.user.name}",
             auto_archive_duration=10080,
-            allowed_mentions=discord.AllowedMentions.all(),
+            allowed_mentions=self.allowed_mentions,
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
             embeds=[report_message_embed(content, interaction.user, target=target), user_info],
@@ -131,15 +143,16 @@ class Report(commands.Cog):
             await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
         return
 
-    async def get_message_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
+    def get_message_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
         undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID)
         message_report_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_MESSAGE_REPORT_TAG_ID)
 
         return [t for t in [undone_tag, message_report_tag] if t is not None]
 
-    async def get_user_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
+    def get_user_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
         undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID)
         user_report_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_USER_REPORT_TAG_ID)
+
         return [t for t in [undone_tag, user_report_tag] if t is not None]
 
 
