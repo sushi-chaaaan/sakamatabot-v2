@@ -5,9 +5,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from embeds.command_info import attach_cmd_info
-from embeds.extensions.moderation import user_embed
 from schemas.command import CommandInfo
+from src.embeds.command_info import attach_cmd_info
+from src.embeds.extensions.moderation import user_embed
 from text.extensions import ModerationText
 from utils.logger import command_log
 

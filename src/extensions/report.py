@@ -5,8 +5,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from components.extensions.report import ReportMessageModal, ReportUserModal
 from schemas.command import CommandInfo
+from src.components.extensions.report import ReportMessageModal, ReportUserModal
 from utils.logger import command_log
 
 if TYPE_CHECKING:

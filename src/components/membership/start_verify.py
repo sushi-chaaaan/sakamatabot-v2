@@ -1,7 +1,7 @@
 import discord
 from discord import Interaction, ui
 
-from components.ui.base import BaseView
+from src.components.ui.base import BaseView
 
 from .mem_embeds import Embeds
 
