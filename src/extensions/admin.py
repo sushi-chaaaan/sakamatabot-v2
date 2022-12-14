@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from text.extensions import AdminText
+from src.text.extensions import AdminText
 from utils.logger import command_log
 
 if TYPE_CHECKING:

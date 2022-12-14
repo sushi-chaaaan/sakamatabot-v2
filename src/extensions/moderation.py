@@ -8,7 +8,7 @@ from discord.ext import commands  # type: ignore
 from schemas.command import CommandInfo
 from src.embeds.command_info import attach_cmd_info
 from src.embeds.extensions.moderation import user_embed
-from text.extensions import ModerationText
+from src.text.extensions import ModerationText
 from utils.logger import command_log
 
 if TYPE_CHECKING:

@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from text.extensions import PollText
+from src.text.extensions import PollText
 from type.color import Color
 from utils.io import read_json
 from utils.logger import command_log

@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands  # type: ignore
 
-from text.extensions import EntranceText
+from src.text.extensions import EntranceText
 from utils.finder import Finder
 from utils.time import TimeUtils
 

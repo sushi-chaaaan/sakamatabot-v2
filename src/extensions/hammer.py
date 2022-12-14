@@ -1,7 +1,7 @@
 import discord
 
 from schemas.command import CommandInfo
-from text.extensions import HammerText
+from src.text.extensions import HammerText
 from utils.logger import getMyLogger
 
 

@@ -6,7 +6,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from text.extensions import UtilsText
+from src.text.extensions import UtilsText
 from utils.logger import command_log
 from utils.time import JST
 

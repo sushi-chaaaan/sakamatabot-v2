@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands, tasks  # type: ignore
 
 from schemas.command import CommandInfo
-from text.extensions import MemberCountText
+from src.text.extensions import MemberCountText
 from utils.finder import Finder
 from utils.logger import command_log
 from utils.time import TimeUtils
