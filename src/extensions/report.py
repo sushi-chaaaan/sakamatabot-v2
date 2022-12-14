@@ -61,7 +61,7 @@ class Report(commands.Cog):
 
         user_info = user_info_embed(target)
         await report_forum.create_thread(
-            name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
+            name=f"通報 by {interaction.user.name}",
             auto_archive_duration=10080,
             allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
