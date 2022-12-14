@@ -6,7 +6,6 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from utils.logger import command_log
 
 from .hammer import Hammer
 
@@ -33,7 +32,7 @@ class KickAndBan(commands.Cog):
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="kick", reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: 認証
         approved: bool = False
@@ -74,7 +73,7 @@ class KickAndBan(commands.Cog):
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="ban", reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         delete_message_seconds: int = delete_message_days * 86400
 
         # TODO: 認証

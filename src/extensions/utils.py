@@ -7,7 +7,6 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from src.text.extensions import UtilsText
-from utils.logger import command_log
 from utils.time import JST
 
 if TYPE_CHECKING:
@@ -37,7 +36,7 @@ class Utils(commands.Cog):
         # TODO: EmbedとViewを使ったインタラクティブなやつ欲しくない？
         # defer and log
         await interaction.response.defer(ephemeral=True)
-        self.logger.info(command_log(name="timestamp", author=interaction.user))
+        self.logger.command_log(name="timestamp", author=interaction.user)
 
         # get date
         _date = datetime.strptime(date, "%Y%m%d")
@@ -60,7 +59,7 @@ class Utils(commands.Cog):
     async def ping(self, ctx: commands.Context):
         # defer and log
         await ctx.defer(ephemeral=True)
-        self.logger.info(command_log(name="ping", author=ctx.author))
+        self.logger.command_log(name="ping", author=ctx.author)
 
         await ctx.send(
             content=UtilsText.PING_RESPONSE.format(ping=round(self.bot.latency * 1000, 2)),

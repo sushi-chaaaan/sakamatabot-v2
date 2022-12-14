@@ -6,7 +6,6 @@ from discord import app_commands
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -37,7 +36,7 @@ class Sender(commands.GroupCog, group_name="send"):  # type: ignore
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="send dm", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         attachments: list[discord.Attachment] | None = self.gather_attachment(
             attachment_1,
@@ -64,7 +63,7 @@ class Sender(commands.GroupCog, group_name="send"):  # type: ignore
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="send channel", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         attachments: list[discord.Attachment] | None = self.gather_attachment(
             attachment_1,
