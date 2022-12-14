@@ -24,6 +24,7 @@ Extensions:
   - src.extensions.moderation
   - src.extensions.log
   - src.extensions.poll
+  - src.extensions.report
   - src.extensions.send
   - src.extensions.thread
   - src.extensions.utils
