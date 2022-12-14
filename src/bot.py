@@ -160,7 +160,7 @@ class Bot(commands.Bot):
             return True
 
     async def send_boot_message(self):
-        from embeds.bot import boot_message_embed
+        from src.embeds.bot import boot_message_embed
         from utils.finder import Finder
 
         embed = boot_message_embed(self)
