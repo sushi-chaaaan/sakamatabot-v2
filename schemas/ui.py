@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from components.input.input_ui import InputUIEmbed, InputUIView
+from src.components.input.input_ui import InputUIEmbed, InputUIView
 
 from .general import PyStylePath
 
