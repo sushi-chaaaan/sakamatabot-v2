@@ -1,4 +1,3 @@
-import os
 from typing import TYPE_CHECKING
 
 import discord
@@ -43,6 +42,7 @@ class Report(commands.Cog):
 
         cmd_info = CommandInfo(name="report_user", author=interaction.user)
         self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        return
 
     async def report_message_callback(self, interaction: discord.Interaction, message: discord.Message) -> None:
         modal = ReportMessageModal(
@@ -52,6 +52,7 @@ class Report(commands.Cog):
 
         cmd_info = CommandInfo(name="report_message", author=interaction.user)
         self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        return
 
     async def submit_user_report_to_forum(self, interaction: discord.Interaction, content: str) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
@@ -63,22 +64,26 @@ class Report(commands.Cog):
             self.logger.exception("Report forum is not a ForumChannel")
             return
 
+        tags = await self.get_user_report_forum_tags(report_forum)
+
         await report_forum.create_thread(
             name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
             auto_archive_duration=10080,
             allowed_mentions=discord.AllowedMentions.none(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
-            applied_tags=await self.get_user_report_forum_tags(report_forum),
+            applied_tags=tags,
             embed=report_embed(content, interaction.user),
         )
 
         if not interaction.is_expired():
-            await interaction.followup.send("通報を受け付けました。今しばらく対応をお待ちください。", ephemeral=True)
+            await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
 
         return
 
     async def submit_message_report_to_forum(self, interaction: discord.Interaction, content: str) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
+
+        self.bot.logger.info("submit_message_report_to_forum")
 
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
@@ -87,52 +92,34 @@ class Report(commands.Cog):
             self.logger.exception("Report forum is not a ForumChannel")
             return
 
+        tags = await self.get_message_report_forum_tags(report_forum)
+
+        self.bot.logger.info("submit_message_report_to_forum: create_thread")
+
         await report_forum.create_thread(
             name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
             auto_archive_duration=10080,
-            allowed_mentions=discord.AllowedMentions.none(),
+            allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
-            applied_tags=await self.get_message_report_forum_tags(report_forum),
+            applied_tags=tags,
             embed=report_embed(content, interaction.user),
         )
 
         if not interaction.is_expired():
-            await interaction.followup.send("通報を受け付けました。今しばらく対応をお待ちください。", ephemeral=True)
+            await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
 
         return
 
     async def get_message_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
-        undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID) or await self.create_undone_tag(
-            forum_channel
-        )
-        message_report_tag = forum_channel.get_tag(
-            self.bot.env.REPORT_FORUM_MESSAGE_REPORT_TAG_ID
-        ) or await self.create_message_report_tag(forum_channel)
-        return [undone_tag, message_report_tag]
+        undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID)
+        message_report_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_MESSAGE_REPORT_TAG_ID)
+
+        return [t for t in [undone_tag, message_report_tag] if t is not None]
 
     async def get_user_report_forum_tags(self, forum_channel: discord.ForumChannel) -> list[discord.ForumTag]:
-        undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID) or await self.create_undone_tag(
-            forum_channel
-        )
-        user_report_tag = forum_channel.get_tag(
-            self.bot.env.REPORT_FORUM_USER_REPORT_TAG_ID
-        ) or await self.create_user_report_tag(forum_channel)
-        return [undone_tag, user_report_tag]
-
-    async def create_undone_tag(self, forum_channel: discord.ForumChannel):
-        tag = await forum_channel.create_tag(name="未対応", emoji=discord.PartialEmoji(name="U+26A0"))
-        self.logger.info(f"Created tag: {tag.name}, {tag.id}")
-        return tag
-
-    async def create_message_report_tag(self, forum_channel: discord.ForumChannel):
-        tag = await forum_channel.create_tag(name="メッセージ", emoji=discord.PartialEmoji(name="U+1F4AC"))
-        self.logger.info(f"Created tag: {tag.name}, {tag.id}")
-        return tag
-
-    async def create_user_report_tag(self, forum_channel: discord.ForumChannel):
-        tag = await forum_channel.create_tag(name="ユーザー", emoji=discord.PartialEmoji(name="U+1F9D1"))
-        self.logger.info(f"Created tag: {tag.name}, {tag.id}")
-        return tag
+        undone_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_UNDONE_TAG_ID)
+        user_report_tag = forum_channel.get_tag(self.bot.env.REPORT_FORUM_USER_REPORT_TAG_ID)
+        return [t for t in [undone_tag, user_report_tag] if t is not None]
 
 
 async def setup(bot: "Bot"):
