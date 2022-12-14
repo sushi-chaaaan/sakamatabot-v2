@@ -120,7 +120,7 @@ class Report(commands.Cog):
         edited_embed = message_report.embeds[0].copy()
         edited_embed.set_field_at(3, name="転送されたメッセージ", value=f"[転送されたメッセージへ移動]({transferred.jump_url})", inline=False)  # type: ignore
 
-        await message_report.edit(embed=edited_embed)
+        await message_report.edit(embeds=[edited_embed, message_report.embeds[1].copy()])
 
         if not interaction.is_expired():
             await interaction.followup.send("通報を受け付けました。\n今しばらく対応をお待ちください。", ephemeral=True)
