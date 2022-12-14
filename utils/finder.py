@@ -2,7 +2,7 @@ import os
 
 import discord
 
-from text.error import ErrorText
+from src.text.error import ErrorText
 
 from .logger import getMyLogger
 
