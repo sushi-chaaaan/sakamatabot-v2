@@ -47,6 +47,7 @@ class ReportUserModal(ReportBaseModal):
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id, call_back=call_back)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
+        self.add_item(self.input)
 
 
 class ReportMessageModal(ReportBaseModal):
@@ -60,3 +61,4 @@ class ReportMessageModal(ReportBaseModal):
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id, call_back=call_back)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
+        self.add_item(self.input)
