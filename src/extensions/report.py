@@ -9,7 +9,6 @@ from src.components.extensions.report import ReportMessageModal, ReportUserModal
 from src.embeds.extensions.moderation import user_info_embed
 from src.embeds.extensions.report import report_message_embed, report_user_embed
 from utils.finder import Finder
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -18,6 +17,7 @@ if TYPE_CHECKING:
     pass
 
 
+# TODO: メソッドの細かい切り出し
 class Report(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
@@ -49,7 +49,7 @@ class Report(commands.Cog):
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_user", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         return
 
     async def report_user_modal_callback(
@@ -90,7 +90,7 @@ class Report(commands.Cog):
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_message", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         return
 
     async def report_message_modal_callback(

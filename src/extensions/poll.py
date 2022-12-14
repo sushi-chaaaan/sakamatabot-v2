@@ -7,7 +7,6 @@ from schemas.command import CommandInfo
 from src.text.extensions import PollText
 from type.color import Color
 from utils.io import read_json
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     from src.bot import Bot
@@ -25,7 +24,7 @@ class Poll(commands.Cog):
     async def poll(self, ctx: commands.Context, title: str, *select: str):
         # log
         cmd_info = CommandInfo(name="poll", author=ctx.author)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # too many options
         if (options := len(select)) > 20:

@@ -7,9 +7,20 @@ from discord.utils import _ColourFormatter
 from discord_handler import DiscordHandler
 
 
-def getMyLogger(name: str) -> logging.Logger:  # name: __name__
+class MyLogger(logging.Logger):
+    def __init__(self, name: str):
+        super().__init__(name)
 
+    def command_log(self, name: str, author: discord.Member | discord.User, *args, **kwargs) -> None:
+        msg = "{} [ID: {}] used {} command".format(str(author), author.id, name)
+
+        if self.isEnabledFor(logging.INFO):
+            self._log(logging.INFO, msg, args, **kwargs)
+
+
+def getMyLogger(name: str) -> MyLogger:  # name: __name__
     # get logger and handler
+    logging.setLoggerClass(MyLogger)
     logger = logging.getLogger(name)
     streamHandler = logging.StreamHandler()
     # debug_file_handler = logging.handlers.RotatingFileHandler(
@@ -50,8 +61,5 @@ def getMyLogger(name: str) -> logging.Logger:  # name: __name__
         logger.addHandler(streamHandler)
         logger.addHandler(file_handler)
         logger.addHandler(discord_handler)
-    return logger
-
-
-def command_log(*, name: str, author: discord.Member | discord.User) -> str:
-    return "{} [ID: {}] used {} command".format(str(author), author.id, name)
+    # logging.setLoggerClass(MyLogger)しているので問題ない
+    return logger  # type: ignore

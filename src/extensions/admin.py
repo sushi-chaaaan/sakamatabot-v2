@@ -7,7 +7,6 @@ from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.text.extensions import AdminText
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -28,7 +27,7 @@ class AdminCommand(commands.Cog):
     async def shutdown(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="shutdown", author=interaction.user)
-        self.logger.info(command_log(name="shutdown", author=cmd_info.author))
+        self.logger.command_log(name="shutdown", author=cmd_info.author)
 
         # TODO: Confirm message
         await interaction.followup.send(AdminText.SHUTDOWN_MESSAGE)
@@ -43,7 +42,7 @@ class AdminCommand(commands.Cog):
     async def reload(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="reload", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: Confirm message
         await interaction.followup.send(AdminText.RELOAD_MESSAGE)

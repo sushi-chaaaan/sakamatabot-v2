@@ -7,7 +7,6 @@ from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.text.extensions import LogText
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -27,7 +26,7 @@ class Log(commands.GroupCog, group_name="log", group_description=LogText.LOG_DES
     async def get_today_log(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="log today", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         with open("./log/src.bot.log", "rb") as fp:
             log_file = discord.File(fp, filename="src.bot.log")

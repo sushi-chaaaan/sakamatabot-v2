@@ -9,7 +9,6 @@ from schemas.command import CommandInfo
 from src.embeds.command_info import attach_cmd_info
 from src.embeds.extensions.moderation import user_info_embed
 from src.text.extensions import ModerationText
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     from src.bot import Bot
@@ -32,7 +31,7 @@ class Moderation(commands.Cog):
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="user", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         embed = user_info_embed(target)
         embed = attach_cmd_info(embed, cmd_info)

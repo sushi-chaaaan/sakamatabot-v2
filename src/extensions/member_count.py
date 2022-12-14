@@ -8,7 +8,6 @@ from discord.ext import commands, tasks  # type: ignore
 from schemas.command import CommandInfo
 from src.text.extensions import MemberCountText
 from utils.finder import Finder
-from utils.logger import command_log
 from utils.time import TimeUtils
 
 if TYPE_CHECKING:
@@ -57,7 +56,7 @@ class MemberCounter(commands.Cog):
     async def refresh_count_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         cmd_info = CommandInfo(name="refresh_member_count", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # refresh member count
         refresh_succeed = await self.refresh_count()

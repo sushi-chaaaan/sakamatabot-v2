@@ -10,7 +10,6 @@ from schemas.command import CommandInfo
 from src.components.escape import EscapeWithCodeBlock
 from src.embeds.extensions.thread import on_thread_create_embed
 from utils.finder import Finder
-from utils.logger import command_log
 
 if TYPE_CHECKING:
     # import some original class
@@ -58,7 +57,7 @@ class Thread(commands.Cog):
         # defer and log
         await interaction.response.defer(thinking=True)
         cmd_info = CommandInfo(name="add-role-to-thread", author=interaction.user)
-        self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: 認証
 
@@ -133,7 +132,7 @@ class Thread(commands.Cog):
         """特定カテゴリ内のスレッドとチャンネルの一覧を作成します。"""
         # defer and log
         await interaction.response.defer(ephemeral=True)
-        self.logger.info(command_log(name="thread-board", author=interaction.user))
+        self.logger.command_log(name="thread-board", author=interaction.user)
 
         # get category
         if not category:
