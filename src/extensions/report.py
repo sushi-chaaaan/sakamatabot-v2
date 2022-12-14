@@ -6,6 +6,7 @@ from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.components.extensions.report import ReportMessageModal, ReportUserModal
+from src.embeds.extensions.moderation import user_info_embed
 from src.embeds.extensions.report import report_message_embed, report_user_embed
 from utils.finder import Finder
 from utils.logger import command_log
@@ -58,13 +59,14 @@ class Report(commands.Cog):
 
         tags = await self.get_user_report_forum_tags(report_forum)
 
+        user_info = user_info_embed(target)
         await report_forum.create_thread(
             name=f"通報: {interaction.user.name}#{interaction.user.discriminator}",
             auto_archive_duration=10080,
             allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embed=report_user_embed(content, interaction.user, target=target),
+            embeds=[report_user_embed(content, interaction.user, target=target), user_info],
         )
 
         if not interaction.is_expired():
@@ -95,13 +97,14 @@ class Report(commands.Cog):
 
         tags = await self.get_message_report_forum_tags(report_forum)
 
+        user_info = user_info_embed(target.author)
         thread, message_report = await report_forum.create_thread(
             name=f"通報 by {interaction.user.name}",
             auto_archive_duration=10080,
             allowed_mentions=discord.AllowedMentions.all(),
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embed=report_message_embed(content, interaction.user, target=target),
+            embeds=[report_message_embed(content, interaction.user, target=target), user_info],
         )
 
         await thread.send(content="通報対象となったメッセージの内容を転送しています...")

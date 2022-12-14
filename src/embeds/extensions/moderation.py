@@ -4,7 +4,7 @@ from type.color import Color
 from utils.time import TimeUtils
 
 
-def user_embed(target: discord.Member | discord.User) -> discord.Embed:
+def user_info_embed(target: discord.Member | discord.User) -> discord.Embed:
     avatar_url = (
         target.default_avatar.url
         if target.default_avatar == target.display_avatar

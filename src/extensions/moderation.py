@@ -7,7 +7,7 @@ from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
 from src.embeds.command_info import attach_cmd_info
-from src.embeds.extensions.moderation import user_embed
+from src.embeds.extensions.moderation import user_info_embed
 from src.text.extensions import ModerationText
 from utils.logger import command_log
 
@@ -34,7 +34,7 @@ class Moderation(commands.Cog):
         cmd_info = CommandInfo(name="user", author=interaction.user)
         self.logger.info(command_log(name=cmd_info.name, author=cmd_info.author))
 
-        embed = user_embed(target)
+        embed = user_info_embed(target)
         embed = attach_cmd_info(embed, cmd_info)
         await interaction.followup.send(embeds=[embed])
         return
