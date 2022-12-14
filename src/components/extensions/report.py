@@ -49,6 +49,10 @@ class ReportUserModal(ReportBaseModal):
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
 
+    async def on_submit(self, interaction: discord.Interaction, /) -> None:
+        await interaction.response.defer(ephemeral=True)
+        await call_any_func(self.call_back, interaction, self.input.value)
+
 
 class ReportMessageModal(ReportBaseModal):
     def __init__(
@@ -62,3 +66,7 @@ class ReportMessageModal(ReportBaseModal):
         super().__init__(title=title, timeout=timeout, custom_id=custom_id, call_back=call_back)
         self.input.label = "通報の理由について教えてください。(最大1800文字)"
         self.add_item(self.input)
+
+    async def on_submit(self, interaction: discord.Interaction, /) -> None:
+        await interaction.response.defer(ephemeral=True)
+        await call_any_func(self.call_back, interaction, self.input.value)
