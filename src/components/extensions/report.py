@@ -29,6 +29,17 @@ class ReportBaseModal(ui.Modal):
             row=0,
         )
 
+    # Signature of "on_error" incompatible with supertype "View"mypy(error)
+    #  Superclass:mypy(note)
+    #      def on_error(self, Interaction, Exception, Item[Any]) -> Coroutine[Any, Any, None]mypy(note)
+    #  Subclass:mypy(note)
+    #  def on_error(self, Interaction, Exception) -> Coroutine[Any, Any, None]mypy(note)
+    # が出るが、modalのon_errorをOverrideしているだけなので無意味。無視する。
+    async def on_error(self, interaction: discord.Interaction, error: Exception, /) -> None:  # type: ignore
+        await interaction.response.defer(ephemeral=True)
+        msg = f"予期しないエラーが発生しました。\n以下の文を管理者に知らせてください。\n\n```{error}```"
+        await interaction.followup.send(msg[:1999], ephemeral=True)
+
 
 class ReportUserModal(ReportBaseModal):
     def __init__(
