@@ -19,6 +19,7 @@ Extensions:
   - src.extensions.admin
   - src.extensions.entrance
   - src.extensions.error_catcher
+  - src.extensions.inquiry
   - src.extensions.kick_and_ban
   - src.extensions.member_count
   - src.extensions.moderation
