@@ -1,20 +1,26 @@
-from typing import Any, Callable, Coroutine
-
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
+from schemas.command import CommandInfo
 from src.components.ui.base import BaseModal, BaseView
-from utils.run_any import call_any_func
+from utils.logger import getMyLogger
 
 
 class InquiryView(BaseView):
-    def __init__(self, *, custom_id: str, callback_func: Callable[[Interaction], Coroutine[Any, Any, None] | None]) -> None:
+    def __init__(self, *, custom_id: str) -> None:
         super().__init__(custom_id=custom_id)
-        self.callback_func = callback_func
+        self.logger = getMyLogger(__name__)
 
     @ui.button(label="お問い合わせ", style=ButtonStyle.primary, custom_id="src.components.extensions.inquiry.InquiryView.button")
     async def inquiry(self, interaction: Interaction, button: ui.Button) -> None:  # type: ignore # ButtonのGeneric型を指定する必要はない
-        await interaction.response.defer(ephemeral=True)
-        await call_any_func(self.callback_func, interaction)
+        await interaction.response.send_modal(
+            InquiryModal(
+                title="お問い合わせフォーム",
+                custom_id="src.extensions.inquiry.inquiry_view_callback",
+            )
+        )
+        cmd_info = CommandInfo(name="inquiry_view_callback", author=interaction.user)
+        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        return
 
 
 class InquiryModal(BaseModal):
@@ -24,22 +30,21 @@ class InquiryModal(BaseModal):
         title: str,
         timeout: float | None = None,
         custom_id: str,
-        callback_func: Callable[[Interaction, str], Coroutine[Any, Any, None] | None],
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.input = ui.TextInput(  # type: ignore # 明らかにui.TextInputなのでannotationしない
             label="お問い合わせ内容",
             style=TextStyle.long,
             custom_id=custom_id + "_input",
-            placeholder="お問い合わせ内容を入力してください。(最大1800文字)",
+            placeholder="お問い合わせ内容(最大1800字)",
             min_length=1,
             max_length=1800,
             required=True,
             row=0,
         )
-        self.callback_func = callback_func
         self.add_item(self.input)
 
     async def on_submit(self, interaction: Interaction, /) -> None:
         await interaction.response.defer(ephemeral=True)
-        await call_any_func(self.callback_func, interaction, self.input.value)
+        await interaction.followup.send(content="お問い合わせありがとうございます。以下の内容で受け付けました。")
+        return
