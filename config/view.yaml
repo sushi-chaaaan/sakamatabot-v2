@@ -6,3 +6,7 @@
   CustomId:
     - components.membership.Start_Verify_View
   Path: src.components.membership.start_verify
+- ClassName: InquiryView
+  CustomId:
+    - src.extensions.inquiry.send_inquiry_form
+  Path: src.components.extensions.inquiry
