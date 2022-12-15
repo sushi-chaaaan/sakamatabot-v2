@@ -18,6 +18,7 @@ discord-py = { git = "https://github.com/Rapptz/discord.py.git", rev = "master",
 dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy2-return-embeds" }
 pydantic = { extras = ["dotenv"], version = "^1.10.2" }
 tomli = "^2.0.1"
+discord-ext-ui = { git = "https://github.com/sushi-chaaaan/discord-ext-ui.git", rev = "dpy2" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"
