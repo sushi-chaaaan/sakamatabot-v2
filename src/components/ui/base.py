@@ -3,6 +3,8 @@ import asyncio
 import discord
 from discord import Embed, ui
 
+from utils.logger import getMyLogger
+
 
 class BaseView(ui.View):
     """Viewをより簡単に扱えるクラス
@@ -16,7 +18,7 @@ class BaseView(ui.View):
         送信したときの返り値Messageを格納することで, timeout時に自動でdisabledになる.
     """
 
-    def __init__(self, *, timeout: float | None = 180, custom_id: str = ""):
+    def __init__(self, *, timeout: float | None = None, custom_id: str = ""):
         super().__init__(timeout=timeout)
         self.__custom_id = custom_id
         self.message: discord.Message | None = None
@@ -91,44 +93,25 @@ class __ViewBase:
         return await self.__stopped
 
 
-class InputUIEmbed(Embed):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.set_footer(text="InputUI")
+class BaseModal(ui.Modal):
+    def __init__(self, *, title: str, timeout: float | None = None, custom_id: str) -> None:
+        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
+        self.logger = getMyLogger(__name__)
 
-
-class InputUIView(ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
-
-    def check_message_format(self, interaction: discord.Interaction) -> bool:
-        return bool(
-            interaction.message is not None
-            and len(interaction.message.embeds) == 1
-            and interaction.message.embeds[0].footer is not None
-            and interaction.message.embeds[0].footer.text == "InputUI"
-        )
-
-    @ui.button(label="入力(input)", style=discord.ButtonStyle.blurple)
-    async def input(self, interaction: discord.Interaction, button: ui.Button):  # type: ignore
+    # Signature of "on_error" incompatible with supertype "View"mypy(error)
+    #  Superclass:mypy(note)
+    #      def on_error(self, Interaction, Exception, Item[Any]) -> Coroutine[Any, Any, None]mypy(note)
+    #  Subclass:mypy(note)
+    #  def on_error(self, Interaction, Exception) -> Coroutine[Any, Any, None]mypy(note)
+    # が出るが、modalのon_errorをOverrideしているだけなので無意味。無視する。
+    async def on_error(self, interaction: discord.Interaction, error: Exception, /) -> None:  # type: ignore
+        self.logger.error("予期しないエラーが発生しました。", exc_info=error)
         await interaction.response.defer(ephemeral=True)
+        msg = f"予期しないエラーが発生しました。\n以下の文を管理者に知らせてください。\n\n```{error}```"
+        await interaction.followup.send(msg[:1999], ephemeral=True)
+        return
 
-        if not self.check_message_format(interaction):
-            return
-
-        else:
-            embed = interaction.message.embeds[0]  # type: ignore
-
-    @ui.button(label="実行(start)", style=discord.ButtonStyle.green)
-    async def start(self, interaction: discord.Interaction, button: ui.Button):  # type: ignore
-        await interaction.response.defer(ephemeral=True)
-
-        if not self.check_message_format(interaction):
-            return
-
-    @ui.button(label="キャンセル(cancel)", style=discord.ButtonStyle.red)
-    async def cancel(self, interaction: discord.Interaction, button: ui.Button):  # type: ignore
-        await interaction.response.defer(ephemeral=True)
-
-        if not self.check_message_format(interaction):
-            return
+    async def on_timeout(self) -> None:
+        self.logger.info(f"{__name__}がタイムアウトしました。")
+        self.stop()
+        return
