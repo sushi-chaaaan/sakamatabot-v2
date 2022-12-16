@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 class KickAndBan(commands.Cog):
     def __init__(self, bot: "Bot") -> None:
         self.bot = bot
-        self.logger = self.bot.logger
 
     @app_commands.command(name="kick")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
@@ -32,14 +31,14 @@ class KickAndBan(commands.Cog):
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="kick", reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: 認証
         approved: bool = False
 
         if approved:
             hammer = Hammer(cmd_info)
-            hammer.set_target_id(target.id)
+            hammer.target = target
             succeed = await hammer.kick_from_guild(guild=interaction.guild)  # pyright: ignore checked by discord
             if not succeed:
                 await interaction.followup.send(hammer.message)
@@ -73,7 +72,7 @@ class KickAndBan(commands.Cog):
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="ban", reason=reason, author=interaction.user)  # pyright: ignore
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         delete_message_seconds: int = delete_message_days * 86400
 
         # TODO: 認証
@@ -81,7 +80,7 @@ class KickAndBan(commands.Cog):
 
         if approved:
             hammer = Hammer(cmd_info)
-            hammer.set_target_id(target.id)
+            hammer.target = target
             succeed = await hammer.ban_from_guild(
                 guild=interaction.guild,  # pyright: ignore checked by discord
                 delete_message_seconds=delete_message_seconds,

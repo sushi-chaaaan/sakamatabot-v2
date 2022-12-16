@@ -1,23 +1,35 @@
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
-from components.base import BaseModal, BaseView
-from schemas.command import CommandInfo
+from src.components.base import BaseModal, BaseView
+from type.interaction import interaction_callback
 
 
 class InquiryView(BaseView):
-    def __init__(self, *, custom_id: str) -> None:
+    def __init__(
+        self,
+        *,
+        custom_id: str,
+        callback_func: interaction_callback | None = None,
+    ) -> None:
         super().__init__(custom_id=custom_id)
 
     @ui.button(label="お問い合わせ", style=ButtonStyle.primary, custom_id="src.components.extensions.inquiry.InquiryView.button")
     async def inquiry(self, interaction: Interaction, button: ui.Button) -> None:  # type: ignore # ButtonのGeneric型を指定する必要はない
-        await interaction.response.send_modal(
-            InquiryModal(
-                title="お問い合わせフォーム",
-                custom_id="src.extensions.inquiry.inquiry_view_callback",
-            )
+        modal = InquiryModal(
+            title="お問い合わせフォーム",
+            custom_id="src.extensions.inquiry.inquiry_view_callback",
         )
-        cmd_info = CommandInfo(name="inquiry_view_callback", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        await interaction.response.send_modal(modal)
+        await modal.wait()
+        inquiry_content = modal.input.value or ""
+
+        self.logger.info(f"{interaction.user} tried to send inquiry: {inquiry_content}")
+
+        if inquiry_content == "":
+            return
+
+        # TODO: ここからお問い合わせを発行する。
+
         return
 
 
@@ -44,5 +56,9 @@ class InquiryModal(BaseModal):
 
     async def on_submit(self, interaction: Interaction, /) -> None:
         await interaction.response.defer(ephemeral=True)
-        await interaction.followup.send(content="お問い合わせありがとうございます。以下の内容で受け付けました。")
+        await interaction.followup.send(
+            content="お問い合わせありがとうございます。以下の内容で受け付けました。",
+            ephemeral=True,
+        )
+        self.stop()
         return

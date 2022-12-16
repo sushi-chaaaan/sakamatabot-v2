@@ -19,7 +19,6 @@ class MemberCounter(commands.Cog):
 
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     async def cog_load(self) -> None:
         self.refresh_count_task.start()
@@ -30,18 +29,18 @@ class MemberCounter(commands.Cog):
     @tasks.loop(minutes=30.0)
     async def refresh_count_task(self):
         if self.refresh_count_task.next_iteration:
-            self.logger.info(
+            self.bot.logger.info(
                 MemberCountText.TASK_SETUP_SUCCEED.format(time=TimeUtils.dt_to_str(self.refresh_count_task.next_iteration))
             )
         else:
-            self.logger.info(MemberCountText.TASK_SETUP_FAILED)
+            self.bot.logger.info(MemberCountText.TASK_SETUP_FAILED)
 
         # refresh member count
         refresh_succeed = await self.refresh_count()
         if refresh_succeed:
-            self.logger.info(MemberCountText.REFRESH_SUCCEED)
+            self.bot.logger.info(MemberCountText.REFRESH_SUCCEED)
         else:
-            self.logger.error(MemberCountText.REFRESH_FAILED)
+            self.bot.logger.error(MemberCountText.REFRESH_FAILED)
 
     @refresh_count_task.before_loop
     async def before_refresh_count(self):
@@ -56,7 +55,7 @@ class MemberCounter(commands.Cog):
     async def refresh_count_command(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         cmd_info = CommandInfo(name="refresh_member_count", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # refresh member count
         refresh_succeed = await self.refresh_count()
@@ -80,7 +79,7 @@ class MemberCounter(commands.Cog):
 
         # check channel
         if not isinstance(channel, discord.VoiceChannel):
-            self.logger.exception(f"{str(channel)} is not a VoiceChannel")
+            self.bot.logger.exception(f"{str(channel)} is not a VoiceChannel")
             return False
 
         # refresh member count
@@ -91,10 +90,10 @@ class MemberCounter(commands.Cog):
                 )
             )
         except Exception as e:
-            self.logger.exception(f"failed to edit channel: {channel.name}", exc_info=e)
+            self.bot.logger.exception(f"failed to edit channel: {channel.name}", exc_info=e)
             return False
         else:
-            self.logger.info(f"updated channel: {channel.name}")
+            self.bot.logger.info(f"updated channel: {channel.name}")
             return True
 
 

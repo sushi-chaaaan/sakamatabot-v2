@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 class Dispander(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @commands.Cog.listener("on_message")
     async def on_message(self, message: discord.Message):
@@ -27,7 +26,7 @@ class Dispander(commands.Cog):
             try:
                 await message.channel.send(embeds=embeds)
             except Exception as e:
-                self.logger.error(e)
+                self.bot.logger.error(e)
             return
 
 

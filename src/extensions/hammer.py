@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import discord
 
 from schemas.command import CommandInfo
@@ -9,14 +11,18 @@ class Hammer:
     def __init__(self, info: CommandInfo) -> None:
         self.logger = getMyLogger(__name__)
         self.info = info
-        self.target_id: int  # set by set_target_id()
         self.message: str = ""
 
-    def set_target_id(self, target_id: int) -> None:
-        self.target_id = target_id
+    @property
+    def target(self) -> discord.Member:
+        return self.target
+
+    @target.setter
+    def target(self, target: discord.Member) -> None:
+        self.target = target
 
     async def kick_from_guild(self, guild: discord.Guild) -> bool:
-        if not self.target_id:
+        if not self.target:
             self.logger.error(msg=HammerText.TARGET_ID_NOT_SET)
             self.message = "kickする対象のIDが設定されていません。"
             return False
@@ -24,9 +30,9 @@ class Hammer:
         reason = HammerText.KICK_AUDIT_LOG.format(author=self.info.author.id, reason=self.info.reason)
 
         try:
-            await guild.kick(user=discord.Object(id=self.target_id), reason=reason)
+            await guild.kick(user=discord.Object(id=self.target.id), reason=reason)
         except Exception as e:
-            msg = HammerText.FAILED_TO_KICK.format(target=self.target_id, exception=e.__class__.__name__)
+            msg = HammerText.FAILED_TO_KICK.format(target=self.target.id, exception=e.__class__.__name__)
             self.logger.exception(
                 msg=msg,
                 exc_info=True,
@@ -37,7 +43,7 @@ class Hammer:
             return True
 
     async def ban_from_guild(self, guild: discord.Guild, delete_message_seconds: int = 604800) -> bool:
-        if not self.target_id:
+        if not self.target.id:
             self.logger.error(msg=HammerText.TARGET_ID_NOT_SET)
             self.message = "BANする対象のIDが設定されていません。"
             return False
@@ -46,16 +52,32 @@ class Hammer:
 
         try:
             await guild.ban(
-                user=discord.Object(id=self.target_id),
+                user=discord.Object(id=self.target.id),
                 reason=reason,
                 delete_message_seconds=delete_message_seconds,
             )
         except Exception as e:
-            msg = HammerText.FAILED_TO_BAN.format(target=self.target_id, exception=e.__class__.__name__)
+            msg = HammerText.FAILED_TO_BAN.format(target=self.target.id, exception=e.__class__.__name__)
             self.logger.exception(msg=msg, exc_info=True)
             self.message = f"BANに失敗しました。\n```{msg}```"
             return False
-        finally:
+        else:
             return True
 
-    # TODO: timeout
+    async def timeout_user(self, until: datetime | timedelta) -> bool:
+        if not self.target:
+            self.logger.error(msg=HammerText.TARGET_ID_NOT_SET)
+            self.message = "タイムアウトする対象のIDが設定されていません。"
+            return False
+
+        reason = HammerText.TIMEOUT_AUDIT_LOG.format(author=self.info.author.id, reason=self.info.reason)
+
+        try:
+            await self.target.timeout(until, reason=reason)
+        except TypeError as e:
+            msg = HammerText.FAILED_TO_TIMEOUT.format(target=self.target.id, exception=e.__class__.__name__)
+            self.logger.exception(msg=msg, exc_info=True)
+            self.message = f"タイムアウトに失敗しました。\n```{msg}```"
+            return False
+        else:
+            return True

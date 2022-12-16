@@ -18,7 +18,6 @@ class Utils(commands.Cog):
 
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @app_commands.command(name="timestamp", description=UtilsText.TIMESTAMP_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
@@ -36,7 +35,7 @@ class Utils(commands.Cog):
         # TODO: EmbedとViewを使ったインタラクティブなやつ欲しくない？
         # defer and log
         await interaction.response.defer(ephemeral=True)
-        self.logger.command_log(name="timestamp", author=interaction.user)
+        self.bot.logger.command_log(name="timestamp", author=interaction.user)
 
         # get date
         _date = datetime.strptime(date, "%Y%m%d")
@@ -59,7 +58,7 @@ class Utils(commands.Cog):
     async def ping(self, ctx: commands.Context):
         # defer and log
         await ctx.defer(ephemeral=True)
-        self.logger.command_log(name="ping", author=ctx.author)
+        self.bot.logger.command_log(name="ping", author=ctx.author)
 
         await ctx.send(
             content=UtilsText.PING_RESPONSE.format(ping=round(self.bot.latency * 1000, 2)),

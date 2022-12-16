@@ -19,6 +19,7 @@ dispander = { git = "https://github.com/sushi-chaaaan/dispander.git", rev = "dpy
 pydantic = { extras = ["dotenv"], version = "^1.10.2" }
 tomli = "^2.0.1"
 discord-ext-ui = { git = "https://github.com/sushi-chaaaan/discord-ext-ui.git", rev = "dpy2" }
+python-version-checker = {git = "https://github.com/sushi-chaaaan/python-version-checker.git"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.10.0"

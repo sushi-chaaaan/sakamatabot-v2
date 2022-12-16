@@ -4,9 +4,10 @@ import discord
 from discord.ext import commands  # type: ignore
 from dotenv import load_dotenv
 
-from components.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
-from schemas.ui import PersistentView
+from schemas.ui import BaseView as BaseViewSchema
+from src.components.base import BaseView
+from type.interaction import interaction_callback
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
@@ -109,30 +110,38 @@ class Bot(commands.Bot):
             pass
 
     async def setup_views(self) -> None:
-        per_views = [PersistentView(**v) for v in read_yaml(r"config/view.yaml")]
+        per_views = [BaseViewSchema(**v) for v in read_yaml(r"config/view.yaml")]
         for pv in per_views:
             for view in self.build_view(pv):
                 self.add_view(view)
         return
 
-    def build_view(self, view: PersistentView) -> list[discord.ui.View]:
+    def build_view(self, view_schema: BaseViewSchema) -> list[discord.ui.View]:
         # https://saruhei1989.hatenablog.com/entry/2019/03/10/090000
         # 外部ファイルベースの動的なViewインスタンス生成
         import importlib
         import inspect
 
-        view_file = importlib.import_module(view.Path)
-        view_class: BaseView = getattr(view_file, view.ClassName)
+        # View本体のimport
+        view_file = importlib.import_module(view_schema.Path)
+        view_class: BaseView = getattr(view_file, view_schema.ClassName)
         if not inspect.isclass(view_class):
-            raise TypeError(f"{view.ClassName} is not a class")
+            raise TypeError(f"{view_schema.ClassName} is not a class")
 
         if not issubclass(view_class, discord.ui.View):
-            raise TypeError(f"{view.ClassName} is not a subclass of discord.ui.View")
+            raise TypeError(f"{view_schema.ClassName} is not a subclass of discord.ui.View")
 
         if not issubclass(view_class, BaseView):
-            raise TypeError(f"{view.ClassName} is not a subclass of BaseView")
+            raise TypeError(f"{view_schema.ClassName} is not a subclass of BaseView")
 
-        return [view_class(custom_id=c_id) for c_id in view.CustomId]  # type: ignore
+        # callbackのimport
+        # TODO: callbackの注入
+
+        callback: interaction_callback | None = (
+            getattr(view_file, view_schema.CallbackName) if view_schema.CallbackName else None  # pyright: ignore
+        )
+
+        return [view_class(custom_id=c_id, callback_func=callback) for c_id in view_schema.CustomId]  # type: ignore
 
     async def clear_app_commands_and_close(self) -> None:
         self.tree.clear_commands(guild=None)

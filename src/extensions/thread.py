@@ -6,8 +6,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from components.utils.escape import EscapeWithCodeBlock
 from schemas.command import CommandInfo
+from src.components.utils.escape import EscapeWithCodeBlock
 from src.embeds.extensions.thread import on_thread_create_embed
 from utils.finder import Finder
 
@@ -22,15 +22,14 @@ class Thread(commands.Cog):
     # TODO: アーカイブ回避機能
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @commands.Cog.listener(name="on_thread_create")
     async def thread_create(self, thread: discord.Thread):
-        self.logger.info(f"New Thread created: {thread.name}")
+        self.bot.logger.info(f"New Thread created: {thread.name}")
 
         # user reportのThreadだった場合処理が違うので無視する
         if thread.parent_id == self.bot.env.REPORT_FORUM_CHANNEL_ID:
-            self.logger.info("This thread is user report thread. Skipping...")
+            self.bot.logger.info("This thread is user report thread. Skipping...")
             return
 
         finder = Finder(self.bot)
@@ -57,7 +56,7 @@ class Thread(commands.Cog):
         # defer and log
         await interaction.response.defer(thinking=True)
         cmd_info = CommandInfo(name="add-role-to-thread", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: 認証
 
@@ -95,7 +94,7 @@ class Thread(commands.Cog):
         try:
             msg = await thread.send(content="test message")
         except Exception as e:
-            self.logger.exception(f"{thread.name} is not accessible", exc_info=e)
+            self.bot.logger.exception(f"{thread.name} is not accessible", exc_info=e)
             await interaction.followup.send(content=f"{thread.mention}にアクセスできません。\n処理を停止します。")
             return
 
@@ -105,7 +104,7 @@ class Thread(commands.Cog):
             try:
                 await msg.edit(content=f"{text}")
             except Exception as e:
-                self.logger.exception(
+                self.bot.logger.exception(
                     f"failed to edit message: {msg.id},Index:{str(i)}",
                     exc_info=e,
                 )
@@ -132,7 +131,7 @@ class Thread(commands.Cog):
         """特定カテゴリ内のスレッドとチャンネルの一覧を作成します。"""
         # defer and log
         await interaction.response.defer(ephemeral=True)
-        self.logger.command_log(name="thread-board", author=interaction.user)
+        self.bot.logger.command_log(name="thread-board", author=interaction.user)
 
         # get category
         if not category:

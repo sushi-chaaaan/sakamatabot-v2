@@ -3,7 +3,7 @@ from typing import Any, Callable, Coroutine
 import discord
 from discord import ui
 
-from components.base import BaseModal
+from src.components.base import BaseModal
 from utils.run_any import call_any_func
 
 
