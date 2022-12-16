@@ -4,7 +4,13 @@ import os
 
 import discord
 from discord.utils import _ColourFormatter
-from discord_handler import DiscordHandler
+
+try:
+    from discord_handler import DiscordHandler
+except ImportError:
+    DISCORD_HANDLER_EXIST = 0
+else:
+    DISCORD_HANDLER_EXIST = 1
 
 
 class MyLogger(logging.Logger):
@@ -19,9 +25,13 @@ class MyLogger(logging.Logger):
 
 
 def getMyLogger(name: str) -> MyLogger:  # name: __name__
-    # get logger and handler
     logging.setLoggerClass(MyLogger)
-    logger = logging.getLogger(name)
+
+    # Expression of type "Logger" cannot be assigned to declared type "MyLogger"
+    # "Logger" is incompatible with "MyLogger" のエラーが出る
+    # logging.setLoggerClass(MyLogger)しているので問題ない
+    logger: MyLogger = logging.getLogger(name)  # type: ignore
+
     streamHandler = logging.StreamHandler()
     # debug_file_handler = logging.handlers.RotatingFileHandler(
     #     f"./log/{name}.log",
@@ -37,29 +47,30 @@ def getMyLogger(name: str) -> MyLogger:  # name: __name__
         backupCount=10,
     )
 
-    webhook_url = os.environ["LOGGER_WEBHOOK_URL"]
-    discord_handler = DiscordHandler(
-        webhook_url=webhook_url,
-        notify_users=[os.environ["BOT_OWNER"]],
-    )
-
     # set format
     formatter = _ColourFormatter()
     literal_formatter = logging.Formatter("%(asctime)s:%(levelname)s:\n%(name)s:%(message)s")
     streamHandler.setFormatter(formatter)
     file_handler.setFormatter(literal_formatter)
-    discord_handler.setFormatter(literal_formatter)
 
     # set level
     logger.setLevel(logging.DEBUG)
     streamHandler.setLevel(logging.DEBUG)
     file_handler.setLevel(logging.DEBUG)
-    discord_handler.setLevel(logging.WARNING)
 
     # add handler
     if not logger.hasHandlers():
         logger.addHandler(streamHandler)
         logger.addHandler(file_handler)
-        logger.addHandler(discord_handler)
-    # logging.setLoggerClass(MyLogger)しているので問題ない
-    return logger  # type: ignore
+
+        # Setup Discord Handler
+        if DISCORD_HANDLER_EXIST:
+            discord_handler = DiscordHandler(
+                webhook_url=os.environ["LOGGER_WEBHOOK_URL"],
+                notify_users=[os.environ["BOT_OWNER"]],
+            )
+            discord_handler.setFormatter(literal_formatter)
+            discord_handler.setLevel(logging.WARNING)
+            logger.addHandler(discord_handler)
+
+    return logger
