@@ -176,7 +176,7 @@ requests = "*"
 
 [[package]]
 name = "discord.py"
-version = "2.2.0a4650+g799e3c5b"
+version = "2.2.0a4658+gb671958e"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -464,7 +464,7 @@ develop = false
 [package.source]
 type = "git"
 url = "https://github.com/sushi-chaaaan/python-version-checker.git"
-reference = "HEAD"
+reference = "main"
 resolved_reference = "af2c11b85e5445180ee0a3c134284f53a073a5fa"
 
 [[package]]
@@ -537,7 +537,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "2eb290eaa845a029c01bd7f44c7f7b278f680a29a96a4fb2ce28fdde1543000d"
+content-hash = "197770a5f7a989067ce9bf28ae4244d22a7c141a699d635e55cde439e4375213"
 
 [metadata.files]
 aiodns = [
