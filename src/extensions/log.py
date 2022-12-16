@@ -19,14 +19,13 @@ if TYPE_CHECKING:
 class Log(commands.GroupCog, group_name="log", group_description=LogText.LOG_DESCRIPTION):  # type: ignore
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @app_commands.command(name="today", description=LogText.GET_TODAY_LOG_DESCRIPTION)
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
     async def get_today_log(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="log today", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         with open("./log/src.bot.log", "rb") as fp:
             log_file = discord.File(fp, filename="src.bot.log")

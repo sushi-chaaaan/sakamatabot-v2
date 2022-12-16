@@ -21,7 +21,6 @@ if TYPE_CHECKING:
 class Report(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
         self.ctx_report_user = app_commands.ContextMenu(
             name="ユーザーを通報",
             guild_ids=[self.bot.env.GUILD_ID],
@@ -49,7 +48,7 @@ class Report(commands.Cog):
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_user", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         return
 
     async def report_user_modal_callback(
@@ -63,7 +62,7 @@ class Report(commands.Cog):
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
 
         if not isinstance(report_forum, discord.ForumChannel):
-            self.logger.exception("Report forum is not a ForumChannel")
+            self.bot.logger.exception("Report forum is not a ForumChannel")
             return
 
         tags = self.get_user_report_forum_tags(report_forum)
@@ -90,7 +89,7 @@ class Report(commands.Cog):
         )
         await interaction.response.send_modal(modal)
         cmd_info = CommandInfo(name="report_message", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         return
 
     async def report_message_modal_callback(
@@ -104,7 +103,7 @@ class Report(commands.Cog):
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
 
         if not isinstance(report_forum, discord.ForumChannel):
-            self.logger.exception("Report forum is not a ForumChannel")
+            self.bot.logger.exception("Report forum is not a ForumChannel")
             return
 
         tags = self.get_message_report_forum_tags(report_forum)

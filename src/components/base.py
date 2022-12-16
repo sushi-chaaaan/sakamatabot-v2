@@ -4,6 +4,7 @@ from typing import Any
 import discord
 from discord import Embed, ui
 
+from type.interaction import interaction_callback
 from utils.logger import getMyLogger
 
 
@@ -19,11 +20,18 @@ class BaseView(ui.View):
         送信したときの返り値Messageを格納することで, timeout時に自動でdisabledになる.
     """
 
-    def __init__(self, *, timeout: float | None = None, custom_id: str = ""):
+    def __init__(
+        self,
+        *,
+        timeout: float | None = None,
+        custom_id: str = "",
+        callback_func: interaction_callback | None = None,
+    ):
         super().__init__(timeout=timeout)
         self.__custom_id = custom_id
         self.message: discord.Message | None = None
         self.logger = getMyLogger(__name__)
+        self.callback_func = callback_func
 
     @property
     def custom_id(self) -> str:

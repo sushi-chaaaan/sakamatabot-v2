@@ -18,7 +18,6 @@ if TYPE_CHECKING:
 class AdminCommand(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
@@ -27,7 +26,7 @@ class AdminCommand(commands.Cog):
     async def shutdown(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="shutdown", author=interaction.user)
-        self.logger.command_log(name="shutdown", author=cmd_info.author)
+        self.bot.logger.command_log(name="shutdown", author=cmd_info.author)
 
         # TODO: Confirm message
         await interaction.followup.send(AdminText.SHUTDOWN_MESSAGE)
@@ -42,7 +41,7 @@ class AdminCommand(commands.Cog):
     async def reload(self, interaction: discord.Interaction):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="reload", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         # TODO: Confirm message
         await interaction.followup.send(AdminText.RELOAD_MESSAGE)

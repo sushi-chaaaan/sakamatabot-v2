@@ -30,6 +30,7 @@ class HammerText:
     FAILED_TO_KICK = """Failed to kick {target} ({exception})"""
     FAILED_TO_BAN = """Failed to ban {target} ({exception})"""
     TARGET_ID_NOT_SET = """Target ID is not set"""
+    FAILED_TO_TIMEOUT = """Failed to timeout {target} ({exception})"""
 
     KICK_AUDIT_LOG = """kicked by: {author}\nCustom_Reason: {reason}"""
     BAN_AUDIT_LOG = """banned by: {author}\nCustom_Reason: {reason}"""
@@ -50,6 +51,7 @@ class MemberCountText:
 
 class ModerationText:
     USER_DESCRIPTION = """ユーザー情報を照会します。ユーザー名やIDで指定できます。"""
+    TIMEOUT_DESCRIPTION = """ユーザーのタイムアウトを行います"""
 
 
 class LogText:

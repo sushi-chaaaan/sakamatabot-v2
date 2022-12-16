@@ -17,7 +17,6 @@ if TYPE_CHECKING:
 class Entrance(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @commands.Cog.listener(name="on_member_join")
     async def on_join(self, member: discord.Member):
@@ -29,14 +28,14 @@ class Entrance(commands.Cog):
             created=TimeUtils.dt_to_str(member.created_at),
             count=member.guild.member_count,
         )
-        self.logger.info(msg)
+        self.bot.logger.info(msg)
 
         # get channel
         finder = Finder(self.bot)
         channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
 
         if not isinstance(channel, discord.abc.Messageable):
-            self.logger.error("Failed to get Messageable channel")
+            self.bot.logger.error("Failed to get Messageable channel")
             return
 
         await channel.send(msg)
@@ -55,13 +54,13 @@ class Entrance(commands.Cog):
             created=TimeUtils.dt_to_str(payload.user.created_at),
             count=guild.member_count,
         )
-        self.logger.info(msg)
+        self.bot.logger.info(msg)
 
         # get channel
         channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
 
         if not isinstance(channel, discord.abc.Messageable):
-            self.logger.error("Failed to get Messageable channel")
+            self.bot.logger.error("Failed to get Messageable channel")
             return
 
         await channel.send(msg)

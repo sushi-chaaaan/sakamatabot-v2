@@ -1,7 +1,5 @@
-import os
 from typing import TYPE_CHECKING
 
-import discord
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
@@ -24,7 +22,9 @@ class Inquiry(commands.Cog):
         self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
         view = InquiryView(
             custom_id="src.extensions.inquiry.send_inquiry_form",
+            callback_func=None,
         )
+        # TODO: 問い合わせの作成
         await ctx.send("TODO: 問い合わせフォーム", view=view)
         return
 

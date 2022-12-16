@@ -2,10 +2,7 @@
 #   CustomId:
 #     - src.exts.inquiry.InquiryView
 #   Path: components.cmp_inquiry
-- ClassName: Start_Verify_View
-  CustomId:
-    - components.membership.Start_Verify_View
-  Path: src.components.membership.start_verify
+# TODO: callbackの外部ファイル管理化
 - ClassName: InquiryView
   CustomId:
     - src.extensions.inquiry.send_inquiry_form

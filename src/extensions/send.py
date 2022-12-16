@@ -18,7 +18,6 @@ if TYPE_CHECKING:
 class Sender(commands.GroupCog, group_name="send"):  # type: ignore
     def __init__(self, bot: "Bot"):
         self.bot = bot
-        self.logger = self.bot.logger
 
     @app_commands.command(name="dm", description="DMを送信します。")
     @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
@@ -36,7 +35,7 @@ class Sender(commands.GroupCog, group_name="send"):  # type: ignore
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="send dm", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         attachments: list[discord.Attachment] | None = self.gather_attachment(
             attachment_1,
@@ -63,7 +62,7 @@ class Sender(commands.GroupCog, group_name="send"):  # type: ignore
     ):
         await interaction.response.defer()
         cmd_info = CommandInfo(name="send channel", author=interaction.user)
-        self.logger.command_log(name=cmd_info.name, author=cmd_info.author)
+        self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
 
         attachments: list[discord.Attachment] | None = self.gather_attachment(
             attachment_1,
