@@ -4,9 +4,9 @@ import discord
 from discord.ext import commands  # type: ignore
 from dotenv import load_dotenv
 
+from components.base import BaseView
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import PersistentView
-from src.components.ui.base import BaseView
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger

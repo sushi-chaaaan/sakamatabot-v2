@@ -1,14 +1,12 @@
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
+from components.base import BaseModal, BaseView
 from schemas.command import CommandInfo
-from src.components.ui.base import BaseModal, BaseView
-from utils.logger import getMyLogger
 
 
 class InquiryView(BaseView):
     def __init__(self, *, custom_id: str) -> None:
         super().__init__(custom_id=custom_id)
-        self.logger = getMyLogger(__name__)
 
     @ui.button(label="お問い合わせ", style=ButtonStyle.primary, custom_id="src.components.extensions.inquiry.InquiryView.button")
     async def inquiry(self, interaction: Interaction, button: ui.Button) -> None:  # type: ignore # ButtonのGeneric型を指定する必要はない

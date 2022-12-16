@@ -1,4 +1,5 @@
 import asyncio
+from typing import Any
 
 import discord
 from discord import Embed, ui
@@ -10,7 +11,7 @@ class BaseView(ui.View):
     """Viewをより簡単に扱えるクラス
 
     Args:
-        timeout (float | None, optional): Viewのタイムアウト時間. Defaults to 180.
+        timeout (float | None, optional): Viewのタイムアウト時間. Defaults to None.
         custom_id (str, optional): Viewのcustom_id. Defaults to "".
 
     Attributes:
@@ -22,6 +23,7 @@ class BaseView(ui.View):
         super().__init__(timeout=timeout)
         self.__custom_id = custom_id
         self.message: discord.Message | None = None
+        self.logger = getMyLogger(__name__)
 
     @property
     def custom_id(self) -> str:
@@ -32,12 +34,46 @@ class BaseView(ui.View):
         self.__custom_id = value
 
     async def on_timeout(self) -> None:
+        self.logger.debug(f"{self.__class__.__name__}がタイムアウトしました。")
         if self.message:
             for i in self.children:
-                if isinstance(i, (ui.Button, ui.Select)):
+                if isinstance(i, (ui.Button, ui.Select, ui.RoleSelect, ui.ChannelSelect, ui.MentionableSelect)):
                     i.disabled = True
 
             await self.message.edit(view=self)
+        self.stop()
+        return
+
+    async def on_error(self, interaction: discord.Interaction, error: Exception, item: ui.Item[Any], /) -> None:
+        self.logger.error("予期しないエラーが発生しました。", exc_info=error)
+        await interaction.response.defer(ephemeral=True)
+        msg = f"予期しないエラーが発生しました。\n以下の文を管理者に知らせてください。\n\n```{error}```"
+        await interaction.followup.send(msg[:1999], ephemeral=True)
+        return
+
+
+class BaseModal(ui.Modal):
+    def __init__(self, *, title: str, timeout: float | None = None, custom_id: str) -> None:
+        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
+        self.logger = getMyLogger(__name__)
+
+    # Signature of "on_error" incompatible with supertype "View"mypy(error)
+    #  Superclass:mypy(note)
+    #      def on_error(self, Interaction, Exception, Item[Any]) -> Coroutine[Any, Any, None]mypy(note)
+    #  Subclass:mypy(note)
+    #  def on_error(self, Interaction, Exception) -> Coroutine[Any, Any, None]mypy(note)
+    # が出るが、modalのon_errorをOverrideしているだけなので無意味。無視する。
+    async def on_error(self, interaction: discord.Interaction, error: Exception, /) -> None:  # type: ignore
+        self.logger.error("予期しないエラーが発生しました。", exc_info=error)
+        await interaction.response.defer(ephemeral=True)
+        msg = f"予期しないエラーが発生しました。\n以下の文を管理者に知らせてください。\n\n```{error}```"
+        await interaction.followup.send(msg[:1999], ephemeral=True)
+        return
+
+    async def on_timeout(self) -> None:
+        self.logger.debug(f"{self.__class__.__name__}がタイムアウトしました。")
+        self.stop()
+        return
 
 
 class __ViewBase:
@@ -91,27 +127,3 @@ class __ViewBase:
 
     async def wait(self) -> bool:
         return await self.__stopped
-
-
-class BaseModal(ui.Modal):
-    def __init__(self, *, title: str, timeout: float | None = None, custom_id: str) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
-        self.logger = getMyLogger(__name__)
-
-    # Signature of "on_error" incompatible with supertype "View"mypy(error)
-    #  Superclass:mypy(note)
-    #      def on_error(self, Interaction, Exception, Item[Any]) -> Coroutine[Any, Any, None]mypy(note)
-    #  Subclass:mypy(note)
-    #  def on_error(self, Interaction, Exception) -> Coroutine[Any, Any, None]mypy(note)
-    # が出るが、modalのon_errorをOverrideしているだけなので無意味。無視する。
-    async def on_error(self, interaction: discord.Interaction, error: Exception, /) -> None:  # type: ignore
-        self.logger.error("予期しないエラーが発生しました。", exc_info=error)
-        await interaction.response.defer(ephemeral=True)
-        msg = f"予期しないエラーが発生しました。\n以下の文を管理者に知らせてください。\n\n```{error}```"
-        await interaction.followup.send(msg[:1999], ephemeral=True)
-        return
-
-    async def on_timeout(self) -> None:
-        self.logger.info(f"{__name__}がタイムアウトしました。")
-        self.stop()
-        return

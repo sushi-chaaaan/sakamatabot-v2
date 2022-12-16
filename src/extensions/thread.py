@@ -6,8 +6,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
+from components.utils.escape import EscapeWithCodeBlock
 from schemas.command import CommandInfo
-from src.components.escape import EscapeWithCodeBlock
 from src.embeds.extensions.thread import on_thread_create_embed
 from utils.finder import Finder
 

@@ -7,7 +7,7 @@ from discord.ext import commands
 from tools.finder import Finder
 from tools.logger import command_log, getMyLogger
 
-from components.escape import EscapeWithCodeBlock
+from components.utils.escape import EscapeWithCodeBlock
 
 from .embeds import Embeds
 
