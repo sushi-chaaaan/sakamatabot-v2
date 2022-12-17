@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord import app_commands
-from discord.ext import commands  # type: ignore
+from discord.ext import commands
 
 from schemas.command import CommandInfo
 from src.text.extensions import AdminText
@@ -19,19 +19,19 @@ class AdminCommand(commands.Cog):
     def __init__(self, bot: "Bot"):
         self.bot = bot
 
-    @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
-    @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
-    @app_commands.guild_only()
-    @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
-    async def shutdown(self, interaction: discord.Interaction):
-        await interaction.response.defer()
-        cmd_info = CommandInfo(name="shutdown", author=interaction.user)
-        self.bot.logger.command_log(name="shutdown", author=cmd_info.author)
+    # @app_commands.command(name="shutdown", description=AdminText.SHUTDOWN_DESCRIPTION)
+    # @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
+    # @app_commands.guild_only()
+    # @app_commands.checks.has_role(int(os.environ["ADMIN_ROLE_ID"]))
+    # async def shutdown(self, interaction: discord.Interaction):
+    #     await interaction.response.defer()
+    #     cmd_info = CommandInfo(name="shutdown", author=interaction.user)
+    #     self.bot.logger.command_log(name="shutdown", author=cmd_info.author)
 
-        # TODO: Confirm message
-        await interaction.followup.send(AdminText.SHUTDOWN_MESSAGE)
-        await self.bot.shutdown()
-        return
+    #     # TODO: Confirm message
+    #     await interaction.followup.send(AdminText.SHUTDOWN_MESSAGE)
+    #     await self.bot.shutdown()
+    #     return
 
     @app_commands.command(name="reload", description=AdminText.RELOAD_DESCRIPTION)
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
