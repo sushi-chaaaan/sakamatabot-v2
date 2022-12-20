@@ -69,8 +69,8 @@ class Utils(commands.Cog):
     @app_commands.command(name="mention_role", description="role mention test")
     @app_commands.guilds(discord.Object(id=int(os.environ["GUILD_ID"])))
     async def mention_role(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f"<@&{self.bot.env.ADMIN_ROLE_ID}>", ephemeral=True)
-        await interaction.followup.send(f"<@&{self.bot.env.ADMIN_ROLE_ID}>", ephemeral=True)
+        await interaction.response.send_message(f"<@&{self.bot.env.ADMIN_ROLE_ID}>")
+        await interaction.followup.send(f"<@&{self.bot.env.ADMIN_ROLE_ID}>")
         return
 
 
