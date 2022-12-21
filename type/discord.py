@@ -10,5 +10,3 @@ else:
 import discord
 
 interaction_callback: TypeAlias = Callable[[discord.Interaction, Any], Coroutine[Any, None, None] | None]
-
-AllDiscordChannels: TypeAlias = discord.abc.GuildChannel | discord.abc.PrivateChannel | discord.Thread
