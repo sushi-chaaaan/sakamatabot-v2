@@ -176,7 +176,7 @@ requests = "*"
 
 [[package]]
 name = "discord.py"
-version = "2.2.0a4658+gb671958e"
+version = "2.2.0a4659+g7cf3cd51"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -465,7 +465,7 @@ develop = false
 type = "git"
 url = "https://github.com/sushi-chaaaan/python-version-checker.git"
 reference = "main"
-resolved_reference = "1ecee522b6982db8db28022bd893c720fbab5f82"
+resolved_reference = "40605f4894aa6a8da4cd51e945d90ba66f7e99f0"
 
 [[package]]
 name = "pyyaml"

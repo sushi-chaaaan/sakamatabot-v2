@@ -1,11 +1,11 @@
 from typing import Any, TypeAlias
 
-from python_version_checker import python_ver_is_over
+from python_version_checker import python_ver_is_under
 
-if python_ver_is_over(3, 9, 0):
-    from collections.abc import Callable, Coroutine
-else:
+if python_ver_is_under(3, 9, 0):
     from typing import Callable, Coroutine
+else:
+    from collections.abc import Callable, Coroutine
 
 import discord
 
