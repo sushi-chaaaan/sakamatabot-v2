@@ -1,10 +1,9 @@
-import asyncio
 from typing import Any
 
 import discord
-from discord import Embed, ui
+from discord import ui
 
-from type.interaction import interaction_callback
+from type.discord import interaction_callback
 from utils.logger import getMyLogger
 
 
@@ -82,56 +81,3 @@ class BaseModal(ui.Modal):
         self.logger.debug(f"{self.__class__.__name__}がタイムアウトしました。")
         self.stop()
         return
-
-
-class __ViewBase:
-    def __init__(self) -> None:
-        self._content: str | None
-        self._view: ui.View
-        self._embeds: list[Embed]
-
-        self.__stopped: asyncio.Future[bool] = asyncio.get_running_loop().create_future()
-
-    @property
-    def content(self) -> str | None:
-        return self._content
-
-    @content.setter
-    def content(self, content: str) -> None:
-        if content == self._content:
-            return
-
-        self._content = content
-        self.refresh_message()
-
-    @property
-    def embeds(self) -> list[Embed]:
-        return self._embeds
-
-    @embeds.setter
-    def embeds(self, embeds: list[Embed]) -> None:
-        if embeds == self._embeds:
-            return
-
-        self._embeds = embeds
-        self.refresh_message()
-
-    def is_finished(self) -> bool:
-        return self.__stopped.done()
-
-    def finish(self) -> None:
-        if not self.__stopped.done():
-            self.__stopped.set_result(True)
-
-    def stop(self) -> None:
-        if self.__stopped.done():
-            return
-
-        self.__stopped.set_result(False)
-        self._view.stop()
-
-    def refresh_message(self) -> None:
-        pass
-
-    async def wait(self) -> bool:
-        return await self.__stopped

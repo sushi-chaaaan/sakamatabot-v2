@@ -1,7 +1,7 @@
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
 from src.components.base import BaseModal, BaseView
-from type.interaction import interaction_callback
+from type.discord import interaction_callback
 
 
 class InquiryView(BaseView):

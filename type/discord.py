@@ -7,6 +7,8 @@ if python_ver_is_over(3, 9, 0):
 else:
     from typing import Callable, Coroutine
 
-from discord import Interaction
+import discord
 
-interaction_callback: TypeAlias = Callable[[Interaction, Any], Coroutine[Any, None, None] | None]
+interaction_callback: TypeAlias = Callable[[discord.Interaction, Any], Coroutine[Any, None, None] | None]
+
+AllDiscordChannels: TypeAlias = discord.abc.GuildChannel | discord.abc.PrivateChannel | discord.Thread

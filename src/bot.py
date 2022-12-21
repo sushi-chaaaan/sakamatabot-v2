@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import BaseView as BaseViewSchema
 from src.components.base import BaseView
-from type.interaction import interaction_callback
+from type.discord import interaction_callback
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
