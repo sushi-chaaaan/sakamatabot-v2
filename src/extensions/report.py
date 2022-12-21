@@ -59,12 +59,7 @@ class Report(commands.Cog):
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
         finder = Finder(self.bot)
-        report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
-
-        if not isinstance(report_forum, discord.ForumChannel):
-            self.bot.logger.exception("Report forum is not a ForumChannel")
-            return
-
+        report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_user_report_forum_tags(report_forum)
 
         user_info = user_info_embed(target)
@@ -100,12 +95,7 @@ class Report(commands.Cog):
     ) -> None:
         # interaction already deferred in ReportBaseModal.on_submit
         finder = Finder(self.bot)
-        report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID)
-
-        if not isinstance(report_forum, discord.ForumChannel):
-            self.bot.logger.exception("Report forum is not a ForumChannel")
-            return
-
+        report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_message_report_forum_tags(report_forum)
 
         user_info = user_info_embed(target.author)

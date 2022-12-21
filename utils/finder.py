@@ -1,44 +1,67 @@
 import os
+from typing import TypeVar, overload
 
 import discord
+from discord import Thread
+from discord.abc import GuildChannel, PrivateChannel
 
 from src.text.error import ErrorText
 
 from .logger import getMyLogger
+
+DiscordChannelT = TypeVar("DiscordChannelT", bound=GuildChannel | PrivateChannel | Thread)
 
 
 class Finder:
     def __init__(self, bot: discord.Client) -> None:
         self.bot = bot
         self.logger = getMyLogger(__name__)
-        self.guild: discord.Guild | None = None
+
+    @overload
+    async def find_channel(
+        self,
+        channel_id: int,
+        type: None = None,
+    ) -> GuildChannel | PrivateChannel | Thread:
+        ...
+
+    @overload
+    async def find_channel(
+        self,
+        channel_id: int,
+        type: list[type[DiscordChannelT]] | type[DiscordChannelT],
+    ) -> DiscordChannelT:
+        ...
 
     async def find_channel(
-        self, channel_id: int, guild: discord.Guild | None = None
-    ) -> discord.abc.GuildChannel | discord.abc.PrivateChannel | discord.Thread:
-
-        resolved: discord.Guild | discord.Client = self.deal_guild(guild)
-        channel = resolved.get_channel(channel_id)
+        self,
+        channel_id: int,
+        type: list[type[DiscordChannelT]] | type[DiscordChannelT] | None = None,
+    ):
+        channel = self.bot.get_channel(channel_id)
         if not channel:
             try:
-                channel = await resolved.fetch_channel(channel_id)
+                channel = await self.bot.fetch_channel(channel_id)
             except Exception as e:
                 self.logger.exception(ErrorText.CHANNEL_NOT_FOUND, exc_info=e)
                 raise
+
+        if not type:
+            return channel
+
+        if isinstance(type, list):
+            for t in type:
+                if not isinstance(channel, t):
+                    self.logger.exception(ErrorText.CHANNEL_NOT_FOUND)
+                    raise TypeError(f"Channel is not a {t}")
+        else:
+            if not isinstance(channel, type):
+                self.logger.exception(ErrorText.CHANNEL_NOT_FOUND)
+                raise TypeError(f"Channel is not a {type}")
         return channel
 
     async def find_log_channel(self) -> discord.TextChannel:
-        channel = await self.find_channel(int(os.environ["LOG_CHANNEL_ID"]))
-
-        if not isinstance(channel, discord.TextChannel):
-            raise TypeError("Log channel is not a TextChannel")
-
-        return channel
-
-    def deal_guild(self, guild: discord.Guild | None = None) -> discord.Guild | discord.Client:
-        if guild:
-            return guild
-        return self.bot
+        return await self.find_channel(int(os.environ["LOG_CHANNEL_ID"]), type=discord.TextChannel)
 
     async def find_guild(self, guild_id: int) -> discord.Guild:
         guild = self.bot.get_guild(guild_id)

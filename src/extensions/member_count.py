@@ -66,23 +66,13 @@ class MemberCounter(commands.Cog):
         return
 
     async def refresh_count(self) -> bool:
-        # get guild
         finder = Finder(self.bot)
         try:
             guild = await finder.find_guild(self.bot.env.GUILD_ID)
         except Exception:
             return False
+        channel = await finder.find_channel(self.bot.env.MEMBER_COUNT_CHANNEL_ID, type=discord.VoiceChannel)
 
-        # get channel
-
-        channel = await finder.find_channel(self.bot.env.MEMBER_COUNT_CHANNEL_ID, guild=guild)
-
-        # check channel
-        if not isinstance(channel, discord.VoiceChannel):
-            self.bot.logger.exception(f"{str(channel)} is not a VoiceChannel")
-            return False
-
-        # refresh member count
         try:
             await channel.edit(
                 name=MemberCountText.MEMBER_COUNT_CHANNEL_NAME.format(

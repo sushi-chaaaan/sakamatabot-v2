@@ -32,12 +32,7 @@ class Entrance(commands.Cog):
 
         # get channel
         finder = Finder(self.bot)
-        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
-
-        if not isinstance(channel, discord.abc.Messageable):
-            self.bot.logger.error("Failed to get Messageable channel")
-            return
-
+        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID, type=discord.TextChannel)
         await channel.send(msg)
         return
 
@@ -57,12 +52,7 @@ class Entrance(commands.Cog):
         self.bot.logger.info(msg)
 
         # get channel
-        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID)
-
-        if not isinstance(channel, discord.abc.Messageable):
-            self.bot.logger.error("Failed to get Messageable channel")
-            return
-
+        channel = await finder.find_channel(self.bot.env.ENTRANCE_CHANNEL_ID, type=discord.TextChannel)
         await channel.send(msg)
         return
 
