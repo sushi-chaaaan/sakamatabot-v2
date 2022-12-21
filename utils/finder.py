@@ -1,5 +1,5 @@
 import os
-from typing import TypeVar, overload
+from typing import TypeVar, Union, overload
 
 import discord
 from discord import Thread
@@ -9,7 +9,7 @@ from src.text.error import ErrorText
 
 from .logger import getMyLogger
 
-DiscordChannelT = TypeVar("DiscordChannelT", bound=GuildChannel | PrivateChannel | Thread)
+DiscordChannelT = TypeVar("DiscordChannelT", bound=Union[GuildChannel, PrivateChannel, Thread])
 
 
 class Finder:
