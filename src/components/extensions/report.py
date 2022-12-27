@@ -4,7 +4,7 @@ import discord
 from discord import ui
 
 from src.components.base import BaseModal
-from utils.run_any import call_any_func
+from utils.call_any import call_any_func
 
 
 class ReportBaseModal(BaseModal):
