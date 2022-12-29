@@ -1,7 +1,7 @@
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
 from src.components.base import BaseModal, BaseView
-from type.discord import interaction_callback
+from type.discord_type import InteractionCallback
 
 
 class InquiryView(BaseView):
@@ -9,7 +9,7 @@ class InquiryView(BaseView):
         self,
         *,
         custom_id: str,
-        callback_func: interaction_callback | None = None,
+        callback_func: InteractionCallback | None = None,
     ) -> None:
         super().__init__(custom_id=custom_id)
 

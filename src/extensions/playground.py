@@ -1,7 +1,5 @@
-import os
 from typing import TYPE_CHECKING
 
-import discord
 from discord.ext import commands  # type: ignore
 
 from schemas.command import CommandInfo
