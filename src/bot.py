@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import BaseView as BaseViewSchema
 from src.components.base import BaseView
-from type.discord import interaction_callback
+from type.discord_type import InteractionCallback
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
@@ -137,7 +137,7 @@ class Bot(commands.Bot):
         # callbackのimport
         # TODO: callbackの注入
 
-        callback: interaction_callback | None = (
+        callback: InteractionCallback | None = (
             getattr(view_file, view_schema.CallbackName) if view_schema.CallbackName else None  # pyright: ignore
         )
 
