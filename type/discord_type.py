@@ -7,6 +7,8 @@ if python_ver_is_under(3, 9, 0):
 else:
     from collections.abc import Callable, Coroutine
 
-import discord
 
-interaction_callback: TypeAlias = Callable[[discord.Interaction, Any], Coroutine[Any, None, None] | None]
+from discord import Interaction
+
+InteractionCallback: TypeAlias = Callable[[Interaction], Coroutine[Any, None, None] | None]
+ModalCallback: TypeAlias = Callable[[Interaction, str], Coroutine[Any, None, None] | None]

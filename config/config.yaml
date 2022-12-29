@@ -24,6 +24,7 @@ Extensions:
   - src.extensions.member_count
   - src.extensions.moderation
   - src.extensions.log
+  - src.extensions.playground
   - src.extensions.poll
   - src.extensions.report
   - src.extensions.send
