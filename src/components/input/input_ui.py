@@ -5,7 +5,8 @@ import discord
 from discord import ui
 
 from schemas.command import CommandInfo
-from src.components.base import BaseButton, BaseModal, BaseView
+from src.components.base import BaseButton as Button
+from src.components.base import BaseModal, BaseView
 from src.embeds.components.input_ui import input_embed
 from type.discord_type import ModalCallback
 from utils.call_any import call_any_func
@@ -38,7 +39,7 @@ class InputUI(BaseView):
 
     def construct_components(self):
         self.__view.add_item(
-            InputButton(
+            Button(
                 style=discord.ButtonStyle.blurple,
                 label="入力(input)",
                 custom_id=self.custom_id + "_InputButton",
@@ -47,7 +48,7 @@ class InputUI(BaseView):
             )
         )
         self.__view.add_item(
-            ExecuteButton(
+            Button(
                 style=discord.ButtonStyle.green,
                 label="実行(execute)",
                 custom_id=self.custom_id + "_ExecuteButton",
@@ -56,7 +57,7 @@ class InputUI(BaseView):
             )
         )
         self.__view.add_item(
-            CancelButton(
+            Button(
                 style=discord.ButtonStyle.red,
                 label="キャンセル(cancel)",
                 custom_id=self.custom_id + "_CancelButton",
@@ -129,18 +130,6 @@ class InputUI(BaseView):
 
         asyncio.run(self.__message.edit(embed=self.__embed, view=self.__view))
         return
-
-
-class InputButton(BaseButton):
-    pass
-
-
-class ExecuteButton(BaseButton):
-    pass
-
-
-class CancelButton(BaseButton):
-    pass
 
 
 class InputModal(BaseModal):
