@@ -127,7 +127,7 @@ class BaseButton(ui.Button):  # type: ignore
     async def callback(self, interaction: discord.Interaction) -> None:
         if self.callback_func is None:
             return
-        call_any_func(self.callback_func, interaction)
+        await call_any_func(self.callback_func, interaction)
 
 
 class UrlButton(ui.Button):  # type: ignore
