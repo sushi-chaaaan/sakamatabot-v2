@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from schemas.config import ConfigYaml, DotEnv
 from schemas.ui import BaseView as BaseViewSchema
 from src.components.base import BaseView
-from src.components.type import InteractionCallback
 from utils.cui import CommandLineUtils
 from utils.io import read_yaml
 from utils.logger import getMyLogger
@@ -135,13 +134,8 @@ class Bot(commands.Bot):
             raise TypeError(f"{view_schema.ClassName} is not a subclass of BaseView")
 
         # callbackのimport
-        # TODO: callbackの注入
-
-        callback: InteractionCallback | None = (
-            getattr(view_file, view_schema.CallbackName) if view_schema.CallbackName else None  # pyright: ignore
-        )
-
-        return [view_class(custom_id=c_id, callback_func=callback) for c_id in view_schema.CustomId]  # type: ignore
+        # TODO: callbackの注入も実装する？
+        return [view_class(custom_id=c_id) for c_id in view_schema.CustomId]  # type: ignore
 
     async def clear_app_commands_and_close(self) -> None:
         self.tree.clear_commands(guild=None)
