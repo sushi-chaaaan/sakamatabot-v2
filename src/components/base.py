@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, final
+from typing import Any
 
 import discord
 from discord import ui
@@ -151,7 +151,6 @@ class BaseModal(ui.Modal):
         for component in components:
             self.add_item(component)
 
-    @final
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
         if not self.callback_func:
             return

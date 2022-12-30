@@ -48,7 +48,6 @@ class ReportUserModal(ReportBaseModal):
         self.target = target
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
-        await interaction.response.defer(ephemeral=True)
         await call_any_func(self.callback_func, interaction, self.target, self.input.value)
 
 
@@ -69,5 +68,4 @@ class ReportMessageModal(ReportBaseModal):
         self.target = target
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
-        await interaction.response.defer(ephemeral=True)
         await call_any_func(self.callback_func, interaction, self.target, self.input.value)

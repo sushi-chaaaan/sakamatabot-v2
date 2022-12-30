@@ -57,7 +57,7 @@ class Report(commands.Cog):
         target: discord.User | discord.Member,
         content: str,
     ) -> None:
-        # interaction already deferred in ReportBaseModal.on_submit
+        await interaction.response.defer(ephemeral=True)
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_user_report_forum_tags(report_forum)
@@ -93,7 +93,7 @@ class Report(commands.Cog):
         target: discord.Message,
         content: str,
     ) -> None:
-        # interaction already deferred in ReportBaseModal.on_submit
+        await interaction.response.defer(ephemeral=True)
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_message_report_forum_tags(report_forum)
@@ -117,9 +117,8 @@ class Report(commands.Cog):
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
-        # この操作で発生するエラーは,mypyがdiscord.Embedの型をソース通りのtyping.Selfにしているために発生するので無視する
         edited_embed = message_report.embeds[0].copy()
-        edited_embed.set_field_at(  # type: ignore
+        edited_embed.set_field_at(
             3,
             name="転送されたメッセージ",
             value=f"[転送されたメッセージへ移動]({transferred.jump_url})",
