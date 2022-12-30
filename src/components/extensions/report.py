@@ -56,7 +56,6 @@ class ReportUserModal(ReportBaseModal):
             custom_id=custom_id,
             target=target,
         )
-        self.callback_func = callback_func
 
 
 class ReportMessageModal(ReportBaseModal):
@@ -76,4 +75,3 @@ class ReportMessageModal(ReportBaseModal):
             custom_id=custom_id,
             target=target,
         )
-        self.callback_func = callback_func

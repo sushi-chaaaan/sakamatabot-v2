@@ -1,7 +1,7 @@
 from discord import ButtonStyle, Interaction, TextStyle, ui
 
 from src.components.base import BaseModal, BaseView
-from src.components.type import ModalValues
+from src.components.type import ModalValues, SelectTypes
 
 
 class InquiryView(BaseView):
@@ -40,24 +40,29 @@ class InquiryModal(BaseModal):
         timeout: float | None = None,
         custom_id: str,
     ) -> None:
-        input = ui.TextInput(  # type: ignore # 明らかにui.TextInputなのでannotationしない
-            label="お問い合わせ内容",
-            style=TextStyle.long,
-            custom_id=custom_id + "_input",
-            placeholder="お問い合わせ内容(最大1800字)",
-            min_length=1,
-            max_length=1800,
-            required=True,
-            row=0,
-        )
+
         super().__init__(
             title=title,
             timeout=timeout,
             custom_id=custom_id,
             callback_func=self.callback,
-            components=[input],
         )
-        self.values: ModalValues = ...  # pyright:ignore  # callbackで代入される
+        self.custom_id = custom_id
+        self.values: ModalValues  # callbackで代入される
+
+    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore # TextInputのGeneric型を指定する必要はない
+        return [
+            ui.TextInput(
+                label="お問い合わせ内容",
+                style=TextStyle.long,
+                custom_id=self.custom_id + "_input",
+                placeholder="お問い合わせ内容(最大1800字)",
+                min_length=1,
+                max_length=1800,
+                required=True,
+                row=0,
+            )
+        ]
 
     async def callback(self, interaction: Interaction, values: ModalValues) -> None:
         await interaction.response.defer(ephemeral=True)

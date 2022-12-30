@@ -143,12 +143,12 @@ class BaseModal(ui.Modal):
         title: str,
         timeout: float | None = None,
         callback_func: ModalCallback | None = None,
-        extras: ExtrasType,
+        extras: ExtrasType = {},
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.logger = getMyLogger(__name__)
         self.callback_func = callback_func
-        self.extras = extras or {}
+        self.extras = extras
 
         for component in self.components():
             self.add_item(component)
