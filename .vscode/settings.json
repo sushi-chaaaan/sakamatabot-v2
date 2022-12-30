@@ -3,7 +3,8 @@
         "cooldown",
         "pydantic",
         "pyright",
-        "unban"
+        "unban",
+        "uicord"
     ],
     "editor.formatOnSave": true,
     "flake8.args": [
@@ -17,9 +18,14 @@
     "isort.importStrategy": "fromEnvironment",
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
+    "python.formatting.blackArgs": [
+        "--line-length=125",
+        "--target-version=py310"
+    ],
     "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
     "python.linting.enabled": true,
     "python.linting.lintOnSave": true,
-    "python.linting.mypyEnabled": true
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": ".venv/bin/mypy"
 }
