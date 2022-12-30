@@ -4,7 +4,7 @@ from discord import ui
 from schemas.command import CommandInfo
 from src.components.base import BaseButton as Button
 from src.components.base import BaseModal, BaseView
-from src.components.type import ModalCallback, ModalValues
+from src.components.type import ModalCallback, ModalValues, SelectTypes
 from src.embeds.components.input_ui import input_embed
 
 
@@ -85,20 +85,25 @@ class InputModal(BaseModal):
         placeholder: str | None = None,
         callback_func: ModalCallback | None = None,
     ) -> None:
-        input: ui.TextInput = ui.TextInput(  # type: ignore
-            label=label,
-            style=discord.TextStyle.long,
-            custom_id="src.components.input.input_ui.input",
-            placeholder=placeholder,
-            min_length=1,
-            max_length=1800,
-            required=True,
-            row=0,
-        )
         super().__init__(
             title=title,
             timeout=None,
             custom_id="src.components.input.input_ui",
             callback_func=callback_func,
-            components=[input],
         )
+        self.label = label
+        self.placeholder = placeholder
+
+    def Components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
+        return [
+            ui.TextInput(
+                label=self.label,
+                style=discord.TextStyle.long,
+                custom_id="src.components.input.input_ui.input",
+                placeholder=self.placeholder,
+                min_length=1,
+                max_length=1800,
+                required=True,
+                row=0,
+            )
+        ]
