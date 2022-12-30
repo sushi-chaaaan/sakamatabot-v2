@@ -4,6 +4,7 @@ from typing import Any
 import discord
 from discord import ui
 
+from src.components.type import ExtrasType
 from utils.call_any import call_any_func
 from utils.logger import getMyLogger
 
@@ -140,21 +141,25 @@ class BaseModal(ui.Modal):
         *,
         custom_id: str,
         title: str,
-        components: list[ui.TextInput | SelectTypes],  # type: ignore
         timeout: float | None = None,
         callback_func: ModalCallback | None = None,
+        extras: ExtrasType,
     ) -> None:
         super().__init__(title=title, timeout=timeout, custom_id=custom_id)
         self.logger = getMyLogger(__name__)
         self.callback_func = callback_func
+        self.extras = extras or {}
 
-        for component in components:
+        for component in self.components():
             self.add_item(component)
+
+    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
+        return []
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:
         if not self.callback_func:
             return
-        await call_any_func(self.callback_func, interaction, await self.get_values())
+        await call_any_func(self.callback_func, interaction, self.get_values())
 
     # Signature of "on_error" incompatible with supertype "View"mypy(error)
     #  Superclass:mypy(note)
@@ -175,7 +180,7 @@ class BaseModal(ui.Modal):
         return
 
     # TODO: ui.TextInputとui.Select両方の値をいい感じに取得する？
-    async def get_values(self) -> ModalValues:
+    def get_values(self) -> ModalValues:
         v = ModalValues()
         for i in self.children:
             if isinstance(i, ui.TextInput):
@@ -193,6 +198,7 @@ class BaseModal(ui.Modal):
             else:
                 # 今のところTextInput,Select以外は入りそうにない
                 pass
+        v.Extras = self.extras
         return v
 
 

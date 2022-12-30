@@ -4,6 +4,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
+from components.type import ModalValues
 from schemas.command import CommandInfo
 from src.components.extensions.report import ReportMessageModal, ReportUserModal
 from src.embeds.extensions.moderation import user_info_embed
@@ -54,10 +55,17 @@ class Report(commands.Cog):
     async def report_user_modal_callback(
         self,
         interaction: discord.Interaction,
-        target: discord.User | discord.Member,
-        content: str,
+        values: ModalValues,
     ) -> None:
         await interaction.response.defer(ephemeral=True)
+
+        input = values.TextInput[0]
+        target = values.Extras["target"]
+
+        if not isinstance(target, (discord.User, discord.Member)):
+            self.bot.logger.error(f"target is not User or Member. target: {target}")
+            return
+
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_user_report_forum_tags(report_forum)
@@ -69,7 +77,7 @@ class Report(commands.Cog):
             allowed_mentions=self.allowed_mentions,
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embeds=[report_user_embed(content, interaction.user, target=target), user_info],
+            embeds=[report_user_embed(input, interaction.user, target=target), user_info],
         )
 
         if not interaction.is_expired():
@@ -90,10 +98,17 @@ class Report(commands.Cog):
     async def report_message_modal_callback(
         self,
         interaction: discord.Interaction,
-        target: discord.Message,
-        content: str,
+        values: ModalValues,
     ) -> None:
         await interaction.response.defer(ephemeral=True)
+
+        input = values.TextInput[0]
+        target = values.Extras["target"]
+
+        if not isinstance(target, discord.Message):
+            self.bot.logger.error("report_message_modal_callback: target is not discord.Message")
+            return
+
         finder = Finder(self.bot)
         report_forum = await finder.find_channel(self.bot.env.REPORT_FORUM_CHANNEL_ID, type=discord.ForumChannel)
         tags = self.get_message_report_forum_tags(report_forum)
@@ -105,7 +120,7 @@ class Report(commands.Cog):
             allowed_mentions=self.allowed_mentions,
             content=f"<@&{self.bot.env.ADMIN_ROLE_ID}>",
             applied_tags=tags,
-            embeds=[report_message_embed(content, interaction.user, target=target), user_info],
+            embeds=[report_message_embed(input, interaction.user, target=target), user_info],
         )
 
         await thread.send(content="通報対象となったメッセージの内容を転送しています...")

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, TypeAlias
+from typing import Any, TypeAlias, Union
 
 import discord
 from discord import app_commands, ui
@@ -12,6 +12,8 @@ else:
 
 from discord import Interaction
 
+ExtrasType: TypeAlias = dict[str, Union[Union[discord.Member, discord.User], discord.Message]]
+
 
 @dataclass
 class ModalValues:
@@ -21,6 +23,7 @@ class ModalValues:
     RoleSelect: list[list[discord.Role]] = field(default_factory=list)
     MentionableSelect: list[list[discord.User | discord.Role | discord.Member]] = field(default_factory=list)
     UserSelect: list[list[discord.User | discord.Member]] = field(default_factory=list)
+    Extras: ExtrasType = field(default_factory=dict)
 
 
 SelectTypes: TypeAlias = ui.Select | ui.ChannelSelect | ui.RoleSelect | ui.MentionableSelect | ui.UserSelect

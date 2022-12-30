@@ -1,34 +1,42 @@
-from typing import Any, Callable, Coroutine
-
 import discord
 from discord import ui
 
 from src.components.base import BaseModal
-from utils.call_any import call_any_func
+from src.components.type import ModalCallback, SelectTypes
 
 
 class ReportBaseModal(BaseModal):
     def __init__(
         self,
         *,
-        title: str,
-        timeout: float | None = None,
         custom_id: str,
+        title: str,
+        target: discord.Member | discord.User | discord.Message,
+        callback_func: ModalCallback | None = None,
+        timeout: float | None = None,
     ) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
-
-        # pyright: reportGeneralTypeIssues=false
-        # あとから、report対象に合わせてlabelをセットする。
-        self.input = ui.TextInput(
-            label=...,  # type: ignore
-            style=discord.TextStyle.long,
-            custom_id=custom_id + "_input",
-            placeholder="通報内容を入力してください。",
-            min_length=1,
-            max_length=1800,
-            required=True,
-            row=0,
+        super().__init__(
+            title=title,
+            timeout=timeout,
+            callback_func=callback_func,
+            custom_id=custom_id,
+            extras={"target": target},
         )
+        self.custom_id = custom_id
+
+    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
+        return [
+            ui.TextInput(
+                label="通報の理由について教えてください。(最大1800文字)",
+                style=discord.TextStyle.long,
+                custom_id=self.custom_id + "_input",
+                placeholder="通報内容を入力してください。",
+                min_length=1,
+                max_length=1800,
+                required=True,
+                row=0,
+            ),
+        ]
 
 
 class ReportUserModal(ReportBaseModal):
@@ -39,16 +47,16 @@ class ReportUserModal(ReportBaseModal):
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        callback_func: Callable[[discord.Interaction, discord.Member | discord.User, str], Coroutine[Any, Any, None] | None],
+        callback_func: ModalCallback,
     ) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
-        self.input.label = "通報の理由について教えてください。(最大1800文字)"
-        self.add_item(self.input)
+        super().__init__(
+            title=title,
+            timeout=timeout,
+            callback_func=callback_func,
+            custom_id=custom_id,
+            target=target,
+        )
         self.callback_func = callback_func
-        self.target = target
-
-    async def on_submit(self, interaction: discord.Interaction, /) -> None:
-        await call_any_func(self.callback_func, interaction, self.target, self.input.value)
 
 
 class ReportMessageModal(ReportBaseModal):
@@ -59,13 +67,13 @@ class ReportMessageModal(ReportBaseModal):
         title: str = "通報フォーム",
         timeout: float | None = None,
         custom_id: str,
-        callback_func: Callable[[discord.Interaction, discord.Message, str], Coroutine[Any, Any, None] | None],
+        callback_func: ModalCallback,
     ) -> None:
-        super().__init__(title=title, timeout=timeout, custom_id=custom_id)
-        self.input.label = "通報の理由について教えてください。(最大1800文字)"
-        self.add_item(self.input)
+        super().__init__(
+            title=title,
+            timeout=timeout,
+            callback_func=callback_func,
+            custom_id=custom_id,
+            target=target,
+        )
         self.callback_func = callback_func
-        self.target = target
-
-    async def on_submit(self, interaction: discord.Interaction, /) -> None:
-        await call_any_func(self.callback_func, interaction, self.target, self.input.value)
