@@ -20,10 +20,7 @@ class Inquiry(commands.Cog):
     async def send_inquiry_form(self, ctx: commands.Context):
         cmd_info = CommandInfo(name="send-inquiry-form", author=ctx.author)
         self.bot.logger.command_log(name=cmd_info.name, author=cmd_info.author)
-        view = InquiryView(
-            custom_id="src.extensions.inquiry.send_inquiry_form",
-            callback_func=None,
-        )
+        view = InquiryView(custom_id="src.extensions.inquiry.send_inquiry_form")
         # TODO: 問い合わせの作成
         await ctx.send("TODO: 問い合わせフォーム", view=view)
         return

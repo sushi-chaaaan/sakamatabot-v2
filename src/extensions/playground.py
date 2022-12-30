@@ -21,7 +21,7 @@ class PlayGround(commands.Cog):
     async def input_ui(self, ctx: commands.Context):
         cmd_info = CommandInfo(name="input", author=ctx.author)
         ui = InputUI(title="InputUI Test", custom_id="input_ui", cmd_info=cmd_info)
-        await ui.send(ctx.channel)
+        await ui.send_message(ctx.channel)
         return
 
 
