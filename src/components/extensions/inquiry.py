@@ -50,7 +50,7 @@ class InquiryModal(BaseModal):
         self.custom_id = custom_id
         self.values: ModalValues  # callbackで代入される
 
-    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore # TextInputのGeneric型を指定する必要はない
+    def Components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore # TextInputのGeneric型を指定する必要はない
         return [
             ui.TextInput(
                 label="お問い合わせ内容",

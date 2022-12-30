@@ -150,10 +150,10 @@ class BaseModal(ui.Modal):
         self.callback_func = callback_func
         self.extras = extras
 
-        for component in self.components():
+        for component in self.Components():
             self.add_item(component)
 
-    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
+    def Components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
         return []
 
     async def on_submit(self, interaction: discord.Interaction, /) -> None:

@@ -24,7 +24,7 @@ class ReportBaseModal(BaseModal):
         )
         self.custom_id = custom_id
 
-    def components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
+    def Components(self) -> list[ui.TextInput | SelectTypes]:  # type: ignore
         return [
             ui.TextInput(
                 label="通報の理由について教えてください。(最大1800文字)",
