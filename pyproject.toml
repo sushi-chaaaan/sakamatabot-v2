@@ -75,6 +75,7 @@ mypy-stub = "mypy --install-types --non-interactive"
 
 # format
 format.sequence = ["_black", "_isort"]
+fmt.sequence = ["format"]
 format.ignore_fail = "return_zero"
 _black = "poetry run black ."
 _isort = "poetry run isort ."
