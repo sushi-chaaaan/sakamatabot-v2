@@ -4,9 +4,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands  # type: ignore
 
-from components.type import ModalValues
 from schemas.command import CommandInfo
 from src.components.extensions.report import ReportMessageModal, ReportUserModal
+from src.components.type import ModalValues
 from src.embeds.extensions.moderation import user_info_embed
 from src.embeds.extensions.report import report_message_embed, report_user_embed
 from utils.finder import Finder
